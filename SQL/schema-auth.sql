@@ -1,3 +1,4 @@
+
 CREATE TABLE verification_token
 (
   identifier TEXT NOT NULL,
@@ -42,8 +43,9 @@ CREATE TABLE users
   email VARCHAR(255),
   "emailVerified" TIMESTAMPTZ,
   image TEXT,
-  employee BOOLEAN,
+  employee BOOLEAN DEFAULT false,
  
   PRIMARY KEY (id)
 );
  
+ select * from users

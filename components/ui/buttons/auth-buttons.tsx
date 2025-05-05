@@ -2,14 +2,14 @@
 import { loginGoogle, loginGithub, loginGitlab, loginDiscord, logout } from '@/actions/auth-actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faGithub, faGitlab, faDiscord, } from '@fortawesome/free-brands-svg-icons';
+
 import { Session } from '@auth/core/types';
 
-interface Props {
+interface AuthButtonProps {
     session: Session | null;
 }
 
-// export default function Authbutton({ session }: Props) {
-    export default function Authbutton({ session }: Props) {
+export default function Authbutton({ session }: AuthButtonProps) {
     return (
         <>
             <div className='flex flex-wrap gap-4 w-full '>
