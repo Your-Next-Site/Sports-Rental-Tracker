@@ -11,7 +11,7 @@ export default function Banner() {
                 alt="Branding for the Paddle Station"
             />
 
-            <div className="absolute top-1/2 left-1/2 shadow-2xl transform -translate-x-1/2 -translate-y-1/2 bg-white/20 backdrop-filter backdrop-blur-lg rounded-md p-2 ">
+            <div className="absolute top-1/2 left-1/2 shadow-2xl transform -translate-x-1/2 -translate-y-1/2 bg-white/20 backdrop-filter backdrop-blur-lg rounded-md p-3 md:p-8">
                 <h1 className="text-2xl sm:text-4xl text-bannertext font-bold text-center">
                     Raft Tracker 5000
                 </h1>
