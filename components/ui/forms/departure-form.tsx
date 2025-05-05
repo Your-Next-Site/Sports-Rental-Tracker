@@ -8,15 +8,15 @@ const boatOptions = [
 ];
 export default function DepartureForm() {
     return (
-        <form className="flex flex-col border gap-8 p-8 rounded-sm">
-            <h1>Show a guest departure </h1>
-            <div className="flex gap-4">
+        <form className="flex flex-col gap-8  ">
+            <h1 className="text-2xl">Show a guests departure </h1>
+            <div className="flex flex-col md:flex-row gap-4">
                 <input
-                    className="border rounded-sm w-2/6"
+                    className="border rounded-sm md:w-2/6 p-2"
                     type="text"
                     name="guest-name"
                     placeholder=" Guest Name" />
-                <select className="border rounded-sm w-1/6">
+                <select className="border rounded-sm md:w-1/6">
                     {boatOptions.map(boat => (
                         <option key={boat.value} value={boat.value}>
                             {boat.label}

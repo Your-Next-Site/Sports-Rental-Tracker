@@ -5,7 +5,7 @@ import DepartureForm from "@/components/ui/forms/departure-form";
 
 export default function Page() {
     return (
-        <div className="flex flex-col gap-4 items-center">
+        <div className="flex flex-col p-2 gap-4 items-center">
             <MainContainer>
                 <DepartureForm />
             </MainContainer>
