@@ -17,5 +17,6 @@ export default async function Home() {
           <Link className="underline" href='/privacy-policy'> Privacy Policy.</Link></div>
       </MainContainer>
     </PageContainer>
+    // <
   );
 }
