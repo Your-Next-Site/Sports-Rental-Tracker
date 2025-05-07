@@ -26,8 +26,7 @@ CREATE TABLE rafts_on_water (
     checked_out_by INTEGER NOT NULL,             -- Staff user who checked out the trip
     departure_time TIMESTAMPTZ NOT NULL,         -- Time raft departed
     arrival_time TIMESTAMPTZ,                   -- Optional return time
-    is_active BOOLEAN DEFAULT true,             -- Whether the trip is still active
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, -- Creation timestamp
+    is_active BOOLEAN DEFAULT true,             -- Whether the trip is still active    
     
     FOREIGN KEY (checked_out_by) REFERENCES users(id) ON DELETE SET NULL,
     FOREIGN KEY (raft_type_id) REFERENCES raft_types(id) ON DELETE CASCADE

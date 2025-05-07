@@ -15,11 +15,11 @@ declare module "@auth/core/types" {
 
 export interface Trip {
   id: number;
-  raftId: number;
-  checkedOutBy: number;   // Reference to the user who checked out the trip (staff member)
-  departureTime: string;  // ISO string (e.g., "2025-05-07T09:00:00Z")
+  raftTypeId: number;       // Reference to the type of raft (e.g., single-kayak, double-kayak)
+  unitNumber: number;       // The specific raft unit number being used
+  checkedOutBy: number;     // Reference to the user who checked out the trip (staff member)
+  departureTime: string;    // ISO string (e.g., "2025-05-07T09:00:00Z")
   arrivalTime?: string | null;
-  isActive: boolean;
-  createdAt: string;      // ISO string
+  isActive: boolean;       // Whether the trip is still active 
 }
 
