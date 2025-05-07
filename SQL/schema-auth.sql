@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS verification_token CASCADE;
+DROP TABLE IF EXISTS accounts CASCADE;
+DROP TABLE IF EXISTS sessions CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
 
 CREATE TABLE verification_token
 (
@@ -48,4 +53,4 @@ CREATE TABLE users
   PRIMARY KEY (id)
 );
  
- select * from users
+--  select * from users
