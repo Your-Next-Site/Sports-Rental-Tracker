@@ -1,10 +1,12 @@
 'use client'
+import { useRemoveRaftFromWater } from "@/mutations/mutations";
 import MainContainer from "../containers/main-container";
 import { useGetTrips } from "@/hooks/hooks";
 
 export default function OnTheWater() {
 
     const { data } = useGetTrips();
+    const { mutate, isPending, isError } = useRemoveRaftFromWater();
     console.log(data)
 
     return (
@@ -12,19 +14,26 @@ export default function OnTheWater() {
             <div className="flex flex-col gap-8">
                 <h1 className="text-2xl">Guests on the Water</h1>
                 <div className="flex flex-wrap justify-center gap-4">
+                    {isError &&
+                        <p className="text-red-500">Error marking raft arrived</p>
+                    }
                     {data?.map((trip, index) => (
                         <div key={index} className="bg-white p-4 rounded shadow-2xl md:w-1/2 lg:w-1/3 xl:w-1/4">
-                            <h2 className="text-lg">{trip.guest_name}</h2>                           
-                            <p>Departure Time:{new Date(trip.departure_time).toLocaleString('en-CA', { dateStyle: 'short', timeStyle: 'short' })} </p>                            
+                            <h2 className="text-lg">{trip.guest_name}</h2>
+                            <p>Departure Time:{new Date(trip.departure_time).toLocaleString('en-CA', { dateStyle: 'short', timeStyle: 'short' })} </p>
                             <p>Raft Size: {trip.raft_type_name}</p>
-                            <p>Unit Number: {trip.unit_number}</p> 
-                            <button className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-4 mt-auto md:w-full text-center mx-auto shadow-lg">
+                            <p>Unit Number: {trip.unit_number}</p>
+                            <button
+                                onClick={trip_id => mutate(trip.id)}
+                                disabled={isPending}
+                                className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-4 mt-auto md:w-full text-center mx-auto shadow-lg">
                                 Mark Arrived
                             </button>
+
                         </div>
                     ))}
                 </div>
             </div>
-        </MainContainer>
+        </MainContainer >
     );
 }

@@ -12,7 +12,8 @@ const schemaAddRaft = z.object({
 export async function addRaftToWater(formData: FormData) {
     const session = await auth();
     const email = session?.user.email;
-    console.log(formData.get("raft-type"))
+
+
     const validatedFields = schemaAddRaft.safeParse({
         guestName: formData.get("guest-name"),
         raftType: formData.get("raft-type"),
@@ -48,6 +49,41 @@ export async function addRaftToWater(formData: FormData) {
         return result;
     } catch (e: unknown) {
         const errorMessage = e instanceof Error ? e.message : String(e);
+        throw new Error(errorMessage);
+    }
+}
+
+const schemaRemoveRaft = z.object({
+    raftOnWaterId: z.number(),
+})
+
+export async function addRemoveRaftFromWater(raftOnWaterId: number) {
+    const session = await auth();
+    const email = session?.user.email;
+
+    const validatedFields = schemaRemoveRaft.safeParse({
+        raftOnWaterId: raftOnWaterId
+    });
+
+    if (!validatedFields.success) {
+        throw new Error("Invalid data");
+    }
+
+    try {     
+        const sql = neon(`${process.env.DATABASE_URL}`);
+
+        const [result] = await sql`
+            UPDATE rafts_on_water 
+            SET arrival_time = NOW(),
+                checked_in_by = (SELECT id FROM users WHERE email = ${email})
+            WHERE id = ${raftOnWaterId}
+            RETURNING *;
+        `;
+
+        if (!result) throw new Error('Failed to mark raft as arrived');
+        return result;
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
         throw new Error(errorMessage);
     }
 }

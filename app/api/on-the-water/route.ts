@@ -5,7 +5,7 @@ import { NextRequest } from 'next/server';
 export async function GET(request: NextRequest) {
     try {
         const sql = neon(`${process.env.DATABASE_URL}`);
-        
+
         const result = await sql`
             SELECT 
                 row.id,
@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
             FROM rafts_on_water row
             JOIN raft_types rt ON row.raft_type_id = rt.id
             WHERE row.departure_time >= CURRENT_DATE - INTERVAL '1 days'
+            AND row.arrival_time IS NULL
             ORDER BY row.departure_time DESC`;
         return new Response(JSON.stringify(result as Trip[]), { headers: { 'Content-Type': 'application/json' } });
     } catch (error) {
@@ -45,7 +46,7 @@ export async function POST(request: NextRequest) {
             checked_out_by,
             departure_time,
             arrival_time`;
-            
+
         if (!result || result.length === 0) {
             return new Response('No data was inserted', { status: 500, headers: { 'Content-Type': 'text/plain' } });
         }
