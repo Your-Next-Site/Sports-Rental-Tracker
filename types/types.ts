@@ -16,6 +16,7 @@ declare module "@auth/core/types" {
 export interface Trip {
   id: number;
   guest_name: string,
+  unit_number:number;
   raft_type_name: number;       // Reference to the type of raft (e.g., single-kayak, double-kayak
   checked_out_by: number;     // Reference to the user who checked out the trip (staff member)
   departure_time: Date;    // ISO string (e.g., "2025-05-07T09:00:00Z")

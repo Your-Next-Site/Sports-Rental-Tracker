@@ -17,7 +17,7 @@ export default function OnTheWater() {
                             <h2 className="text-lg">{trip.guest_name}</h2>                           
                             <p>Departure Time:{new Date(trip.departure_time).toLocaleString('en-CA', { dateStyle: 'short', timeStyle: 'short' })} </p>                            
                             <p>Raft Size: {trip.raft_type_name}</p>
-                            <p>Unit Number: {trip.id}</p> 
+                            <p>Unit Number: {trip.unit_number}</p> 
                             <button className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-4 mt-auto md:w-full text-center mx-auto shadow-lg">
                                 Mark Arrived
                             </button>
