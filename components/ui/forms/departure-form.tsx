@@ -1,3 +1,4 @@
+import { useAddRaftToWater } from "@/mutations/mutations";
 import MainContainer from "../containers/main-container";
 
 const boatOptions = [
@@ -10,9 +11,13 @@ const boatOptions = [
 ];
 
 export default function DepartureForm() {
+    const { mutate } = useAddRaftToWater();
     return (
         <MainContainer>
-            <form className="flex flex-col gap-8  ">
+            <form
+                action={mutate}
+                className="flex flex-col gap-8  "
+            >
                 <h1 className="text-2xl">Show a guests departure </h1>
                 <Inputs />
             </form>
@@ -30,7 +35,7 @@ function Inputs() {
                 placeholder=" Guest Name"
                 required
             />
-            <select className="border rounded-sm md:w-1/6">
+            <select name="raft-type" className="border rounded-sm md:w-1/6">
                 {boatOptions.map(boat => (
                     <option key={boat.value} value={boat.value}>
                         {boat.label}
