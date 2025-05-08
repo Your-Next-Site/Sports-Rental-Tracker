@@ -10,6 +10,6 @@ export default function MainContainer({
             <div className="flex flex-col w-full bg-white border gap-4 md:gap-8 p-8">
                 {children}
             </div>
-        </div >
+        </div>
     );
 }
