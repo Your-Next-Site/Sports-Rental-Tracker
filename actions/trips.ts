@@ -1,13 +1,9 @@
 'use server'
 import { auth } from "@/auth";
+import { removeRaftFromWater } from "@/lib/utils/db";
+import { schemaAddRaft, schemaRemoveRaft } from "@/lib/utils/zod/schmeas";
 import { neon } from "@neondatabase/serverless";
-import { z } from 'zod'
 
-const schemaAddRaft = z.object({
-    guestName: z.string(),
-    raftType: z.string(),
-    unitNumber: z.number(),
-})
 
 export async function addRaftToWater(formData: FormData) {
     const session = await auth();
@@ -53,9 +49,7 @@ export async function addRaftToWater(formData: FormData) {
     }
 }
 
-const schemaRemoveRaft = z.object({
-    raftOnWaterId: z.number(),
-})
+
 
 export async function addRemoveRaftFromWater(raftOnWaterId: number) {
     const session = await auth();
@@ -69,16 +63,9 @@ export async function addRemoveRaftFromWater(raftOnWaterId: number) {
         throw new Error("Invalid data");
     }
 
-    try {     
+    try {
         const sql = neon(`${process.env.DATABASE_URL}`);
-
-        const [result] = await sql`
-            UPDATE rafts_on_water 
-            SET arrival_time = NOW(),
-                checked_in_by = (SELECT id FROM users WHERE email = ${email})
-            WHERE id = ${raftOnWaterId}
-            RETURNING *;
-        `;
+        const [result] = await removeRaftFromWater(validatedFields.data.raftOnWaterId, email)         
 
         if (!result) throw new Error('Failed to mark raft as arrived');
         return result;
