@@ -1,3 +1,5 @@
+import MainContainer from "../containers/main-container";
+
 const boatOptions = [
     { value: 'single-kayak', label: 'Single Kayak' },
     { value: 'double-kayak', label: 'Double Kayak' },
@@ -6,12 +8,15 @@ const boatOptions = [
     { value: 'medium-raft', label: 'Medium Raft' },
     { value: 'large-raft', label: 'Large Raft' }
 ];
+
 export default function DepartureForm() {
     return (
-        <form className="flex flex-col gap-8  ">
-            <h1 className="text-2xl">Show a guests departure </h1>
-            <Inputs />
-        </form>
+        <MainContainer>
+            <form className="flex flex-col gap-8  ">
+                <h1 className="text-2xl">Show a guests departure </h1>
+                <Inputs />
+            </form>
+        </MainContainer>
     );
 }
 
@@ -39,7 +44,7 @@ function Inputs() {
                 placeholder="Unit Number"
                 required
             />
-            <button className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-4 md:w-1/6 text-center ">Mark Guest on The Water</button>
+            <button className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-4 md:w-1/6 text-center shadow-lg">Mark Guest on The Water</button>
         </div>
     );
 }

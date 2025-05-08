@@ -13,14 +13,14 @@ export async function GET(request: NextRequest) {
                 row.unit_number,
                 row.checked_out_by,
                 row.departure_time,
-                row.arrival_time,
-                row.is_active
+                row.arrival_time                
             FROM rafts_on_water row
             JOIN raft_types rt ON row.raft_type_id = rt.id
             WHERE row.departure_time >= CURRENT_DATE - INTERVAL '1 days'
             ORDER BY row.departure_time DESC`;
         return new Response(JSON.stringify(result as Trip[]), { headers: { 'Content-Type': 'application/json' } });
     } catch (error) {
-        return new Response(`Error getting comments: ${error}`, { headers: { 'Content-Type': 'text/plain' } });
+        console.log(error)
+        return new Response(`Error fetching raft data: ${error}`, { status: 500, headers: { 'Content-Type': 'text/plain' } });
     }
 }
