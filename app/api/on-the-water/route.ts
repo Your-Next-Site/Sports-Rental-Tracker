@@ -27,32 +27,3 @@ export async function GET(request: NextRequest) {
     }
 }
 
-export async function POST(request: NextRequest) {
-    try {
-        const sql = neon(`${process.env.DATABASE_URL}`);
-        const body = await request.json();
-        const { guest_name, raft_type_id, unit_number, checked_out_by } = body;
-
-        const result = await sql`
-            INSERT INTO rafts_on_water 
-            (guest_name, raft_type_id, unit_number, checked_out_by, departure_time)
-            VALUES 
-            (${guest_name}, ${raft_type_id}, ${unit_number}, ${checked_out_by}, NOW())
-            RETURNING 
-            id,
-            guest_name,
-            (SELECT name FROM raft_types WHERE id = ${raft_type_id}) as raft_type_name,
-            unit_number,
-            checked_out_by,
-            departure_time,
-            arrival_time`;
-
-        if (!result || result.length === 0) {
-            return new Response('No data was inserted', { status: 500, headers: { 'Content-Type': 'text/plain' } });
-        }
-        return new Response(JSON.stringify(result as Trip[]), { headers: { 'Content-Type': 'application/json' } });
-    } catch (error) {
-        console.log(error)
-        return new Response(`Error fetching raft data: ${error}`, { status: 500, headers: { 'Content-Type': 'text/plain' } });
-    }
-}
