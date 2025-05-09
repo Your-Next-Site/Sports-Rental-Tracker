@@ -2,8 +2,8 @@
 import MainContainer from "@/components/ui/containers/main-container";
 import PageContainer from "@/components/ui/containers/page-container";
 import { useGetUser } from "@/hooks/hooks";
-import { useToggleAdmin } from "@/mutations/mutations";
-import { User } from "@auth/core/types";
+import { useToggleAdmin, useToggleEmployee } from "@/mutations/mutations";
+// import { User } from "@auth/core/types";
 
 export default function Page() {
 
@@ -17,7 +17,8 @@ export default function Page() {
 
 function EmployeeList() {
     const { data } = useGetUser();
-    const { mutate } = useToggleAdmin();
+    const { mutate: mutateAdmin } = useToggleAdmin();
+    const { mutate: mutateEmployee } = useToggleEmployee();
 
     console.log(data)
     return (
@@ -33,7 +34,7 @@ function EmployeeList() {
                         <div className="space-x-4 flex items-center">
                             <label className="flex items-center space-x-2">
                                 <input
-                                    onClick={() => user.email && mutate(user.email)}
+                                    onClick={() => user.email && mutateAdmin(user.email)}
                                     type="checkbox"
                                     defaultChecked={user.admin}
                                     className="form-checkbox"
@@ -42,6 +43,7 @@ function EmployeeList() {
                             </label>
                             <label className="flex items-center space-x-2">
                                 <input
+                                    onClick={() => user.email && mutateEmployee(user.email)}
                                     type="checkbox"
                                     defaultChecked={user.employee}
                                     className="form-checkbox"
@@ -55,3 +57,4 @@ function EmployeeList() {
         </MainContainer>
     )
 }
+

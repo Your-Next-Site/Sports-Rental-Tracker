@@ -66,17 +66,24 @@ export async function removeRaftFromWater(raftOnWaterId: number, email: string |
     return [result];
 }
 
-export async function toggleAdminDB(email: string){
-    if (!process.env.DATABASE_URL) {
-        throw new Error('DATABASE_URL environment variable is not set');
-    }
-    const sql = neon(process.env.DATABASE_URL);
+export async function toggleAdminDB(email: string) {
+    const sql = neon(`${process.env.DATABASE_URL}`);
     const [result] = await sql`
         UPDATE users 
         SET admin = NOT admin 
         WHERE email = ${email}
         RETURNING *;
     `;
-    return [result]
+    return [result];
 }
 
+export async function toggleEmployeeDB(email: string) {    
+    const sql = neon(`${process.env.DATABASE_URL}`);
+    const [result] = await sql`
+        UPDATE users 
+        SET employee = NOT employee 
+        WHERE email = ${email}
+        RETURNING *;
+    `;
+    return [result];
+}
