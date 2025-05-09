@@ -6,12 +6,12 @@ import Discord from 'next-auth/providers/discord';
 import Twitter from 'next-auth/providers/twitter';
 import NeonAdapter from "@auth/neon-adapter"
 import { Pool } from "@neondatabase/serverless"
+import authConfig from './auth.config';
 
-export const { handlers, auth, signIn, signOut } = NextAuth(() => {
-    const pool = new Pool({ connectionString: process.env.DATABASE_URL })
-    return {
-        adapter: NeonAdapter(pool),
-        providers: [Google, GitHub, GitLab, Discord, Twitter],
-        trustHost: true,
-    }
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
+    adapter: NeonAdapter(pool),
+    session: { strategy: "jwt" },
+    ...authConfig
 })

@@ -37,6 +37,8 @@ CREATE TABLE sessions (
     PRIMARY KEY (id)
 );
 
+-- SELECT * FROM sessions;
+
 CREATE TABLE users (
     id SERIAL,
     name VARCHAR(255),
