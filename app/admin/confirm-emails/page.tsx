@@ -17,10 +17,10 @@ export default function Page() {
 
 function EmployeeList() {
     const { data } = useGetUser();
-    const { mutate: mutateAdmin } = useToggleAdmin();
-    const { mutate: mutateEmployee } = useToggleEmployee();
-
-    console.log(data)
+    const { mutate: mutateAdmin, isError: isErrorAdmin } = useToggleAdmin();
+    const { mutate: mutateEmployee, isError: isErrorEmployee } = useToggleEmployee();
+    const isError = (isErrorAdmin || isErrorEmployee)
+    
     return (
         <MainContainer>
             <div className="space-y-4">
@@ -31,7 +31,11 @@ function EmployeeList() {
                             <p className="font-medium">{user.name}</p>
                             <p className="text-gray-600">{user.email}</p>
                         </div>
+                        {isError &&
+                            <p className="w-full text-center text-red-500">Error changing permissions</p>
+                        }
                         <div className="space-x-4 flex items-center">
+
                             <label className="flex items-center space-x-2">
                                 <input
                                     onClick={() => user.email && mutateAdmin(user.email)}
@@ -50,6 +54,7 @@ function EmployeeList() {
                                 />
                                 <span>Employee</span>
                             </label>
+
                         </div>
                     </div>
                 ))}
