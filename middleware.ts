@@ -29,7 +29,7 @@ export default auth((req) => {
     )
 
     if (isAdminRoute && !req.auth?.user?.admin) {
-        return Response.redirect(new URL("https://google.com"))
+        return Response.redirect(new URL("/", req.nextUrl.origin))
     }
     return NextResponse.next()
 })

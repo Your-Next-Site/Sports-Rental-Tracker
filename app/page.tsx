@@ -9,7 +9,7 @@ export default async function Home() {
   return (
     <PageContainer>
       <MainContainer>
-      {session && <p>If you are logged in and see this page, you must still contact your manager to be confirmed.</p>}
+      {session && <p className="w-full text-center">If you are logged in and see this page, you must still contact your manager to be confirmed.</p>}
         <AuthButtons session={session} />        
         <div className="mt-auto mx-auto">Please check out
           <Link className="underline" href="/terms-of-service" > Terms of Service </Link>

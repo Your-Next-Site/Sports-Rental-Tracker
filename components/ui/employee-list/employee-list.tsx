@@ -1,3 +1,4 @@
+'use client'
 import { useGetUser } from "@/hooks/hooks";
 import MainContainer from "../containers/main-container";
 import { useToggleAdmin, useToggleEmployee } from "@/mutations/mutations";
