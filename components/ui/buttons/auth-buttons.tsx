@@ -38,8 +38,8 @@ export default function Authbutton({ session }: AuthButtonProps) {
                     </div>
                 ) : (
 
-                    <div className="flex justify-center w-full">
-                        <button className='p-4 shadow-sm rounded-sm bg-[var(--color-primary)]' onClick={() => logout()}>Sign Out</button>
+                    <div className="flex justify-center w-full ">
+                        <button className='p-4 shadow-sm rounded-sm bg-background border' onClick={() => logout()}>Sign Out</button>
                     </div>
 
                 )}
