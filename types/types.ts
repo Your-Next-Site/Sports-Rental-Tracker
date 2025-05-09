@@ -13,7 +13,6 @@ declare module "@auth/core/types" {
   }
 }
 
-
 export interface Trip {
   id: number;
   guest_name: string,
@@ -25,3 +24,12 @@ export interface Trip {
   checked_in_by: number | null;
 }
 
+// export interface User {
+//   id: number;
+//   name: string;
+//   email: string;
+//   emailVerified: Date | null;
+//   image: string;
+//   employee: boolean;
+//   admin: boolean;
+// }

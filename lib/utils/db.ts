@@ -1,7 +1,16 @@
 import { neon } from "@neondatabase/serverless";
 import { schemaAddRaft } from "./zod/schmeas";
 import { Trip } from "@/types/types";
+import { User } from "@auth/core/types";
 
+
+export async function fetchUsersFromDB() {
+    const sql = neon(`${process.env.DATABASE_URL}`);
+    const result = await sql`
+    SELECT * FROM users;
+    `;
+    return result as User[];
+}
 export async function fetchRaftsOnTheWater() {
     const sql = neon(`${process.env.DATABASE_URL}`);
 
@@ -55,5 +64,19 @@ export async function removeRaftFromWater(raftOnWaterId: number, email: string |
         RETURNING *;
         `;
     return [result];
+}
+
+export async function toggleAdminDB(email: string){
+    if (!process.env.DATABASE_URL) {
+        throw new Error('DATABASE_URL environment variable is not set');
+    }
+    const sql = neon(process.env.DATABASE_URL);
+    const [result] = await sql`
+        UPDATE users 
+        SET admin = NOT admin 
+        WHERE email = ${email}
+        RETURNING *;
+    `;
+    return [result]
 }
 

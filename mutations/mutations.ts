@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { addRaftToWater, addRemoveRaftFromWater } from "@/actions/trips"
+import { toggleAdmin } from "@/actions/users";
 
 export const useAddRaftToWater = () => {
     const queryClient = useQueryClient();
@@ -10,7 +11,6 @@ export const useAddRaftToWater = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['trips'] });
-            // queryClient.invalidateQueries({ queryKey: ['trips', driverEmail] });
         },
         onError: (error) => {
             console.error('Mutation error:', error);
@@ -26,6 +26,21 @@ export const useRemoveRaftFromWater = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['trips'] });
+        },
+        onError: (error) => {
+            console.error('Mutation error:', error);
+        }
+    });
+};
+
+export const useToggleAdmin = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (email: string) => {
+            return toggleAdmin(email);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['users'] });
         },
         onError: (error) => {
             console.error('Mutation error:', error);

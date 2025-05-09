@@ -29,8 +29,6 @@ export async function addRaftToWater(formData: FormData) {
     }
 }
 
-
-
 export async function addRemoveRaftFromWater(raftOnWaterId: number) {
     const session = await auth();
     const email = session?.user.email;
