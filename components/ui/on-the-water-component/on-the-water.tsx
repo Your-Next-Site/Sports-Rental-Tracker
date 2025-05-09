@@ -5,9 +5,10 @@ import { useGetTrips } from "@/hooks/hooks";
 
 export default function OnTheWater() {
 
-    const { data } = useGetTrips();
+    const { data, isLoading } = useGetTrips();
     const { mutate, isPending, isError } = useRemoveRaftFromWater();
-    console.log(data)
+
+    if (isLoading) return <MainContainer> Loading.... </MainContainer>
 
     return (
         <MainContainer>
