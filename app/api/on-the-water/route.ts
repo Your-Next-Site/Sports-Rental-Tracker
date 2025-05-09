@@ -1,26 +1,10 @@
-import { Trip } from '@/types/types';
-import { neon } from '@neondatabase/serverless';
+import { fetchRaftsOnTheWater } from '@/lib/utils/db';
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
-    try {
-        const sql = neon(`${process.env.DATABASE_URL}`);
-
-        const result = await sql`
-            SELECT 
-                row.id,
-                row.guest_name,
-                rt.name as raft_type_name,
-                row.unit_number,
-                row.checked_out_by,
-                row.departure_time,
-                row.arrival_time                
-            FROM rafts_on_water row
-            JOIN raft_types rt ON row.raft_type_id = rt.id
-            WHERE row.departure_time >= CURRENT_DATE - INTERVAL '1 days'
-            AND row.arrival_time IS NULL
-            ORDER BY row.departure_time DESC`;
-        return new Response(JSON.stringify(result as Trip[]), { headers: { 'Content-Type': 'application/json' } });
+    try {  
+        const result = await fetchRaftsOnTheWater();            
+        return new Response(JSON.stringify(result ), { headers: { 'Content-Type': 'application/json' } });
     } catch (error) {
         console.log(error)
         return new Response(`Error fetching raft data: ${error}`, { status: 500, headers: { 'Content-Type': 'text/plain' } });
