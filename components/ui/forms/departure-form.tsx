@@ -1,3 +1,4 @@
+'use client'
 import { useAddRaftToWater } from "@/mutations/mutations";
 import MainContainer from "../containers/main-container";
 

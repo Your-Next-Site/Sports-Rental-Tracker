@@ -1,4 +1,3 @@
-'use client'
 import { auth } from "@/auth";
 import AuthButtons from "@/components/ui/buttons/auth-buttons";
 import PageContainer from "@/components/ui/containers/page-container";
