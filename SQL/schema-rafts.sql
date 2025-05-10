@@ -15,7 +15,7 @@ INSERT INTO
 VALUES ('single-kayak'),
     ('double-kayak'),
     ('small-raft'),
-    ('Round-raft'),
+    ('round-raft'),
     ('medium-raft'),
     ('large-raft');
 

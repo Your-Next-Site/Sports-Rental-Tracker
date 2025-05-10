@@ -51,3 +51,7 @@ CREATE TABLE users (
 );
 
 --  select * from users
+
+UPDATE users 
+SET admin = true, employee = true 
+WHERE id = 1;
