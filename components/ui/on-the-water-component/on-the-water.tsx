@@ -23,7 +23,7 @@ export default function OnTheWater() {
                     <div></div> {/* Empty div for spacing */}
                     <button
                         onClick={() => setDisplayTripsContext(displayTripsContext === "current" ? "past" : "current")}
-                        className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-2 rounded">
+                        className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-2 rounded mr-4">
                         Show {displayTripsContext === "current" ? "Past" : "Current"} Trips
                     </button>
                 </div></div>
@@ -42,11 +42,11 @@ function Trips({ isError, data, isPending, mutate }: {
     mutate?: (id: number) => void
 }) {
     return (
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-4 ">
             {isError && <p className="text-red-500">Error marking raft arrived</p>}
             {data && data.length > 0 ? (
                 data.map((trip, index) => (
-                    <div key={index} className="bg-white p-4 rounded shadow-2xl md:w-1/2 lg:w-1/3 xl:w-1/4">
+                    <div key={index} className="bg-white p-4 rounded shadow-2xl  md:w-1/2 lg:w-1/3 xl:w-1/4">
                         <h2 className="text-lg">{trip.guest_name}</h2>
                         {trip.arrival_time ?
                             <p>Departure Time: {new Date(trip.departure_time).toLocaleString()}</p> :
