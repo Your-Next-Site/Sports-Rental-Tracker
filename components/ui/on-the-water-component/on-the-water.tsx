@@ -46,7 +46,7 @@ function Trips({ isError, data, isPending, mutate }: {
             {isError && <p className="text-red-500">Error marking raft arrived</p>}
             {data && data.length > 0 ? (
                 data.map((trip, index) => (
-                    <div key={index} className="bg-white p-4 rounded shadow-2xl  md:w-1/2 lg:w-1/3 xl:w-1/4">
+                    <div key={index} className="bg-white p-4 rounded shadow-2xl md:w-1/2 lg:w-1/3 xl:w-1/4 w-full">
                         <h2 className="text-lg">{trip.guest_name}</h2>
                         {trip.arrival_time ?
                             <p>Departure Time: {new Date(trip.departure_time).toLocaleString()}</p> :
