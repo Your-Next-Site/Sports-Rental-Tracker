@@ -11,7 +11,7 @@ export async function fetchUsersFromDB() {
     `;
     return result as User[];
 }
-export async function fetchRaftsOnTheWater(tripCurrent: boolean) {
+export async function fetchTrips(tripCurrent: boolean) {
     const sql = neon(`${process.env.DATABASE_URL}`);
 
     const result = await sql`
@@ -25,11 +25,12 @@ export async function fetchRaftsOnTheWater(tripCurrent: boolean) {
             row.arrival_time                
         FROM rafts_on_water row
         JOIN raft_types rt ON row.raft_type_id = rt.id
+        WHERE departure_time > NOW() - INTERVAL '24 hours'
         ${tripCurrent ?
-            sql`WHERE row.arrival_time IS NULL` :
-            sql`WHERE row.arrival_time IS NOT NULL`
+            sql`AND row.arrival_time IS NULL` :
+            sql`AND row.arrival_time IS NOT NULL`
         }
-            ORDER BY row.departure_time DESC`;
+        ORDER BY row.departure_time DESC`;
     return result as Trip[];
 }
 export async function addRaftToWaterDB(validatedFields: typeof schemaAddRaft._type, email: string | null | undefined) {
