@@ -27,7 +27,7 @@ CREATE TABLE rafts_on_water (
     unit_number INTEGER NOT NULL, -- Specific unit number for the raft
     checked_out_by INTEGER NOT NULL, -- Staff user who checked out the trip
     departure_time TIMESTAMP NOT NULL, -- Time raft departed
-    arrival_time TIMESTAMP, -- Optional return time
+    arrival_time TIMESTAMP,
     checked_in_by INTEGER,
     FOREIGN KEY (checked_out_by) REFERENCES users (id) ON DELETE SET NULL,
     FOREIGN KEY (checked_in_by) REFERENCES users (id) ON DELETE SET NULL,

@@ -9,8 +9,8 @@ export default function OnTheWater() {
     const [displayTripsContext, setDisplayTripsContext] = useState("current")
 
     const { data, isLoading } = useGetTrips(displayTripsContext === "current");
-    const { mutate, isPending, isError } = useRemoveRaftFromWater();   
-    
+    const { mutate, isPending, isError } = useRemoveRaftFromWater();
+
 
     if (isLoading) return <MainContainer> Loading.... </MainContainer>
     if (isError) return <MainContainer>Error loading trips</MainContainer>
@@ -48,9 +48,20 @@ function Trips({ isError, data, isPending, mutate }: {
                 data.map((trip, index) => (
                     <div key={index} className="bg-white p-4 rounded shadow-2xl md:w-1/2 lg:w-1/3 xl:w-1/4">
                         <h2 className="text-lg">{trip.guest_name}</h2>
-                        <p>Departure Time: {new Intl.DateTimeFormat('en-CA', { hour: '2-digit', minute: '2-digit' }).format(new Date(trip.departure_time))}</p>
-                        {trip.arrival_time !== null &&
-                           <p>Arrival Time: {new Intl.DateTimeFormat('en-CA', { hour: '2-digit', minute: '2-digit' }).format(new Date(trip.arrival_time))}</p>
+                        {trip.arrival_time ?
+                            <p>Departure Time: {new Date(trip.departure_time).toLocaleString()}</p> :
+                            <p>Departure Time: {new Intl.DateTimeFormat('en-CA', { hour: '2-digit', minute: '2-digit' }).format(new Date(trip.departure_time))}</p>
+                        }
+                        {trip.arrival_time &&
+                            <>
+                                <p>Arrival Time: {new Intl.DateTimeFormat('en-CA', { hour: '2-digit', minute: '2-digit' }).format(new Date(trip.arrival_time))}</p>
+                                <p className={`p-2 rounded ${((new Date(trip.arrival_time).getTime() - new Date(trip.departure_time).getTime()) / (1000 * 60 * 60)) <= 3 
+                                    ? 'bg-green-500' 
+                                    : 'bg-red-500'} text-white`}>
+                                    Duration: {((new Date(trip.arrival_time).getTime() - new Date(trip.departure_time).getTime()) /
+                                    (1000 * 60 * 60)).toFixed(2)} hours
+                                </p>
+                            </>
                         }
                         <p>Raft Size: {trip.raft_type_name}</p>
                         <p>Unit Number: {trip.unit_number}</p>
@@ -72,12 +83,3 @@ function Trips({ isError, data, isPending, mutate }: {
 }
 
 
-function PastTrips({ isError, data, isPending }: {
-    isError: boolean;
-    data: any[] | undefined;
-    isPending: boolean;
-}) {
-    return (
-        <div>test</div>
-    )
-}

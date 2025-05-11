@@ -3,7 +3,6 @@ import { schemaAddRaft } from "./zod/schmeas";
 import { Trip } from "@/types/types";
 import { User } from "@auth/core/types";
 
-
 export async function fetchUsersFromDB() {
     const sql = neon(`${process.env.DATABASE_URL}`);
     const result = await sql`
