@@ -52,16 +52,25 @@ function Trips({ isError, data, isPending, mutate }: {
                             <p>Departure Time: {new Date(trip.departure_time).toLocaleString()}</p> :
                             <p>Departure Time: {new Intl.DateTimeFormat('en-CA', { hour: '2-digit', minute: '2-digit' }).format(new Date(trip.departure_time))}</p>
                         }
-                        {trip.arrival_time &&
+                        {trip.arrival_time ?
                             <>
                                 <p>Arrival Time: {new Intl.DateTimeFormat('en-CA', { hour: '2-digit', minute: '2-digit' }).format(new Date(trip.arrival_time))}</p>
-                                <p className={`p-2 rounded ${((new Date(trip.arrival_time).getTime() - new Date(trip.departure_time).getTime()) / (1000 * 60 * 60)) <= 3 
-                                    ? 'bg-green-500' 
+                                <p className={`p-2 rounded ${((new Date(trip.arrival_time).getTime() - new Date(trip.departure_time).getTime()) / (1000 * 60 * 60)) <= 3
+                                    ? 'bg-green-500'
                                     : 'bg-red-500'} text-white`}>
                                     Duration: {((new Date(trip.arrival_time).getTime() - new Date(trip.departure_time).getTime()) /
-                                    (1000 * 60 * 60)).toFixed(2)} hours
+                                        (1000 * 60 * 60)).toFixed(2)} hours
                                 </p>
-                            </>
+                            </> :
+                            <p className={`p-2 rounded text-white ${((new Date().getTime() - new Date(trip.departure_time).getTime()) / (1000 * 60 * 60)) <= 2.3
+                                    ? 'bg-green-400'
+                                    : ((new Date().getTime() - new Date(trip.departure_time).getTime()) / (1000 * 60 * 60)) <= 3
+                                        ? 'bg-yellow-400'
+                                        : 'bg-red-400'
+                                }`}>
+                                Current Duration: {((new Date().getTime() - new Date(trip.departure_time).getTime()) /
+                                    (1000 * 60 * 60)).toFixed(2)} hours
+                            </p>
                         }
                         <p>Raft Size: {trip.raft_type_name}</p>
                         <p>Unit Number: {trip.unit_number}</p>
