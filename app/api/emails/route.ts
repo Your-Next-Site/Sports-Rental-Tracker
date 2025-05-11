@@ -1,4 +1,4 @@
-import { fetchRaftsOnTheWater, fetchUsersFromDB } from '@/lib/utils/db';
+import { fetchUsersFromDB } from '@/lib/utils/db';
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
