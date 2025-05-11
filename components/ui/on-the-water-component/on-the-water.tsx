@@ -6,11 +6,11 @@ import { useState } from "react";
 
 export default function OnTheWater() {
 
-    const { data, isLoading } = useGetTrips();
-    const { mutate, isPending, isError } = useRemoveRaftFromWater();
-
-    console.log(data)
     const [displayTripsContext, setDisplayTripsContext] = useState("current")
+
+    const { data, isLoading } = useGetTrips(displayTripsContext === "current");
+    const { mutate, isPending, isError } = useRemoveRaftFromWater();   
+    
 
     if (isLoading) return <MainContainer> Loading.... </MainContainer>
     if (isError) return <MainContainer>Error loading trips</MainContainer>
@@ -21,22 +21,25 @@ export default function OnTheWater() {
                 <h1 className="text-2xl">Guests{displayTripsContext === "current" ? " on " : " off "} the Water</h1>
                 <div className="flex justify-between items-center">
                     <div></div> {/* Empty div for spacing */}
-                    <button 
-                    onClick={() => setDisplayTripsContext(displayTripsContext === "current" ? "past" : "current")}
-                    className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-2 rounded">
+                    <button
+                        onClick={() => setDisplayTripsContext(displayTripsContext === "current" ? "past" : "current")}
+                        className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-2 rounded">
                         Show {displayTripsContext === "current" ? "Past" : "Current"} Trips
                     </button>
                 </div></div>
-            <CurrentTrips isError={isError} data={data} isPending={isPending} mutate={mutate} />
+            {displayTripsContext === "current" ?
+                <Trips isError={isError} data={data} isPending={isPending} mutate={mutate} /> :
+                <Trips isError={isError} data={data} isPending={isPending} />
+            }
         </MainContainer >
     );
 }
 
-function CurrentTrips({ isError, data, isPending, mutate }: {
+function Trips({ isError, data, isPending, mutate }: {
     isError: boolean;
     data: any[] | undefined;
     isPending: boolean;
-    mutate: (id: number) => void;
+    mutate?: (id: number) => void
 }) {
     return (
         <div className="flex flex-wrap justify-center gap-4">
@@ -45,15 +48,20 @@ function CurrentTrips({ isError, data, isPending, mutate }: {
                 data.map((trip, index) => (
                     <div key={index} className="bg-white p-4 rounded shadow-2xl md:w-1/2 lg:w-1/3 xl:w-1/4">
                         <h2 className="text-lg">{trip.guest_name}</h2>
-                        <p>Departure Time:{new Date(trip.departure_time).toLocaleString('en-CA', { dateStyle: 'short', timeStyle: 'short' })} </p>
+                        <p>Departure Time: {new Intl.DateTimeFormat('en-CA', { hour: '2-digit', minute: '2-digit' }).format(new Date(trip.departure_time))}</p>
+                        {trip.arrival_time !== null &&
+                           <p>Arrival Time: {new Intl.DateTimeFormat('en-CA', { hour: '2-digit', minute: '2-digit' }).format(new Date(trip.arrival_time))}</p>
+                        }
                         <p>Raft Size: {trip.raft_type_name}</p>
                         <p>Unit Number: {trip.unit_number}</p>
-                        <button
-                            onClick={trip_id => mutate(trip.id)}
-                            disabled={isPending}
-                            className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-4 mt-auto md:w-full text-center mx-auto shadow-lg">
-                            Mark Arrived
-                        </button>
+                        {mutate &&
+                            <button
+                                onClick={() => mutate(trip.id)}
+                                disabled={isPending}
+                                className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-4 mt-auto md:w-full text-center mx-auto shadow-lg">
+                                Mark Arrived
+                            </button>
+                        }
                     </div>
                 ))
             ) : (
@@ -61,4 +69,15 @@ function CurrentTrips({ isError, data, isPending, mutate }: {
             )}
         </div>
     );
+}
+
+
+function PastTrips({ isError, data, isPending }: {
+    isError: boolean;
+    data: any[] | undefined;
+    isPending: boolean;
+}) {
+    return (
+        <div>test</div>
+    )
 }
