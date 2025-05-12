@@ -12,7 +12,7 @@ const boatOptions = [
 ];
 
 export default function DepartureForm() {
-    const { mutate } = useAddRaftToWater();
+    const { mutate, isPending } = useAddRaftToWater();
     return (
         <MainContainer>
             <form
@@ -20,13 +20,13 @@ export default function DepartureForm() {
                 className="flex flex-col gap-8  "
             >
                 <h1 className="text-2xl">Show a guests departure </h1>
-                <Inputs />
+                <Inputs isPending={isPending} />
             </form>
         </MainContainer>
     );
 }
 
-function Inputs() {
+function Inputs({ isPending }: { isPending: boolean }) {
     return (
         <div className="flex flex-col md:flex-row gap-4">
             <input
@@ -50,7 +50,13 @@ function Inputs() {
                 placeholder="Unit Number"
                 required
             />
-            <button className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-4 md:w-1/6 text-center shadow-lg">Mark Guest on The Water</button>
+            <button
+                disabled={isPending}
+                className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-4 md:w-1/6 text-center shadow-lg">
+                {!isPending ?
+                    'Mark Guest on The Water' : 'pending'
+                }
+            </button>
         </div>
     );
 }

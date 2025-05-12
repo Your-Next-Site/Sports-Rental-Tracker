@@ -8,12 +8,12 @@ export default function OnTheWater() {
 
     const [displayTripsContext, setDisplayTripsContext] = useState("current")
 
-    const { data, isLoading } = useGetTrips(displayTripsContext === "current");
-    const { mutate, isPending, isError } = useRemoveRaftFromWater();
+    const { data, isLoading, isError: isErrorData } = useGetTrips(displayTripsContext === "current");
+    const { mutate, isPending, isError: isErrorMutate } = useRemoveRaftFromWater();
 
 
     if (isLoading) return <MainContainer> Loading.... </MainContainer>
-    if (isError) return <MainContainer>Error loading trips</MainContainer>
+    if (isErrorData) return <MainContainer>Error loading trips</MainContainer>
 
     return (
         <MainContainer>
@@ -26,12 +26,13 @@ export default function OnTheWater() {
                         className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-2 rounded mr-4">
                         Show {displayTripsContext === "current" ? "Past" : "Current"} Trips
                     </button>
-                </div></div>
+                </div>
+            </div>
             {displayTripsContext === "current" ?
-                <Trips isError={isError} data={data} isPending={isPending} mutate={mutate} /> :
-                <Trips isError={isError} data={data} isPending={isPending} />
+                <Trips isError={isErrorMutate} data={data} isPending={isPending} mutate={mutate} /> :
+                <Trips isError={isErrorMutate} data={data} isPending={isPending} />
             }
-        </MainContainer >
+        </MainContainer>
     );
 }
 
@@ -55,18 +56,19 @@ function Trips({ isError, data, isPending, mutate }: {
                         {trip.arrival_time ?
                             <>
                                 <p>Arrival Time: {new Intl.DateTimeFormat('en-CA', { hour: '2-digit', minute: '2-digit' }).format(new Date(trip.arrival_time))}</p>
-                                <p className={`p-2 rounded ${((new Date(trip.arrival_time).getTime() - new Date(trip.departure_time).getTime()) / (1000 * 60 * 60)) <= 3
+                                <p className={`p-2 rounded ${((new Date(trip.arrival_time).getTime() - new Date(trip.departure_time).getTime()) / (1000 * 60 * 60)) <= Number(process.env.NEXT_PUBLIC_TRIP_LIMIT)
                                     ? 'bg-green-500'
                                     : 'bg-red-500'} text-white`}>
                                     Duration: {((new Date(trip.arrival_time).getTime() - new Date(trip.departure_time).getTime()) /
                                         (1000 * 60 * 60)).toFixed(2)} hours
                                 </p>
-                            </> :
-                            <p className={`p-2 rounded text-white ${((new Date().getTime() - new Date(trip.departure_time).getTime()) / (1000 * 60 * 60)) <= 2.3
-                                    ? 'bg-green-400'
-                                    : ((new Date().getTime() - new Date(trip.departure_time).getTime()) / (1000 * 60 * 60)) <= 3
-                                        ? 'bg-yellow-400'
-                                        : 'bg-red-400'
+                            </>
+                            :
+                            <p className={`p-2 rounded text-white ${((new Date().getTime() - new Date(trip.departure_time).getTime()) / (1000 * 60 * 60)) <= Number(process.env.NEXT_PUBLIC_TRIP_WARNING)
+                                ? 'bg-green-400'
+                                : ((new Date().getTime() - new Date(trip.departure_time).getTime()) / (1000 * 60 * 60)) <= Number(process.env.NEXT_PUBLIC_TRIP_LIMIT)
+                                    ? 'bg-yellow-400'
+                                    : 'bg-red-400'
                                 }`}>
                                 Current Duration: {((new Date().getTime() - new Date(trip.departure_time).getTime()) /
                                     (1000 * 60 * 60)).toFixed(2)} hours
@@ -79,7 +81,7 @@ function Trips({ isError, data, isPending, mutate }: {
                                 onClick={() => mutate(trip.id)}
                                 disabled={isPending}
                                 className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-4 mt-auto md:w-full text-center mx-auto shadow-lg">
-                                Mark Arrived
+                                {!isPending ? 'Mark Arrived' : 'Pending'}
                             </button>
                         }
                     </div>

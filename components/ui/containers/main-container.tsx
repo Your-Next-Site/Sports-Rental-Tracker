@@ -1,4 +1,3 @@
-import { Children } from "react";
 
 export default function MainContainer({ children }: { children: React.ReactNode; }) {
     return (
