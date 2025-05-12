@@ -24,7 +24,7 @@ export default function OnTheWater() {
                     <button
                         onClick={() => setDisplayTripsContext(displayTripsContext === "current" ? "past" : "current")}
                         className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-2 rounded mr-4">
-                        Show {displayTripsContext === "current" ? "Past" : "Current"} Trips
+                        Show {displayTripsContext === "current" ? "off" : "on"} the Water
                     </button>
                 </div>
             </div>
