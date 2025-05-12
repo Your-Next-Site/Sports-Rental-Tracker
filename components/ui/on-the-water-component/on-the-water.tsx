@@ -29,7 +29,8 @@ export default function OnTheWater() {
                 </div>
             </div>
             {displayTripsContext === "current" ?
-                <Trips isError={isErrorMutate} data={data} isPending={isPending} mutate={mutate} /> :
+                <Trips isError={isErrorMutate} data={data} isPending={isPending} mutate={mutate} /> 
+                :
                 <Trips isError={isErrorMutate} data={data} isPending={isPending} />
             }
         </MainContainer>
@@ -50,7 +51,8 @@ function Trips({ isError, data, isPending, mutate }: {
                     <div key={index} className="bg-white p-4 rounded shadow-2xl md:w-1/2 lg:w-1/3 xl:w-1/4 w-full">
                         <h2 className="text-lg">{trip.guest_name}</h2>
                         {trip.arrival_time ?
-                            <p>Departure Time: {new Date(trip.departure_time).toLocaleString()}</p> :
+                            <p>Departure Time: {new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(trip.departure_time))}</p>
+                            :
                             <p>Departure Time: {new Intl.DateTimeFormat('en-CA', { hour: '2-digit', minute: '2-digit' }).format(new Date(trip.departure_time))}</p>
                         }
                         {trip.arrival_time ?
