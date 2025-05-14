@@ -7,7 +7,7 @@ import SearchHistory from "../search-history-component/search-history";
 
 export default function Tab(props: any) {
   const [selectedTab, setSelectedTab] = useState("DepartureForm");
-  const tabs = ["DepartureForm", "OnTheWater", "SearchHistory"];
+  const tabs = ["DepartureForm", "OnTheWater", "Search"];
   return (
     <div className="flex flex-col w-5/6">
       <div className="flex">
@@ -25,7 +25,7 @@ export default function Tab(props: any) {
       </div>
       {selectedTab == "DepartureForm" && <DepartureForm />}
       {selectedTab == "OnTheWater" && <OnTheWater />}
-      {selectedTab == "SearchHistory" && <SearchHistory />}
+      {selectedTab == "Search" && <SearchHistory />}
     </div>
   );
 }
