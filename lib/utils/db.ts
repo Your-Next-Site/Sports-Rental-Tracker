@@ -95,7 +95,7 @@ export async function searchTripsDB(guestName: string | string, departureTime: D
     console.log(departureTime);
     // Adjust departure time by subtracting 6 hours
     const adjustedTime = new Date(departureTime);
-    adjustedTime.setHours(adjustedTime.getHours() - Number(process.env.OFFSET || 0));
+    adjustedTime.setHours(adjustedTime.getHours() + Number(process.env.OFFSET || 0));
     // Calculate time window (24 hours from adjusted time)
     const endTime = new Date(adjustedTime);
 
