@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 export default function SearchHistory() {
 
   const [guestName, setGuestName] = useState("");
-  const [departureDate, setDepartureDate] = useState(new Date().toISOString().split('T')[0]);
+  const [departureDate, setDepartureDate] = useState(new Date().toLocaleDateString('en-CA'));
 
   const { data, isLoading, isError, refetch } = useGetSearchPageTrips({ guestName, departureDate: new Date(departureDate) });
 

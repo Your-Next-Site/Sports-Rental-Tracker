@@ -92,10 +92,9 @@ export async function toggleEmployeeDB(email: string) {
 }
 
 export async function searchTripsDB(guestName: string | string, departureTime: Date | string) {
-    console.log(departureTime);
     // Adjust departure time by subtracting 6 hours
     const adjustedTime = new Date(departureTime);
-    console.log("Offset", Number(process.env.OFFSET))
+
     adjustedTime.setHours(adjustedTime.getHours() + Number(process.env.OFFSET || 0));
     // Calculate time window (24 hours from adjusted time)
     const endTime = new Date(adjustedTime);
@@ -116,7 +115,9 @@ export async function searchTripsDB(guestName: string | string, departureTime: D
         JOIN raft_types rt ON row.raft_type_id = rt.id
         WHERE 
             LOWER(row.guest_name) LIKE LOWER(${'%' + guestName + '%'})
-            AND row.departure_time BETWEEN ${adjustedTime} AND ${endTime}
+            ${typeof departureTime === 'object' ? 
+                sql`AND row.departure_time BETWEEN ${adjustedTime} AND ${endTime}` :
+                sql``}
         ORDER BY row.departure_time DESC`;
     return result as Trip[];
 }
