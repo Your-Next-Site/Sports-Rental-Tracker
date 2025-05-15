@@ -1,27 +1,15 @@
 "use client";
+import { useGetSearchPageTrips } from "@/hooks/hooks";
 import MainContainer from "../containers/main-container";
-import { searchTrips } from "@/lib/utils/db";
 import { Trip } from "@/types/types";
 import { useEffect, useState } from "react";
 
 export default function SearchHistory() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false); // not implemented Error
-  const [trips, setTrips] = useState<Trip[]>([]);
+
   const [guestName, setGuestName] = useState("");
-  const [departureDate, setDepartureDate] = useState("");
+  const [departureDate, setDepartureDate] = useState(new Date().toISOString().split('T')[0]);
 
-  useEffect(() => {
-    setIsLoading(true);
-    getData();
-    console.log(trips);
-  }, [departureDate]);
-
-  async function getData(): Promise<void> {
-    const result = await searchTrips(guestName, departureDate);
-    setTrips(result);
-    setIsLoading(false);
-  }
+  const { data, isLoading, isError, refetch } = useGetSearchPageTrips({ guestName, departureDate: new Date(departureDate) });
 
   return (
     <MainContainer>
@@ -35,8 +23,8 @@ export default function SearchHistory() {
             className="border-1 p-1"
             value={guestName}
             onChange={(e) => setGuestName(e.target.value)}
-            onKeyDown={(e) => (e.key === "Enter" ? getData() : null)}
-          ></input>
+          // onKeyDown={(e) => (e.key === "Enter" ? refetch : null)}
+          />
           <label htmlFor="Date">Date</label>
           <input
             name="Date"
@@ -47,9 +35,9 @@ export default function SearchHistory() {
             onChange={(e) => {
               setDepartureDate(e.target.value)
             }}
-          ></input>
+          />
           <button
-            onClick={() => getData()}
+            onClick={() => refetch()}
             className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-2 rounded mr-4"
           >
             Search
@@ -60,7 +48,7 @@ export default function SearchHistory() {
         ) : isError ? (
           <p>Error loading trips</p>
         ) : (
-          <Trips trips={trips} />
+          data && <Trips trips={data} />
         )}
       </div>
     </MainContainer>
@@ -103,14 +91,13 @@ function Trips({ trips }: { trips: Trip[] }) {
                   }).format(new Date(trip.arrival_time))}
                 </p>
                 <p
-                  className={`p-2 rounded ${
-                    (new Date(trip.arrival_time).getTime() -
-                      new Date(trip.departure_time).getTime()) /
-                      (1000 * 60 * 60) <=
+                  className={`p-2 rounded ${(new Date(trip.arrival_time).getTime() -
+                    new Date(trip.departure_time).getTime()) /
+                    (1000 * 60 * 60) <=
                     Number(process.env.NEXT_PUBLIC_TRIP_LIMIT)
-                      ? "bg-green-500"
-                      : "bg-red-500"
-                  } text-white`}
+                    ? "bg-green-500"
+                    : "bg-red-500"
+                    } text-white`}
                 >
                   Duration:{" "}
                   {(
@@ -123,19 +110,18 @@ function Trips({ trips }: { trips: Trip[] }) {
               </>
             ) : (
               <p
-                className={`p-2 rounded text-white ${
-                  (new Date().getTime() -
+                className={`p-2 rounded text-white ${(new Date().getTime() -
+                  new Date(trip.departure_time).getTime()) /
+                  (1000 * 60 * 60) <=
+                  Number(process.env.NEXT_PUBLIC_TRIP_WARNING)
+                  ? "bg-green-400"
+                  : (new Date().getTime() -
                     new Date(trip.departure_time).getTime()) /
                     (1000 * 60 * 60) <=
-                  Number(process.env.NEXT_PUBLIC_TRIP_WARNING)
-                    ? "bg-green-400"
-                    : (new Date().getTime() -
-                        new Date(trip.departure_time).getTime()) /
-                        (1000 * 60 * 60) <=
-                      Number(process.env.NEXT_PUBLIC_TRIP_LIMIT)
+                    Number(process.env.NEXT_PUBLIC_TRIP_LIMIT)
                     ? "bg-yellow-400"
                     : "bg-red-400"
-                }`}
+                  }`}
               >
                 Current Duration:{" "}
                 {(

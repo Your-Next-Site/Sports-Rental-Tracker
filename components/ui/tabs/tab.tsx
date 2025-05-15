@@ -1,15 +1,15 @@
 "use client";
-
 import { useState } from "react";
 import DepartureForm from "../forms/departure-form";
 import OnTheWater from "../on-the-water-component/on-the-water";
 import SearchHistory from "../search-history-component/search-history";
 
 export default function Tab(props: any) {
-  const [selectedTab, setSelectedTab] = useState("DepartureForm");
-  const tabs = ["DepartureForm", "OnTheWater", "Search"];
+  const [selectedTab, setSelectedTab] = useState("Departure");
+  const tabs = ["Departure", "On The Water", "Search"];
+
   return (
-    <div className="flex flex-col w-5/6">
+    <div className="flex flex-col  w-full md:w-5/6">
       <div className="flex">
         {tabs.map((tab) => (
           <button
@@ -23,8 +23,8 @@ export default function Tab(props: any) {
           </button>
         ))}
       </div>
-      {selectedTab == "DepartureForm" && <DepartureForm />}
-      {selectedTab == "OnTheWater" && <OnTheWater />}
+      {selectedTab == "Departure" && <DepartureForm />}
+      {selectedTab == "On The Water" && <OnTheWater />}
       {selectedTab == "Search" && <SearchHistory />}
     </div>
   );

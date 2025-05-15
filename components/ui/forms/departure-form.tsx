@@ -13,6 +13,7 @@ const boatOptions = [
 
 export default function DepartureForm() {
     const { mutate, isPending } = useAddRaftToWater();
+    
     return (
         <MainContainer>
             <form

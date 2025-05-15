@@ -1,13 +1,13 @@
-import { searchTrips } from '@/lib/utils/db';
+import { searchTripsDB } from '@/lib/utils/db';
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
         const searchParams = request.nextUrl.searchParams;
-        const guestName = searchParams.get('guestName');
-        const departureTime = searchParams.get('departureTime');
+        const guestName = searchParams.get('guestName') || '';
+        const departureTime = searchParams.get('departureTime') || new Date().toISOString();
 
-        const result = await searchTrips(guestName, departureTime);
+        const result = await searchTripsDB(guestName, departureTime);
 
         return new Response(JSON.stringify(result), { headers: { 'Content-Type': 'application/json' } });
     } catch (error) {

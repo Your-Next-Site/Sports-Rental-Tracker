@@ -10,6 +10,7 @@ const adminRoutes = [
 const employeeRoutes = [
     "/on-the-water",
     "/api/on-the-water",
+    "/api/search-trips"
 ]
 
 export default auth((req) => {
@@ -34,7 +35,3 @@ export default auth((req) => {
     return NextResponse.next()
 })
 
-// Check for authenticated user
-// if (!req.auth) {
-//     return Response.redirect(new URL("/auth/login", req.nextUrl.origin))
-// }
