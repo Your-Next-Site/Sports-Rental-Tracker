@@ -2,8 +2,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { addRaftToWater, addRemoveRaftFromWater } from "@/actions/trips"
 import { toggleAdmin, toggleEmployee } from "@/actions/users";
-import { searchTrips } from "@/lib/utils/db-server-action";
-import { Trip } from "@/types/types";
 
 export const useAddRaftToWater = () => {
     const queryClient = useQueryClient();
