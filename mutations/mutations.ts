@@ -2,6 +2,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { addRaftToWater, addRemoveRaftFromWater } from "@/actions/trips"
 import { toggleAdmin, toggleEmployee } from "@/actions/users";
+import { searchTrips } from "@/lib/utils/db";
+import { Trip } from "@/types/types";
 
 export const useAddRaftToWater = () => {
     const queryClient = useQueryClient();
@@ -62,3 +64,20 @@ export const useToggleEmployee = () => {
         }
     });
 };
+
+export const useSearchTrips = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: ({ guestName, departureDate }: { guestName: string, departureDate: Date }) => {
+            return searchTrips(guestName, departureDate);
+        },
+        onSuccess: (data: Trip[]) => {
+            queryClient.invalidateQueries({ queryKey: ['searchPageTrips'] });
+        },
+        onError: (error) => {
+            console.error('Mutation error:', error);
+        }
+    });
+};
+
+

@@ -11,7 +11,6 @@ export default function OnTheWater() {
     const { data, isLoading, isError: isErrorData } = useGetTrips(displayTripsContext === "current");
     const { mutate, isPending, isError: isErrorMutate } = useRemoveRaftFromWater();
 
-
     if (isLoading) return <MainContainer> Loading.... </MainContainer>
     if (isErrorData) return <MainContainer>Error loading trips</MainContainer>
 

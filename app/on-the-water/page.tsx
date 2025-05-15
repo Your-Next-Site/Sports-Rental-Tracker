@@ -14,8 +14,7 @@ export default async function Page() {
 
     return (
         <PageContainer>
-            <Tab></Tab>
-            
+            <Tab></Tab>            
             <AuthButtons session={session} />
         </PageContainer>
     );

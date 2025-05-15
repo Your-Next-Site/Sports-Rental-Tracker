@@ -6,7 +6,7 @@ const fetchTrips = async (currentTrip: boolean): Promise<Array<Trip>> => {
   const response = await fetch(`/api/on-the-water?currentTrip=${currentTrip}`)
   return await response.json();
 }
-const searchTrips = async (guestName:string, departureTime:any): Promise<Array<Trip>> => {
+const searchTrips = async (guestName: string, departureTime: any): Promise<Array<Trip>> => {
   const response = await fetch(`/api/search-trips?guestName=${guestName}&departureTime=${departureTime}`)
   return await response.json();
 }
@@ -27,5 +27,12 @@ export const useGetUser = () => {
   return useQuery({
     queryKey: ['users',],
     queryFn: () => fetchUsers(),
+  })
+}
+
+export const useGetSearchPageTrips = () => {
+  return useQuery({
+    queryKey: ['searchPageTrips'],
+    queryFn: () => searchTrips("", ""),
   })
 }
