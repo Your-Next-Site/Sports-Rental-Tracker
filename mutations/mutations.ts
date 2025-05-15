@@ -65,19 +65,19 @@ export const useToggleEmployee = () => {
     });
 };
 
-export const useSearchTrips = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: ({ guestName, departureDate }: { guestName: string, departureDate: Date }) => {
-            return searchTrips(guestName, departureDate);
-        },
-        onSuccess: (data: Trip[]) => {
-            queryClient.invalidateQueries({ queryKey: ['searchPageTrips'] });
-        },
-        onError: (error) => {
-            console.error('Mutation error:', error);
-        }
-    });
-};
+// export const useSearchTrips = () => {
+//     const queryClient = useQueryClient();
+//     return useMutation({
+//         mutationFn: ({ guestName, departureDate }: { guestName: string, departureDate: Date }) => {
+//             return searchTrips(guestName, departureDate);
+//         },
+//         onSuccess: (data: Trip[]) => {
+//             queryClient.invalidateQueries({ queryKey: ['searchPageTrips'] });
+//         },
+//         onError: (error) => {
+//             console.error('Mutation error:', error);
+//         }
+//     });
+// };
 
 

@@ -27,9 +27,9 @@ export const useGetUser = () => {
   })
 }
 
-export const useGetSearchPageTrips = () => {
+export const useGetSearchPageTrips = ({ guestName, departureDate }: { guestName: string, departureDate: Date }) => {
   return useQuery({
     queryKey: ['searchPageTrips'],
-    queryFn: () => searchTrips("", null),
+    queryFn: () => searchTrips(guestName, departureDate),
   })
 }

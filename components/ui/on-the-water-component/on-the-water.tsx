@@ -2,7 +2,6 @@
 import { useRemoveRaftFromWater } from "@/mutations/mutations";
 import MainContainer from "../containers/main-container";
 import { useGetTrips } from "@/hooks/hooks";
-import { useState } from "react";
 
 export default function OnTheWater() {
 

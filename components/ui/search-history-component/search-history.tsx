@@ -1,22 +1,16 @@
 "use client";
 import { useGetSearchPageTrips } from "@/hooks/hooks";
 import MainContainer from "../containers/main-container";
-import { useSearchTrips } from "@/mutations/mutations";
 import { Trip } from "@/types/types";
 import { useEffect, useState } from "react";
 
 export default function SearchHistory() {
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [isError, setIsError] = useState(false); // not implemented Error
-  // const [trips, setTrips] = useState<Trip[]>([]);
+
   const [guestName, setGuestName] = useState("");
-  const [departureDate, setDepartureDate] = useState("");
+  const [departureDate, setDepartureDate] = useState(new Date().toISOString().split('T')[0]);
 
-  const { mutate, isPending: isPendingMutation, isError: isErrorSearch } = useSearchTrips();
-  const { data, isLoading: isLoadingData, isError: isErrorFetching } = useGetSearchPageTrips();
 
-  const isLoading = isLoadingData || isPendingMutation
-  const isError = isErrorSearch || isErrorFetching;
+  const { data, isLoading, isError, refetch } = useGetSearchPageTrips({ guestName, departureDate: new Date(departureDate) });
 
   return (
     <MainContainer>
@@ -30,8 +24,8 @@ export default function SearchHistory() {
             className="border-1 p-1"
             value={guestName}
             onChange={(e) => setGuestName(e.target.value)}
-            onKeyDown={(e) => (e.key === "Enter" ? mutate : null)}
-          ></input>
+          // onKeyDown={(e) => (e.key === "Enter" ? refetch : null)}
+          />
           <label htmlFor="Date">Date</label>
           <input
             name="Date"
@@ -42,9 +36,9 @@ export default function SearchHistory() {
             onChange={(e) => {
               setDepartureDate(e.target.value)
             }}
-          ></input>
+          />
           <button
-            onClick={() => mutate({ guestName, departureDate: new Date(departureDate) })}
+            onClick={() => refetch()}
             className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-2 rounded mr-4"
           >
             Search
