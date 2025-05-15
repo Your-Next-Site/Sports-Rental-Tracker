@@ -6,9 +6,7 @@ import { useState } from "react";
 
 export default function OnTheWater() {
 
-    const [displayTripsContext, setDisplayTripsContext] = useState("current")
-
-    const { data, isLoading, isError: isErrorData } = useGetTrips(displayTripsContext === "current");
+    const { data, isLoading, isError: isErrorData } = useGetTrips(true);
     const { mutate, isPending, isError: isErrorMutate } = useRemoveRaftFromWater();
 
     if (isLoading) return <MainContainer> Loading.... </MainContainer>
@@ -17,21 +15,9 @@ export default function OnTheWater() {
     return (
         <MainContainer>
             <div className="flex flex-col gap-8">
-                <h1 className="text-2xl">Guests{displayTripsContext === "current" ? " on " : " off "} the Water</h1>
-                <div className="flex justify-between items-center">
-                    <div></div> {/* Empty div for spacing */}
-                    <button
-                        onClick={() => setDisplayTripsContext(displayTripsContext === "current" ? "past" : "current")}
-                        className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-2 rounded mr-4">
-                        Show {displayTripsContext === "current" ? "off" : "on"} the Water
-                    </button>
-                </div>
+                <h1 className="text-2xl">Guests on the Water</h1>
             </div>
-            {displayTripsContext === "current" ?
-                <Trips isError={isErrorMutate} data={data} isPending={isPending} mutate={mutate} /> 
-                :
-                <Trips isError={isErrorMutate} data={data} isPending={isPending} />
-            }
+            <Trips isError={isErrorMutate} data={data} isPending={isPending} mutate={mutate} />
         </MainContainer>
     );
 }
