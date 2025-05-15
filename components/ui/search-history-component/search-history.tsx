@@ -1,7 +1,6 @@
 "use client";
 import { useGetSearchPageTrips } from "@/hooks/hooks";
 import MainContainer from "../containers/main-container";
-import { searchTrips } from "@/lib/utils/db";
 import { useSearchTrips } from "@/mutations/mutations";
 import { Trip } from "@/types/types";
 import { useEffect, useState } from "react";
