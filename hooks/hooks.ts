@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Trip } from '@/types/types'
 import { User } from "@auth/core/types";
-import { searchTrips } from "@/lib/utils/db-server-action";
 
 const fetchTrips = async (currentTrip: boolean): Promise<Array<Trip>> => {
   const response = await fetch(`/api/on-the-water?currentTrip=${currentTrip}`)
@@ -27,9 +26,16 @@ export const useGetUser = () => {
   })
 }
 
+const searchTrips = async (guestName:string, departureTime:any): Promise<Array<Trip>> => {
+  const response = await fetch(`/api/search-trips?guestName=${guestName}&departureTime=${departureTime}`)
+  return await response.json();
+}
+
 export const useGetSearchPageTrips = ({ guestName, departureDate }: { guestName: string, departureDate: Date }) => {
   return useQuery({
     queryKey: ['searchPageTrips'],
     queryFn: () => searchTrips(guestName, departureDate),
   })
 }
+
+
