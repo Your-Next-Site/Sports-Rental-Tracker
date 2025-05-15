@@ -9,7 +9,6 @@ export default function SearchHistory() {
   const [guestName, setGuestName] = useState("");
   const [departureDate, setDepartureDate] = useState(new Date().toISOString().split('T')[0]);
 
-
   const { data, isLoading, isError, refetch } = useGetSearchPageTrips({ guestName, departureDate: new Date(departureDate) });
 
   return (

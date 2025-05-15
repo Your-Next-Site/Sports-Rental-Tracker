@@ -3,6 +3,14 @@ import { Trip } from "@/types/types";
 import { neon } from "@neondatabase/serverless";
 
 export async function searchTrips(guestName: string | string, departureTime: Date | string) {
+    console.log(departureTime);
+    // Adjust departure time by subtracting 6 hours
+    const adjustedTime = new Date(departureTime);
+    adjustedTime.setHours(adjustedTime.getHours() - 6);
+    // Calculate time window (24 hours from adjusted time)
+    const endTime = new Date(adjustedTime);
+
+    endTime.setHours(endTime.getHours() + 24);
     const sql = neon(`${process.env.DATABASE_URL}`);
 
     const result = await sql`
@@ -18,13 +26,9 @@ export async function searchTrips(guestName: string | string, departureTime: Dat
         JOIN raft_types rt ON row.raft_type_id = rt.id
         WHERE 
             LOWER(row.guest_name) LIKE LOWER(${'%' + guestName + '%'})
-            
+            AND row.departure_time BETWEEN ${adjustedTime} AND ${endTime}
         ORDER BY row.departure_time DESC`;
     return result as Trip[];
 }
 
 
-// ${departureTime ?
-//             sql` AND row.departure_time BETWEEN ${departureTime + ' 00:00:00.0000'} 
-//                                          AND ${departureTime + ' 23:59:59.9999'} ` :
-//             sql` `}
