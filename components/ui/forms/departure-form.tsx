@@ -60,6 +60,10 @@ export default function DepartureForm() {
             {isError && <p className="text-red-500">Error loading bookings!</p>}
             <form
                 action={(formData: FormData) => {
+                    formData.append('booking-id', selectedGuest?.bookingId?.toString() || '');
+                    formData.append('guest-name', selectedGuest?.name || '');
+                    formData.append('raft-type', raftType?.value || '');
+                    formData.append('unit-number', unitNumber);
                     mutate(formData);
                     setSelectedGuest(null);
                     setRaftType(null);
@@ -67,19 +71,19 @@ export default function DepartureForm() {
                 }}
                 className="flex flex-col gap-8 "
             >
-            <Inputs
-                isPending={isPending}
-                guests={guests}
-                boatOptions={boatOptions}
-                selectedGuest={selectedGuest}
-                setSelectedGuest={setSelectedGuest}
-                raftType={raftType}
-                setRaftType={setRaftType}
-                unitNumber={unitNumber}
-                setUnitNumber={setUnitNumber}
-            />
-        </form>
-        </MainContainer >
+                <Inputs
+                    isPending={isPending}
+                    guests={guests}
+                    boatOptions={boatOptions}
+                    selectedGuest={selectedGuest}
+                    setSelectedGuest={setSelectedGuest}
+                    raftType={raftType}
+                    setRaftType={setRaftType}
+                    unitNumber={unitNumber}
+                    setUnitNumber={setUnitNumber}
+                />
+            </form>
+        </MainContainer>
     );
 }
 
@@ -179,10 +183,6 @@ function Inputs({
                     placeholder="Unit Number"
                     required
                 />
-                <input type="hidden" name="booking-id" value={selectedGuest?.bookingId || ''} />
-                <input type="hidden" name="guest-name" value={selectedGuest?.name || ''} />
-                <input type="hidden" name="raft-type" value={raftType?.value || ''} />
-                <input type="hidden" name="unit-number" value={unitNumber} />
             </div>
             <button
                 disabled={isPending}
