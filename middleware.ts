@@ -14,6 +14,8 @@ const employeeRoutes = [
 ]
 
 export default auth((req) => {
+    return NextResponse.next()
+
 
     // Check employees routes 
     const isEmployeeRoute = employeeRoutes.some(route =>
@@ -32,6 +34,5 @@ export default auth((req) => {
     if (isAdminRoute && !req.auth?.user?.admin) {
         return Response.redirect(new URL("/", req.nextUrl.origin))
     }
-    return NextResponse.next()
 })
 
