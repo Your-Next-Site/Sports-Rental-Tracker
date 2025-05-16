@@ -5,7 +5,7 @@ import { useGetTrips } from "@/hooks/hooks";
 
 export default function OnTheWater() {
 
-    const { data, isLoading, isError: isErrorData } = useGetTrips(true);
+    const { data, isLoading, isError: isErrorData, refetch } = useGetTrips(true);
     const { mutate, isPending, isError: isErrorMutate } = useRemoveRaftFromWater();
 
     if (isLoading) return <MainContainer> Loading.... </MainContainer>
@@ -15,6 +15,7 @@ export default function OnTheWater() {
         <MainContainer>
             <div className="flex flex-col gap-8">
                 <h1 className="text-2xl">Guests on the Water</h1>
+                <button className='border rounded-sm w-1/6 mx-auto hover:bg-gray-100' onClick={() => refetch()}>Refetch</button>
             </div>
             <Trips isError={isErrorMutate} data={data} isPending={isPending} mutate={mutate} />
         </MainContainer>
