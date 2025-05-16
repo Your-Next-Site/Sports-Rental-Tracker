@@ -118,7 +118,7 @@ function Inputs({ isPending, guests, boatOptions }: { isPending: boolean, guests
             </div>
             <button
                 disabled={isPending}
-                className="bg-buttoncolormain hover:bg-buttoncolorsecend p-2 hover:text-white md:w-2/6 text-center shadow-lg">
+                className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white md:w-2/6 text-center shadow-lg">
                 {!isPending ?
                     'Mark Guest on The Water' : 'pending'
                 }
