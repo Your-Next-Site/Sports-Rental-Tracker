@@ -4,7 +4,7 @@ import DepartureForm from "../forms/departure-form";
 import OnTheWater from "../on-the-water-component/on-the-water";
 import SearchHistory from "../search-history-component/search-history";
 
-export default function Tab(props: any) {
+export default function Tab() {
   const [selectedTab, setSelectedTab] = useState("Departure");
   const tabs = ["Departure", "On The Water", "Search"];
 

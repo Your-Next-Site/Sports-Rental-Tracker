@@ -1,16 +1,20 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { Trip } from '@/types/types'
 import { User } from "@auth/core/types";
 
-const fetchTrips = async (currentTrip: boolean): Promise<Array<Trip>> => {
-  const response = await fetch(`/api/on-the-water?currentTrip=${currentTrip}`)
+const fetchTrips = async (currentTrip: boolean, currentPage:number): Promise<{ trips: Trip[], hasMore: boolean, totalPages:number }> => {
+  const response = await fetch(`/api/on-the-water?currentTrip=${currentTrip}&page=${currentPage}`)
   return await response.json();
 }
 
-export const useGetTrips = (currentTrip: boolean) => {
+export const useGetTrips = (currentTrip: boolean, pageNumber:number) => {
   return useQuery({
-    queryKey: ['trips', currentTrip],
-    queryFn: () => fetchTrips(currentTrip),
+    queryKey: ['trips', currentTrip, pageNumber],
+    queryFn: () => fetchTrips(currentTrip, pageNumber),
+    // queryKey: ['trips', currentTrip],
+    // queryFn: () => fetchTrips(currentTrip),
+    placeholderData: keepPreviousData,
+
   })
 }
 
