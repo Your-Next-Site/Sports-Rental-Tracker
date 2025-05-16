@@ -15,7 +15,7 @@ export default function OnTheWater() {
         <MainContainer>
             <div className="flex flex-col gap-8">
                 <h1 className="text-2xl">Guests on the Water</h1>
-                <button className='border rounded-sm w-1/6 mx-auto hover:bg-gray-100' onClick={() => refetch()}>Refetch</button>
+                <button className='border rounded-sm md:w-1/6 w-2/6 mx-auto hover:bg-gray-100' onClick={() => refetch()}>Refetch</button>
             </div>
             <Trips isError={isErrorMutate} data={data} isPending={isPending} mutate={mutate} />
         </MainContainer>
