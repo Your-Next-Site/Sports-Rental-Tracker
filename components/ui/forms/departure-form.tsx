@@ -132,12 +132,14 @@ function Inputs({
         <div className="flex flex-col md:flex-row gap-4">
             <div className="flex flex-col md:flex-row w-full p-2 gap-4 justify-center items-center">
                 <CreatableSelect
+                    required
                     instanceId="guest-select"
                     options={guests.map(guest => ({
                         value: guest.bookingId,
                         label: guest.name,
                         summary: guest.summary
                     })) as GuestOption[]}
+                    value={selectedGuest ? { value: selectedGuest.bookingId, label: selectedGuest.name } : null}
                     onChange={(selectedOption: any) => {
                         if (selectedOption) {
                             const guest = guests.find(g => g.bookingId === selectedOption.value);
@@ -163,6 +165,7 @@ function Inputs({
                     }}
                 />
                 <Select
+                    required
                     instanceId="raft-type-select"
                     options={boatOptions}
                     value={raftType}
@@ -186,7 +189,7 @@ function Inputs({
             </div>
             <button
                 disabled={isPending}
-                className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white md:w-2/6 text-center shadow-lg">
+                className="bg-buttoncolormain hover:bg-buttoncolorsecend p-2 hover:text-white md:w-2/6 text-center shadow-lg">
                 {!isPending ?
                     'Mark Guest on The Water' : 'pending'
                 }
