@@ -3,8 +3,7 @@ import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-        const result = await fetchBookings();
-        console.log("result: ", result)
+        const result = await fetchBookings();        
         return new Response(JSON.stringify(result), { headers: { 'Content-Type': 'application/json' } });
     } catch (error) {
         console.log(error)
