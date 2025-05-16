@@ -37,7 +37,7 @@ export const useRemoveRaftFromWater = (currentPage: number, setPage: (page: numb
 
         return { ...oldData, trips: updatedTrips };
       });
-            queryClient.invalidateQueries({ queryKey: ['trips'] });
+            queryClient.clear();
         },
         onError: (error) => {
             console.error('Mutation error:', error);
