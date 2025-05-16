@@ -1,6 +1,7 @@
 'use client'
 import { useAddRaftToWater } from "@/mutations/mutations";
 import MainContainer from "../containers/main-container";
+import { useGetBookings } from "@/hooks/hooks";
 
 const boatOptions = [
     { value: 'single-kayak', label: 'Single Kayak' },
@@ -12,10 +13,14 @@ const boatOptions = [
 ];
 
 export default function DepartureForm() {
+    const { data } = useGetBookings();
     const { mutate, isPending } = useAddRaftToWater();
+
+    console.log(data)
     
     return (
         <MainContainer>
+
             <form
                 action={mutate}
                 className="flex flex-col gap-8  "

@@ -26,7 +26,7 @@ export const useGetUser = () => {
   })
 }
 
-const searchTrips = async (guestName:string, departureTime:any): Promise<Array<Trip>> => {
+const searchTrips = async (guestName: string, departureTime: any): Promise<Array<Trip>> => {
   const response = await fetch(`/api/search-trips?guestName=${guestName}&departureTime=${departureTime}`)
   return await response.json();
 }
@@ -35,6 +35,18 @@ export const useGetSearchPageTrips = ({ guestName, departureDate }: { guestName:
   return useQuery({
     queryKey: ['searchPageTrips'],
     queryFn: () => searchTrips(guestName, departureDate),
+  })
+}
+
+const getBookings = async (): Promise<any> => {
+  const response = await fetch(`/api/checkfront`)
+  return await response.json();
+}
+
+export const useGetBookings = () => {
+  return useQuery({
+    queryKey: ['bookingsFromCheckFront'],
+    queryFn: () => getBookings(),
   })
 }
 
