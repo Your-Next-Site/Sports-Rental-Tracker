@@ -159,10 +159,11 @@ function Inputs({
                             }
                         }
                     }}
-                    className=" rounded-sm md:w-2/6 w-full"
+                    className="rounded-sm md:w-2/6 w-full"
                     classNames={{
-                        control: () => "h-10 w-full",
+                        control: () => "cursor-pointer"
                     }}
+                    onMenuOpen={() => { }}               
                 />
                 <Select
                     required
