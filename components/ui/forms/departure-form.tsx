@@ -4,6 +4,7 @@ import MainContainer from "../containers/main-container";
 import { useGetBookings } from "@/hooks/hooks";
 import Select from 'react-select';
 import CreatableSelect from "react-select/creatable";
+import { useState } from 'react';
 
 
 const boatOptions = [
@@ -21,8 +22,23 @@ interface Booking {
     summary: string;
 }
 
+interface GuestOption {
+    value: number;
+    label: string;
+    summary: string;
+}
+
+interface RaftOption {
+    value: string;
+    label: string;
+}
+
 export default function DepartureForm() {
     const { data, isLoading, isError, refetch } = useGetBookings();
+    const [selectedGuest, setSelectedGuest] = useState<{ bookingId: number | null; name: string } | null>(null);
+    const [raftType, setRaftType] = useState<RaftOption | null>(null);
+    const [unitNumber, setUnitNumber] = useState('');
+
     const { mutate, isPending } = useAddRaftToWater();
 
     const guests = data && data["booking/index"]
@@ -43,16 +59,51 @@ export default function DepartureForm() {
             {isLoading && <p>Loading bookings...</p>}
             {isError && <p className="text-red-500">Error loading bookings!</p>}
             <form
-                action={mutate}
+                action={(formData: FormData) => {
+                    mutate(formData);
+                    setSelectedGuest(null);
+                    setRaftType(null);
+                    setUnitNumber('');
+                }}
                 className="flex flex-col gap-8 "
             >
-                <Inputs isPending={isPending} guests={guests} boatOptions={boatOptions} />
-            </form>
-        </MainContainer>
+            <Inputs
+                isPending={isPending}
+                guests={guests}
+                boatOptions={boatOptions}
+                selectedGuest={selectedGuest}
+                setSelectedGuest={setSelectedGuest}
+                raftType={raftType}
+                setRaftType={setRaftType}
+                unitNumber={unitNumber}
+                setUnitNumber={setUnitNumber}
+            />
+        </form>
+        </MainContainer >
     );
 }
 
-function Inputs({ isPending, guests, boatOptions }: { isPending: boolean, guests: { name: string, bookingId: number, summary: string }[], boatOptions: { value: string, label: string }[] }) {
+function Inputs({
+    isPending,
+    guests,
+    boatOptions,
+    selectedGuest,
+    setSelectedGuest,
+    raftType,
+    setRaftType,
+    unitNumber,
+    setUnitNumber
+}: {
+    isPending: boolean,
+    guests: { name: string, bookingId: number, summary: string }[],
+    boatOptions: RaftOption[],
+    selectedGuest: { bookingId: number | null; name: string } | null,
+    setSelectedGuest: (guest: { bookingId: number | null; name: string } | null) => void,
+    raftType: RaftOption | null,
+    setRaftType: (raftType: RaftOption | null) => void,
+    unitNumber: string,
+    setUnitNumber: (unitNumber: string) => void
+}) {
 
     const getRaftType = (summary: string) => {
         summary = summary.toLowerCase();
@@ -80,18 +131,25 @@ function Inputs({ isPending, guests, boatOptions }: { isPending: boolean, guests
                     instanceId="guest-select"
                     options={guests.map(guest => ({
                         value: guest.bookingId,
-                        label: guest.name
-                    }))}
-                    onChange={(selectedOption) => {
+                        label: guest.name,
+                        summary: guest.summary
+                    })) as GuestOption[]}
+                    onChange={(selectedOption: any) => {
                         if (selectedOption) {
                             const guest = guests.find(g => g.bookingId === selectedOption.value);
                             if (guest) {
-                                (document.querySelector('select[name="raft-type"]') as HTMLSelectElement).value = getRaftType(guest.summary);
-                                (document.querySelector('input[name="booking-id"]') as HTMLInputElement).value = guest.bookingId.toString();
-                                (document.querySelector('input[name="guest-name"]') as HTMLInputElement).value = guest.name;
+                                setSelectedGuest({
+                                    bookingId: guest.bookingId,
+                                    name: guest.name,
+                                });
+                                const raftTypeValue = getRaftType(guest.summary);
+                                setRaftType(boatOptions.find(option => option.value === raftTypeValue) || null);
                             } else {
-                                (document.querySelector('input[name="guest-name"]') as HTMLInputElement).value = selectedOption.label;
-                                (document.querySelector('input[name="booking-id"]') as HTMLInputElement).value = '';
+                                setSelectedGuest({
+                                    bookingId: null,
+                                    name: selectedOption.label,
+                                });
+                                setRaftType(null);
                             }
                         }
                     }}
@@ -100,26 +158,35 @@ function Inputs({ isPending, guests, boatOptions }: { isPending: boolean, guests
                         control: () => "h-10 w-full",
                     }}
                 />
-                <input type="hidden" name="booking-id" />
-                <input type="hidden" name="guest-name" />
-                <select name="raft-type" className="border p-2 h-10 rounded-sm w-full md:w-2/6">
-                    {boatOptions.map(boat => (
-                        <option key={boat.value} value={boat.value}>
-                            {boat.label}
-                        </option>
-                    ))}
-                </select>
+                <Select
+                    instanceId="raft-type-select"
+                    options={boatOptions}
+                    value={raftType}
+                    onChange={(selectedOption: any) => {
+                        setRaftType(selectedOption);
+                    }}
+                    placeholder="Select Raft Type"
+                    className=" rounded-sm md:w-2/6 w-full"
+                    classNames={{
+                        control: () => "h-10 w-full",
+                    }}
+                />
                 <input
                     className="border rounded-sm h-10 w-full md:w-2/6 p-2"
                     type="number"
-                    name="unit-number"
+                    value={unitNumber}
+                    onChange={(e) => setUnitNumber(e.target.value)}
                     placeholder="Unit Number"
                     required
                 />
+                <input type="hidden" name="booking-id" value={selectedGuest?.bookingId || ''} />
+                <input type="hidden" name="guest-name" value={selectedGuest?.name || ''} />
+                <input type="hidden" name="raft-type" value={raftType?.value || ''} />
+                <input type="hidden" name="unit-number" value={unitNumber} />
             </div>
             <button
                 disabled={isPending}
-                className="bg-buttoncolormain hover:bg-buttoncolorsecend p-2 hover:text-white md:w-2/6 text-center shadow-lg">
+                className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white md:w-2/6 text-center shadow-lg">
                 {!isPending ?
                     'Mark Guest on The Water' : 'pending'
                 }
