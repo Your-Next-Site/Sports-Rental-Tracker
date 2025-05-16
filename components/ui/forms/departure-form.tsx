@@ -80,7 +80,7 @@ function Inputs({ isPending, guests, boatOptions }: { isPending: boolean, guests
             <input
                 list="guests"
                 name="guest-name"
-                className="border p-2 rounded-sm md:w-1/6"
+                className="border p-2 rounded-sm md:w-1/6 appearance-none"
                 placeholder="Type or select guest name"
                 onChange={(event) => {
                     const selectedGuest = guests.find(guest => guest.name.toLowerCase() === event.target.value.toLowerCase());
