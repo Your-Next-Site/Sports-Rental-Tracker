@@ -3,6 +3,7 @@ import { useAddRaftToWater } from "@/mutations/mutations";
 import MainContainer from "../containers/main-container";
 import { useGetBookings } from "@/hooks/hooks";
 import Select from 'react-select';
+import CreatableSelect from "react-select/creatable";
 
 
 const boatOptions = [
@@ -50,7 +51,7 @@ export default function DepartureForm() {
 }
 
 function Inputs({ isPending, guests, boatOptions }: { isPending: boolean, guests: { name: string, bookingId: number, summary: string }[], boatOptions: { value: string, label: string }[] }) {
-   
+
     const getRaftType = (summary: string) => {
         summary = summary.toLowerCase();
         if (summary.includes('single')) {
@@ -72,16 +73,24 @@ function Inputs({ isPending, guests, boatOptions }: { isPending: boolean, guests
 
     return (
         <div className="flex flex-col md:flex-row gap-4">
-            <Select
+            <CreatableSelect
                 options={guests.map(guest => ({
                     value: guest.bookingId,
                     label: guest.name
                 }))}
                 onChange={(selectedOption) => {
-                    const guest = guests.find(g => g.bookingId === selectedOption?.value);
-                    if (guest) {
-                        (document.querySelector('select[name="raft-type"]') as HTMLSelectElement).value = getRaftType(guest.summary);
-                        (document.querySelector('input[name="booking-id"]') as HTMLInputElement).value = guest.bookingId.toString();
+                    if (selectedOption) {
+                        const guest = guests.find(g => g.bookingId === selectedOption.value);
+                        if (guest) {
+                            (document.querySelector('select[name="raft-type"]') as HTMLSelectElement).value = getRaftType(guest.summary);
+                            (document.querySelector('input[name="booking-id"]') as HTMLInputElement).value = guest.bookingId.toString();
+                            (document.querySelector('input[name="guest-name"]') as HTMLInputElement).value = guest.name;
+                        } else {
+                            (document.querySelector('input[name="guest-name"]') as HTMLInputElement).value = selectedOption.label;
+                            // You might want to handle the bookingId differently in this case
+                            // For example, you could set it to a default value or leave it empty
+                            (document.querySelector('input[name="booking-id"]') as HTMLInputElement).value = '';
+                        }
                     }
                 }}
                 className="md:w-1/6"
