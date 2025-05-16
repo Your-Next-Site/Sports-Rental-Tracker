@@ -22,7 +22,7 @@ interface Booking {
 }
 
 export default function DepartureForm() {
-    const { data, isLoading, refetch } = useGetBookings();
+    const { data, isLoading, isError, refetch } = useGetBookings();
     const { mutate, isPending } = useAddRaftToWater();
 
     const guests = data && data["booking/index"]
@@ -39,8 +39,9 @@ export default function DepartureForm() {
     return (
         <MainContainer>
             <h1 className="text-2xl">Show a guests departure </h1>
-            <button className='border rounded-sm md:w-1/6 w-2/6 mx-auto hover:bg-gray-100' onClick={() => refetch()}>Refetch Bookings</button>
+            <button className='border rounded-sm md:w-1/6 w-2/6 mx-auto hover:bg-gray-100' onClick={() => refetch}>Refetch Bookings</button>
             {isLoading && <p>Loading bookings...</p>}
+            {isError && <p className="text-red-500">Error loading bookings!</p>}
             <form
                 action={mutate}
                 className="flex flex-col gap-8 "
@@ -118,7 +119,7 @@ function Inputs({ isPending, guests, boatOptions }: { isPending: boolean, guests
             </div>
             <button
                 disabled={isPending}
-                className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white md:w-2/6 text-center shadow-lg">
+                className="bg-buttoncolormain hover:bg-buttoncolorsecend p-2 hover:text-white md:w-2/6 text-center shadow-lg">
                 {!isPending ?
                     'Mark Guest on The Water' : 'pending'
                 }
