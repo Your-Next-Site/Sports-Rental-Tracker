@@ -11,8 +11,6 @@ export const useGetTrips = (currentTrip: boolean, pageNumber:number) => {
   return useQuery({
     queryKey: ['trips', currentTrip, pageNumber],
     queryFn: () => fetchTrips(currentTrip, pageNumber),
-    // queryKey: ['trips', currentTrip],
-    // queryFn: () => fetchTrips(currentTrip),
     placeholderData: keepPreviousData,
 
   })

@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { addRaftToWater, addRemoveRaftFromWater } from "@/actions/trips"
 import { toggleAdmin, toggleEmployee } from "@/actions/users";
+import { Trip } from "@/types/types";
 
 export const useAddRaftToWater = () => {
     const queryClient = useQueryClient();
@@ -18,13 +19,24 @@ export const useAddRaftToWater = () => {
     });
 };
 
-export const useRemoveRaftFromWater = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (raftOnWaterId: number) => {
-            return addRemoveRaftFromWater(raftOnWaterId);
-        },
-        onSuccess: () => {
+export const useRemoveRaftFromWater = (currentPage: number, setPage: (page: number) => void) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (raftOnWaterId: number) => addRemoveRaftFromWater(raftOnWaterId),
+    onSuccess: (_, raftOnWaterId) => {
+      // Remove trip locally before refetch
+      queryClient.setQueryData(["trips", true, currentPage], (oldData: { trips: Trip[] }) => {
+        if (!oldData) return oldData;
+        const updatedTrips = oldData.trips.filter((trip) => trip.id !== raftOnWaterId);
+
+        // If no trips remain, move to previous page
+        if (updatedTrips.length === 0 && currentPage > 0) {
+          setPage(currentPage - 1);
+        }
+
+        return { ...oldData, trips: updatedTrips };
+      });
             queryClient.invalidateQueries({ queryKey: ['trips'] });
         },
         onError: (error) => {

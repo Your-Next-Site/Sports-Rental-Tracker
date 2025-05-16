@@ -1,4 +1,5 @@
 "use client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRemoveRaftFromWater } from "@/mutations/mutations";
 import MainContainer from "../containers/main-container";
 import { useGetTrips } from "@/hooks/hooks";
@@ -18,7 +19,7 @@ export default function OnTheWater() {
     mutate,
     isPending,
     isError: isErrorMutate,
-  } = useRemoveRaftFromWater();
+  } = useRemoveRaftFromWater(page, setPage);
 
   if (isLoading) return <MainContainer> Loading.... </MainContainer>;
   if (isErrorData) return <MainContainer>Error loading trips</MainContainer>;

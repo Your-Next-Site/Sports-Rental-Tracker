@@ -14,25 +14,25 @@ const employeeRoutes = [
 ]
 
 export default auth((req) => {
-    return NextResponse.next()
-
-
+    
+    
     // Check employees routes 
     const isEmployeeRoute = employeeRoutes.some(route =>
         req.nextUrl.pathname.includes(route)
     )
-
+    
     if (isEmployeeRoute && !req.auth?.user?.employee) {
         return Response.redirect(new URL("/", req.nextUrl.origin))
     }
-
+    
     // Check if the current path is an admin route
     const isAdminRoute = adminRoutes.some(route =>
         req.nextUrl.pathname.includes(route)
     )
-
+    
     if (isAdminRoute && !req.auth?.user?.admin) {
         return Response.redirect(new URL("/", req.nextUrl.origin))
     }
+    return NextResponse.next()
 })
 

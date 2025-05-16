@@ -49,7 +49,7 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number) {
   `;
   const totalTrips = Number(totalTripsResult[0].count);
   const hasMore = offset + pageSize < totalTrips;
-  const totalPages = Math.floor(Number(totalTripsResult[0].count)/pageSize) + 1;
+  const totalPages = Math.ceil(Number(totalTripsResult[0].count)/pageSize);
 
   return { trips, hasMore, totalPages };
 }
