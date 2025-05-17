@@ -1,6 +1,5 @@
 import { Booking, InvoiceData } from "@/types/types";
 
-
 export async function fetchBookings(): Promise<any[]> {
   const apiKey = process.env.API_KEY_CHECKFRONT;
   const apiSecret = process.env.API_SECRET_CHECKFRONT;
@@ -52,16 +51,17 @@ export async function fetchBookings(): Promise<any[]> {
   const start = convertTimeToMinutes(targetTime) - 30;
   const end = convertTimeToMinutes(targetTime) + 30;
 
+
   const filteredBookings = bookingTimes.filter((booking) => {
     const bookingTime = convertTimeToMinutes(booking.time);
     return bookingTime >= start && bookingTime <= end;
   }).map((booking) => ({
     ...booking.booking,
     time: booking.time,
-  }));
+  }));;
 
-//   console.log("booking times:", bookingTimes.map((booking) => ({ code: booking.booking.code, time: booking.time })))
-//   console.log("bookings within time range: ", filteredBookings)
+  //   console.log("booking times:", bookingTimes.map((booking) => ({ code: booking.booking.code, time: booking.time })))
+  // console.log("bookings within time range: ", filteredBookings)
   return filteredBookings;
 }
 
