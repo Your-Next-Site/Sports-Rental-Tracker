@@ -24,12 +24,17 @@ export interface Trip {
   checked_in_by: number | null;
 }
 
-// export interface User {
-//   id: number;
-//   name: string;
-//   email: string;
-//   emailVerified: Date | null;
-//   image: string;
-//   employee: boolean;
-//   admin: boolean;
-// }
+export interface Booking {
+  booking_id: number;
+  code: string;
+  start_date: string;
+  time: string;
+}
+
+export interface InvoiceData {
+  booking: {
+    invoice: {
+      html: string;
+    };
+  };
+}

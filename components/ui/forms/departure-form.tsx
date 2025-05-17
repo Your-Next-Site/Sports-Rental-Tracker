@@ -41,13 +41,14 @@ export default function DepartureForm() {
 
     const { mutate, isPending } = useAddRaftToWater();
 
-    const guests = data && data["booking/index"]
-        ? Object.values(data["booking/index"]).map((booking) => ({
-            name: (booking as Booking).customer_name,
-            bookingId: (booking as Booking).booking_id,
-            summary: (booking as Booking).summary.replace(/Sit-on-top /i, ''),
+    const guests = data
+        ? data.map((booking) => ({
+            name: booking.customer_name,
+            bookingId: booking.booking_id,
+            summary: booking.summary.replace(/Sit-on-top /i, ''),
         }))
         : [];
+
 
     console.log(data)
     console.log(guests);
