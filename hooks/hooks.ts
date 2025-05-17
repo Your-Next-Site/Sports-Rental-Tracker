@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Trip } from '@/types/types'
+import { BookingWithTime, Trip } from '@/types/types'
 import { User } from "@auth/core/types";
 
 const fetchTrips = async (currentTrip: boolean): Promise<Array<Trip>> => {
@@ -38,7 +38,7 @@ export const useGetSearchPageTrips = ({ guestName, departureDate }: { guestName:
   })
 }
 
-const getBookings = async (): Promise<any> => {
+const getBookings = async (): Promise<BookingWithTime[]> => {
   const response = await fetch(`/api/checkfront`)
   return await response.json();
 }

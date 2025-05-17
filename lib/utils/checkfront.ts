@@ -16,7 +16,7 @@ export async function fetchBookings(): Promise<BookingWithTime[]> {
       },
     }
   );
-
+ 
   const data: any = await response.json();
 
   if (!data["booking/index"]) {
