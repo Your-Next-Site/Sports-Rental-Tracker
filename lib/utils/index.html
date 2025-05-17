@@ -1,0 +1,402 @@
+{
+version: "3.0",
+account_id: 3,
+host_id: "thepaddlestation-2025test.checkfront.com",
+name: "The Paddle Station",
+locale: {
+id: "en_CA",
+lang: "en",
+currency: "CAD",
+},
+request: {
+status: "OK",
+resource: "booking",
+scope: "invoice",
+id: "1",
+records: 1,
+limit: 0,
+page: 1,
+pages: 1,
+time: 0.0623,
+timestamp: 1747446144.637639,
+method: "get",
+},
+booking: {
+invoice: {
+html: "\n\t\t
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />\n\t\t<style type='text/css'>
+    \n\t\t\t#checkfront-invoice {
+        \n\t\t\t\tbackground: #fff;
+        \n\t\t\t\tmargin-bottom: 1em;
+        \n\t\t\t\tfont: 11pt \"Helvetica Neue\", Helvetica, Arial, sans-serif;
+        \n\t\t\t
+    }
+
+    \n\t\t\ttable {
+        \n\t\t\t\tborder-collapse: collapse;
+        \n\t\t\t\tborder-spacing: 0;
+        \n\t\t\t
+    }
+
+    \n\t\t\t.note_table tr {
+        \n\t\t\t\tpage-break-inside: avoid;
+        \n\t\t\t
+    }
+
+    \n\t\t\t.item_table {
+        \n\t\t\t\tbackground: white;
+        \n\t\t\t
+    }
+
+    \n\t\t\t.item_table tr {
+        page-break-inside: avoid;
+    }
+
+    \n\t\t\t.item_table td,
+    \n\t\t\t.item_table th {
+        \n\t\t\t\tvertical-align: top;
+        \n\t\t\t\tpadding: 5px;
+        \n\t\t\t\ttext-align: left;
+        \n\t\t\t
+    }
+
+    \n\t\t\t.item_table thead tr {
+        \n\t\t\t\tbackground: #e1e1e1;
+        \n\t\t\t
+    }
+
+    \n\t\t\t.item_table thead th {
+        \n\t\t\t\tborder-bottom: solid 1px #aaa;
+        \n\t\t\t
+    }
+
+    \n\t\t\t.item_table tr.sum-row td,
+    \n\t\t\t.item_table tr.sum-row th {
+        \n\t\t\t\ttext-align: right;
+        \n\t\t\t\twhite-space: nowrap;
+        \n\t\t\t
+    }
+
+    \n\t\t\t.item_table tr.border-top {
+        \n\t\t\t\tborder-top: solid 1px #111;
+        \n\t\t\t
+    }
+
+    \n\t\t\t.invoice_header td,
+    \n\t\t\t.invoice_header th {
+        \n\t\t\t\tvertical-align: top;
+        \n\t\t\t\ttext-align: left;
+        \n\t\t\t\tpadding: 0;
+        \n\t\t\t\tborder: 0;
+        \n\t\t\t
+    }
+
+    \n\t\t\t.invoice_details {
+        \n\t\t\t\tmax-width: 300px;
+        \n\t\t\t\tfloat: right;
+        \n\t\t\t\tborder: solid 1px #aaa;
+        \n\t\t\t\tfont-size: 9pt;
+        \n\t\t\t\ttext-align: right;
+        \n\t\t\t\tbackground: #fff;
+        \n\t\t\t
+    }
+
+    \n\t\t\t.invoice_details th {
+        \n\t\t\t\tbackground: #e1e1e1;
+        \n\t\t\t\tpadding: 5px;
+        \n\t\t\t
+    }
+
+    \n\t\t\t.invoice_details td {
+        \n\t\t\t\ttext-align: right;
+        \n\t\t\t\tpadding: 5px\n\t\t\t
+    }
+
+    \n\t\t\t.btn-invoice {
+        \n\t\t\t\tbackground-color: #fff;
+        \n\t\t\t\tcolor: #777;
+        \n\t\t\t\tfont-weight: bold;
+        \n\t\t\t\ttext-decoration: none;
+        \n\t\t\t\tpadding: 3px 10px;
+        \n\t\t\t\tborder: solid 1px #ccc;
+        \n\t\t\t\tmargin-right: 5px;
+        \n\t\t\t
+    }
+
+    \n\t\t\taddress {
+        \n\t\t\t\tfont-size: 9pt;
+        \n\t\t\t\tcolor: #777;
+        \n\t\t\t
+    }
+
+    \n\t\t\t#checkfront_status {
+        \n\t\t\t\tdisplay: inline-block;
+        \n\t\t\t\tpadding: .5em 1em .5em 1em;
+        \n\t\t\t\tmargin-top: 1em;
+        \n\t\t\t\tmin-width: 8em;
+        \n\t\t\t\tborder-radius: 5px;
+        \n\t\t\t\tcolor: #fff;
+        \n\t\t\t\tfont-size: 13pt;
+        \n\t\t\t\tfont-weight: bold;
+        \n\t\t\t\ttext-align: center;
+        \n\t\t\t\ttext-transform: uppercase;
+        \n\t\t\t
+    }
+
+    \n\t\t\t.show-cell-webkit {
+        \n\t\t\t\tdisplay: none;
+        \n\t\t\t
+    }
+
+    \n\t\t\t.show-cell-webkit:not(*:root) {
+        \n\t\t\t\tdisplay: table-cell;
+        \n\t\t\t
+    }
+
+    \n\n\t\t\t@media screen and (max-width: 576px) {
+        \n\t\t\t\t#invoice-wrap {
+            \n\t\t\t\t\tmargin-left: 0;
+            \n\t\t\t\t
+        }
+
+        \n\t\t\t
+    }
+
+    \n\n\t\t
+</style><img src='https://thepaddlestation-2025test.checkfront.com/images/curl.png' class='xprint' width='33'
+    height='33' alt=' ' style='float: right' />\n\t\t\t\t\t<div id='checkfront-invoice'
+    style='border: solid 1px #aaa; padding: 1.2em;'>\n\t\t\t\t\t\t\n\t\t<div style='clear:both;'>\n\t\t\t<table
+            class='invoice_header' style='width: 100%; font-size: 12pt;'>\n\t\t\t\t<tr>\n\t\t\t\t\t<td>\n\t\t\t\t\t\t<h1
+                        style='font-size: 14pt; color: #333; font-weight: bold; margin:0 0 5px 0;'>
+                        \n\t\t\t\t\t\t\tBooking Invoice\n\t\t\t\t\t\t</h1>\n\t\t\t\t\t\t<span id='checkfront_status'
+                        style='background-color: #ea8006;'>Pending</span>\n\t\t\t\t\t</td>\n\t\t\t\t\t<td
+                    style='text-align: right; padding: 0.5em;'>\n\t\t\t\t\t\t<img
+                        src='https://storage.googleapis.com/cf-public-us/thepaddlestation-2025test-143399/media/plogo?t=1747258846982314'
+                        width='60' height='60' alt='The Paddle Station' class='yprint' />
+                    <h2 style='font-size: 12pt; padding:0; margin:0; color: #333;'>The Paddle Station</h2>\n\t\t\t\t\t\t
+                    <address>http://paddlestation.ca 888-988-7238<br />\r\nStart Location: Shouldice Athletic
+                        Park<br />\r\n5227 13 Ave NW, Calgary, AB T3B 1J1 <br />\r\n<br />\r\nPlease report 15-30
+                        minutes <br />\r\nprior to your booking time to <br />\r\navoid cancellation of your booking.
+                    </address>\n\t\t\t\t\t
+                </td>\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t<td style='padding-top: 1em; font-size: 10pt;'>
+                    \n\t\t\t\t\t\t<div class='cf-customer-addr'>\n\t\t\t\t\t\t\t<strong>Patrick MacDonald</strong><br><i
+                            class=\"fa fa-envelope\"></i> pmacdonald15@gmail.com<br />1 (403) 975-5053<br />4432 Bowness
+                        Road Northwest<br />Calgary, Alberta, T3B 0A8<br />Canada\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</td>
+                \n\t\t\t\t\t<td style='text-align: right; padding-top: 1em;'>\n\t\t\t\t\t\t\n\t\t\t<table
+                        class='invoice_details'>\n\t\t\t\t\n\t\t\t\t<tr>\n\t\t\t\t\t<th> Booking ID:</th>\n\t\t\t\t\t
+                            <td><strong>DDLY-150525</strong></td>\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t<th> Created:
+                            </th>\n\t\t\t\t\t<td style='white-space: nowrap;'>May 15, 2025</td>\n\t\t\t\t</tr>
+                        \n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th style='white-space: nowrap;'> Booking Date:</th>
+                            \n\t\t\t\t\t\t\t<td style='white-space: nowrap;'>May 16, 2025</td>\n\t\t\t\t\t\t</tr>
+                        \n\t\t\t\t<tr>\n\t\t\t\t\t<th> Total&#160;(CAD):</th>\n\t\t\t\t\t<td
+                                style='white-space: nowrap'>$87.95</td>\n\t\t\t\t</tr>\n\t\t\t</table>\n\t\t\n\t\t\t\t\t
+                </td>\n\t\t\t\t</tr>\n\t\t\t</table>\n\t\t\t<br />\n\t\t\t<table class='item_table'
+            style='border: solid 1px #aaa; text-align: left; width: 100%; margin:0; font-size: 9pt;'>\n\t\t\t\t<thead>
+                \n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<th>Item</th>\n\t\t\t\t\t\t<th colspan='2'>Rate</th>\n\t\t\t\t\t\t<th
+                        style='text-align: right; width: 1%;'>Amount</th>\n\t\t\t\t\t</tr>\n\t\t\t\t</thead>\n\t\t\t\t
+            <tbody>\n\t\t\t\t\t\n\t\t\t<tr>\n\t\t\t\t<td style='padding: 5px; '>\n\t\t\t\t\t\n\t\t\t\t\t<strong>Double
+                            Sit-On-Top Kayak</strong><br />\n\t\t\t\t\tFri May 16, 2025\n\t\t\t\t\t<br /><i
+                            class='fa fa-clock-o'></i> 03:30 PM\n\t\t\t\t</td>\n\t\t\t\t<td style='' colspan='2'><strong
+                            title='Qty'>Qty:</strong> 1 @ $79.00</td>\n\t\t\t\t<td
+                        style='text-align: right;  white-space: nowrap; position: relative;'>\n\t\t\t\t <div
+                            class='min-height-amount-invoice'>$79.00</div>\n\t\t\t\t \n </td>\n\t\t\t</tr>\n\t\t\t\t\t
+                <tr style='border-top: solid 1px #000;'>
+                    <td rowspan='7' colspan='2' style='border-right: solid 1px #000; color: #444'>
+                        <p style='padding:.25em 0; margin:0'><strong>How did you hear about us?</strong>: Walk Up</p>
+                        <p style='padding:.25em 0; margin:0'><strong>Are you bringing a dog?</strong>: No</p>
+                    </td>
+                    <td class=\"show-cell-webkit\" colspan=\"2\" style=\"height:100%; padding: 0\"></td>
+                </tr>\n\n\t\t\t\t\t\n\t\t\t<tr class='sum-row border-top'>\n\t\t\t\t<th>Sub-Total: </th>\n\t\t\t\t<td>
+                        $79.00</td>\n\t\t\t</tr>\n\t\t\t\t\t\t<tr class='tax sum-row'>\n\t\t\t\t\t\t\t<td>Sanitation
+                        &amp; Fuel Surcharge Fee:</td>\n\t\t\t\t\t\t\t<td>$5.00</td>\n\t\t\t\t\t\t</tr>
+                \n\t\t\t\t\t\n\t\t\t\t\t\t<tr class='tax sum-row'>\n\t\t\t\t\t\t\t<td>GST (5%):</td>\n\t\t\t\t\t\t\t<td>
+                        $3.95</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t<tr
+                    class='sum-row border-top'>\n\t\t\t\t<th>Total: </th>\n\t\t\t\t<td class='item_total_price'>$87.95
+                    </td>\n\t\t\t</tr>\n\t\t\n\t\t\t\t<tr class='sum-row'>\n\t\t\t\t\t<th>Amount Paid: </th>\n\t\t\t\t\t
+                    <td>$0.00</td>\n\t\t\t\t</tr>\n\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t<tr id='CF_due'
+                    class='sum-row' style='border-top: double 3px #111; background: #fff6ad;'>\n\t\t\t\t\t<th>Balance
+                        Due: </th>\n\t\t\t\t\t<td><strong>$87.95</strong></td>\n\t\t\t\t</tr>
+                \n\t\t\t\n\t\t\t\t\t\n\t\t\t<tr>\n\t\t\t\t<td colspan='4' class='xprint'
+                        style='border-top: solid 1px #aaa; background-color: #e1e1e1; text-align: right; padding: 5px 0 5px 5px'>
+                        \n\t\t\t\t\t<div
+                            style='font-weight: bold; padding: 5px 0; color: #999; font-size: 8pt; text-align: right;'>
+                            <a href='https://thepaddlestation-2025test.checkfront.com/booking/DDLY-150525/edit'
+                                class='btn-invoice edit'>Edit</a> <a
+                                href='https://thepaddlestation-2025test.checkfront.com/reserve/booking/DDLY-150525?token=1f6c64b497d68229dfaab1019af2037d9afd2dca6a7a4070ed52358c4d217c70&amp;view=pdf'
+                                class='btn-invoice pdf' target='_blank'>PDF (Print)</a> <a
+                                href='https://thepaddlestation-2025test.checkfront.com/booking/DDLY-150525/#payment'
+                                class='btn-invoice pay'>Pay Now <i class='fa fa-caret-up'></i></a></div>\n\t\t\t\t</td>
+                    \n\t\t\t</tr>\n\t\t\n\t\t\t\t</tbody>\n\t\t\t</table>\n\t\t\t\n\t\t\t\n\t\t\t\n\t\t\t\t\t<div
+            style='margin-top: 1em;'>\n\t\t\t\t\t\t<strong
+                style='float: left;padding-right: 1em; font-size: 1.3em; margin-top: 0.25em; white-space: nowrap;'>\n\t\t\t\t\t\t\t<i
+                    class='fa fa-file-text-o'></i> Booking
+                Documents\n\t\t\t\t\t\t</strong>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<a href='/booking/DDLY-150525/documents'
+                style='float: right; display: inline-block; padding: 6px 12px; margin-bottom: 0; font-size: 14px; font-weight: normal; line-height: 1.42857143; text-align: center; white-space: nowrap; vertical-align: middle; touch-action: manipulation; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; background-image: none; border: 1px solid transparent; border-radius: 4px; background: #487fe8; border-color: #4b86f4; color: white;'>\n\t\t\t\t\t\t\tView
+                Required Documents\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\n\t\t\t\t\t\t<div
+                style='float: left; margin-top: 0.5em;'>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t<span
+                        style='display: inline-block; width: 300px; overflow: hidden; text-overflow: ellipsis;'>\n\t\t\t\t\t\t\tLiability
+                        Waiver - Patrick MacDonald\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t<strong
+                        class='text-success'>Completed<i class='fa fa-fw fa-check'></i></strong>\n\t\t\t\t\t</li>
+                \n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div style='clear: both;'></div>\n\t\t\t\t\t</div>\n\t\t\t\t<img
+            src=\"https://thepaddlestation-2025test.checkfront.com/images/qr/?id=DDLY-150525\" alt=\"Bar Code\"
+            width=\"84\" height=\"84\" style=\"margin-top: 5px; background: #fff; padding: 10px 0 10px 15px; float:
+            right;\" />\n\t\t\t<div id='checkfront-policy'
+            style='padding: 1.25em 0 0 0; color: #555; margin:2em 0 0 0; font-size: 9pt; border-top: solid 1px #eee;'>
+            \n\t\t\t\t\t\t<p><strong><br /><br />Please note that we DO NOT provide transportation for paddlers so
+                    please ensure you make arrangements for your own transportation at the end of your float, either
+                    using two cars or booking an Uber / taxi.</strong></p>\n<p><strong>For the exact locations, please
+                    see our <a href=\"http://www.paddlestation.ca/find-us-calgary\">Locations</a> page or search us on
+                    Google maps as The Paddle Station - Shouldice Park, The Paddle Station - St. Patrick's
+                    Island<strong>. Directions to each location, <a
+                            href=\"https://www.paddlestation.ca/find-us-calgary\">please click
+                            here</a></strong></strong></p>\n<p><strong><em><u>Your booking includes: the vessel you
+                            booked, inflated\n or prepped and ready at the side of the river AND we provide the
+                            \nrequired safety gear (pfd/life jacket and safety kit) for free with \nyour booking; we
+                            even give you a safety talk. Our crew will take it all\n from you at the end of your float.
+                        </u></em></strong></p>\n<p><strong>Booking Terms and Conditions</strong><br /></p>\n<p>1. Rental
+                Rates (all inclusive of helmets, PFDs, paddles, and an emergency safety kit)</p>\n<p>Rental rates are as
+                posted and subject to change without notice.</p>\n<p>2. Pre-authorization</p>\n<p>A pre-authorization
+                amount of $300.00 CAD per vessel will be temporarily (up to 7 days) held on your credit card and will be
+                released once you reach your end destination, provided all the rental equipment is returned in its
+                original condition.</p>\n<p>3. Maximum allotted time per rental</p>\n<table>
+                <colgroup>
+                    <col />
+                    <col />
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>ROUTES</p>
+                        </td>
+                        <td>
+                            <p>MAXIMUM TIME ALLOTTED</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Shouldice Athletic Park to St. Patrick’s Island Park</p>
+                        </td>
+                        <td>
+                            <p>Time will be posted each day<br /></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>\n<p>After the maximum allotted time, penalty rates will apply. Please ensure that you stop only at
+                our designated Paddle Station.</p>\n<p>4. Penalty Rates</p>\n<table>
+                <colgroup>
+                    <col />
+                    <col />
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>Opened/Compromised Emergency Kit</p>
+                        </td>
+                        <td>
+                            <p>$30/kit</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Single Kayak/SUP</p>
+                        </td>
+                        <td>
+                            <p>$30.00 CAD/ hr delayed</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Double Kayak</p>
+                        </td>
+                        <td>
+                            <p>$40.00 CAD/ hr delayed</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Rafts</p>
+                        </td>
+                        <td>
+                            <p>$60.00 CAD/ hr delayed</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Penalties will be rounded up to the closest hour.</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>\n<p>5. Cancellation &amp; Rescheduling policy</p>\n<p>We understand that plans may change or
+                unavoidable situations arise that necessitate having to cancel or change your trip plans. However,
+                please understand that once your trip is booked we reserve your space, assign staff and resources to
+                ensure your trip runs smoothly. Few of these costs are recoverable at the last minute.</p>\n<p>With this
+                in mind we apply the following cancellation policy: </p>\n<ul>
+                <li>Cancellations more than 72 hours (3 days) prior to booking date and time: Full refund<br /></li>
+            </ul>\n<ul>
+                <li>Cancellations between 72 hour to 24 hours before to booking date and time: No refunds. Paddle
+                    Station credit (gift certificate)<br /></li>
+                <li>No rescheduling, credit or refund will be permitted for cancellations within 24 hours</li>
+            </ul>\n<ul>
+                <li>Cancellations by The Paddle Station due to suspended operations \nfor weather or any other reason:
+                    Paddle Station will rebook at your \nconvenience or issue a credit for cancelled bookings made prior
+                    to the closure </li>
+            </ul>\n<p>We regret that we cannot make exceptions for personal emergencies and recommend that Trip
+                Cancellation Protection be purchased through your travel insurance company to protect your payments.</p>
+            \n<p>Our <u><strong>reschedule policy</strong></u> will allow you to reschedule your booking* or receive a
+                gift certificate up to 24 hours before the date of your last booking. Please email us with your last
+                name and booking ID and the date and time you wish to reschedule to (*subject to availability). All
+                requests to reschedule your booking time will be subject to a $20 fee. Rescheduling is NOT permitted
+                within 24 hours.<br /></p>\n<p>6. Equipment damage or replacement fees</p>\n<p>The fee for rental
+                equipment damaged, lost or stolen will be equal to the full replacement cost of the item in question.
+                Determination of level of damage is at the discretion of the The Paddle Station.</p>\n<p>7. Vessel
+                Retrieval Rates</p>\n<p>A vessel retrieval fee of $100.00 CAD will be charged to your credit card if you
+                pass the last designated endpoint, St. Patrick’s Island Park, and require Paddle Station staff
+                assistance to return your rented vessel to a Paddle Station.</p>\n<p>8. Waiver</p>\n<p>Every paddler, or
+                the parent of a minor, is required to review and sign a waiver before any rental equipment will be
+                provided by The Paddle Station.</p>\n<p>Please review the waiver carefully before signing. Electronic
+                waivers can be emailed to yourself. Please ensure you take a copy of the waiver with you before leaving
+                the booking area. </p>\n<p><span style=\"background-color:rgb(255,255,0);\"><span
+                        style=\"color:rgb(192,80,77);\">9. Reporting time</span></span></p>\n<p><span
+                    style=\"background-color:rgb(255,255,0);\"><span style=\"color:rgb(192,80,77);\">Please arrive at
+                        our start location at least 15 minutes prior to your rental time.</span></span><span
+                    style=\"background-color:rgb(255,255,0);\"><span style=\"color:rgb(192,80,77);\"><br /><br />If you
+                        arrive after your rental time, your booking may be cancelled or you will be subject to a delay
+                        penalty (if applicable). Penalties will be rounded up to the closest hour. You will not receive
+                        a refund if you fail to report by your rental time.<br /></span></span></p>\n<p>10. Safety</p>\n
+            <p>All paddlers MUST wear a life jacket. No Exceptions. It is your responsibility to ensure the life jacket
+                provided fits you and/or your child. Failure to wear your life jacket may result in a $500 fine per
+                paddler by the Calgary Police Service/Calgary Fire Department and a MANDATORY court appearance. Life
+                jackets for children are subject to availability – we recommend bringing your own to ensure you do not
+                have to wait for one.</p>\n<p>Adult sized helmets are available by request. The Paddle Station does not
+                provide child sized helmets.</p>\n<p>It is your responsibility to ensure you understand and follow all
+                instructions provided to you by the Paddle Crew.</p>\n<p>11. Age Restrictions</p>\n<p>All minors,
+                including single kayakers under age 18, MUST be accompanied by a parent or guardian. The Paddle Station
+                reserves the right to ask for identification for safety purposes.</p>\n<ul>
+                <li>Children, ages 3 and up are permitted in rafts.</li>
+                <li>Children, ages 6 and up are permitted in double kayaks.</li>
+                <li>Paddlers must be age 16 and older to be permitted in a single kayak.</li>
+            </ul>\n<p>12. Pets</p>\n<p>Animals are permitted in all of our vessels. The Paddle Station does not provide
+                safety equipment for animals. The Paddler assumes all risks related to any animal they choose to take in
+                our vessels. The Paddler will be subject to a cleaning or damages fee for any animal waste or related
+                damage.</p>\n<p>13. Cleaning Fee</p>\n<p>Please note you will be subject to a cleaning fee of $50 in the
+                event your raft is not returned free of garbage, mess and debris. Please ensure you remove ALL of your
+                disposables and recyclables.</p>\n<p> <strong><span style=\"color:rgb(149,55,52);\">PADDLE STATION
+                        CONTACT NUMBER: </span></strong><strong><u>CALL (888) 988-7238 </u><u>TEXT (587)
+                        200-4446</u></strong><br /></p>\n\t\t\t\t\t</div>\n\t\t</div>\n\t\t\n\t\t\t\t\t</div>",
+},
+},
+}
+booking times: [
+{
+code: "DDLY-150525",
+time: "Time not found",
+}, {
+code: "FRNC-150525",
+time: "Time not found",
+}, {
+code: "KXQR-150525",
+time: "Time not found",
+}, {
+code: "ABCB-150525",
+time: "Time not found",
+}
+]
