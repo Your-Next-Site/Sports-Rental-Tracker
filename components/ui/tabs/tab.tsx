@@ -6,13 +6,12 @@ import OnTheWater from "../on-the-water-component/on-the-water";
 import SearchHistory from "../search-history-component/search-history";
 import { fetchTrips, searchTrips } from "@/hooks/hooks";
 
-export default function Tab(props: any) {
+export default function Tab() {
   const [selectedTab, setSelectedTab] = useState("Departure");
   const tabs = ["Departure", "On The Water", "Search"];
   const queryClient = useQueryClient();
 
-  // Prefetch only for "On The Water"
-  const handleMouseOver = (tab: string) => {
+  const handleMouseOver = (tab?: string) => {
     if (tab === "On The Water") {
       queryClient.prefetchQuery({
         queryKey: ['trips', true],
@@ -28,6 +27,7 @@ export default function Tab(props: any) {
       });
     }
   };
+
 
   return (
     <div className="flex flex-col  w-full md:w-5/6">

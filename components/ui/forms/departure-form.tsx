@@ -40,7 +40,7 @@ export default function DepartureForm() {
                     setRaftType(null);
                     setUnitNumber('');
                 }}
-                className="flex flex-col gap-8 "
+                className="flex flex-col gap-2 "
             >
                 <Inputs
                     isPending={isPending}
