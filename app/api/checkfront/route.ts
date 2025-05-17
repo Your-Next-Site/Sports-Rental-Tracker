@@ -3,11 +3,19 @@ import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-        const result = await fetchBookings();        
-        return new Response(JSON.stringify(result), { headers: { 'Content-Type': 'application/json' } });
+        const result = await fetchBookings();
+        return new Response(JSON.stringify(result), {
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'public, max-age=1800, stale-while-revalidate=60', // 30 minutes
+            }
+        });
     } catch (error) {
-        console.log(error)
-        return new Response(`Error fetching raft data: ${error}`, { status: 500, headers: { 'Content-Type': 'text/plain' } });
+        console.log(error);
+        return new Response(`Error fetching raft data: ${error}`, {
+            status: 500,
+            headers: { 'Content-Type': 'text/plain' }
+        });
     }
 }
 
