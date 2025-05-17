@@ -91,4 +91,6 @@ export interface BookingDetails {
 
 export interface BookingWithTime extends Booking {
   time: string;
+  customer_name?: string;
+  summary?: string;
 }
