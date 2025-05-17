@@ -179,7 +179,7 @@ function Inputs({
                     }}
                 />
                 <input
-                    className="border rounded-sm h-10 w-full md:w-2/6 p-2"
+                    className="border border-gray-300 rounded-sm h-10 w-full md:w-2/6 p-2"
                     type="number"
                     value={unitNumber}
                     onChange={(e) => setUnitNumber(e.target.value)}
