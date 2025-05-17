@@ -89,21 +89,6 @@ export interface BookingDetails {
   token: string;
 }
 
-// export interface BookingWithTime {
-//   booking_id: number;
-//   code: string;
-//   status_id: string;
-//   status_name: string;
-//   created_date: number;
-//   total: string;
-//   tax_total: string;
-//   paid_total: string;
-//   customer_id: number;
-//   customer_name: string;
-//   customer_email: string;
-//   summary: string;
-//   date_desc: string;
-//   tid: string;
-//   token: string;
-//   time: string;
-// }
+export interface BookingWithTime extends Booking {
+  time: string;
+}

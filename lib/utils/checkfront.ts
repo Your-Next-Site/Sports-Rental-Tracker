@@ -1,6 +1,6 @@
-import { Booking, InvoiceData } from "@/types/types";
+import { Booking, BookingWithTime, InvoiceData } from "@/types/types";
 
-export async function fetchBookings(): Promise<any[]> {
+export async function fetchBookings(): Promise<BookingWithTime[]> {
   const apiKey = process.env.API_KEY_CHECKFRONT;
   const apiSecret = process.env.API_SECRET_CHECKFRONT;
   const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
@@ -52,18 +52,20 @@ export async function fetchBookings(): Promise<any[]> {
   const end = convertTimeToMinutes(targetTime) + 30;
 
 
-  const filteredBookings = bookingTimes.filter((booking) => {
-    const bookingTime = convertTimeToMinutes(booking.time);
-    return bookingTime >= start && bookingTime <= end;
-  }).map((booking) => ({
-    ...booking.booking,
-    time: booking.time,
-  }));;
-
+  const filteredBookings: BookingWithTime[] = bookingTimes
+    .filter((booking) => {
+      const bookingTime = convertTimeToMinutes(booking.time);
+      return bookingTime >= start && bookingTime <= end;
+    })
+    .map((booking) => ({
+      ...booking.booking, // booking is of type Booking
+      time: booking.time,
+    }));
   //   console.log("booking times:", bookingTimes.map((booking) => ({ code: booking.booking.code, time: booking.time })))
   // console.log("bookings within time range: ", filteredBookings)
   return filteredBookings;
 }
+
 
 function convertTimeToMinutes(time: string): number {
   const [hours, minutes] = time.split(':').map((val) => parseInt(val.replace(' AM', '').replace(' PM', '')));
