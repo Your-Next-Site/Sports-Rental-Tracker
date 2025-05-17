@@ -55,7 +55,7 @@ export default function DepartureForm() {
     return (
         <MainContainer>
             <h1 className="text-2xl">Show a guests departure </h1>
-            <button className='border rounded-sm md:w-1/6 w-2/6 mx-auto hover:bg-gray-100' onClick={() => refetch}>Refetch Bookings</button>
+            <button className='border rounded-sm md:w-1/6 w-2/6 mx-auto hover:bg-gray-100' onClick={() => refetch()}>Refetch Bookings</button>
             {isLoading && <p>Loading bookings...</p>}
             {isError && <p className="text-red-500">Error loading bookings!</p>}
             <form
