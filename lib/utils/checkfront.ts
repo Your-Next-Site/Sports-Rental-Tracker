@@ -14,9 +14,10 @@ export async function fetchBookings(): Promise<BookingWithTime[]> {
       headers: {
         'Authorization': `Basic ${auth}`,
       },
-    }
+      next: { revalidate: 1800 }
+    },
   );
- 
+
   const data: any = await response.json();
 
   if (!data["booking/index"]) {
@@ -35,6 +36,7 @@ export async function fetchBookings(): Promise<BookingWithTime[]> {
           headers: {
             'Authorization': `Basic ${auth}`,
           },
+          next: { revalidate: 1800 }
         }
       );
 
