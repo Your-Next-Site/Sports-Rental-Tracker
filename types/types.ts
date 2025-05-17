@@ -24,12 +24,71 @@ export interface Trip {
   checked_in_by: number | null;
 }
 
-// export interface User {
-//   id: number;
-//   name: string;
-//   email: string;
-//   emailVerified: Date | null;
-//   image: string;
-//   employee: boolean;
-//   admin: boolean;
-// }
+export interface Booking {
+  booking_id: number;
+  code: string;
+  start_date: string;
+  time: string;
+}
+
+export interface InvoiceData {
+  booking: {
+    invoice: {
+      html: string;
+    };
+  };
+}
+
+export interface BookingData {
+  customer_name: string;
+  booking_id: number;
+  summary: string;
+}
+
+export interface GuestData {
+  name: string;
+  bookingId: number;
+  summary: string;
+}
+export interface GuestOption {
+  value: number;
+  label: string;
+  summary: string;
+}
+
+export interface RaftOption {
+  value: string;
+  label: string;
+}
+export interface InputsProps {
+  isPending: boolean;
+  guests: { name: string; bookingId: number; summary: string }[];
+  boatOptions: RaftOption[];
+  selectedGuest: { bookingId: number | null; name: string } | null;
+  setSelectedGuest: (guest: { bookingId: number | null; name: string } | null) => void;
+  raftType: RaftOption | null;
+  setRaftType: (raftType: RaftOption | null) => void;
+  unitNumber: string;
+  setUnitNumber: (unitNumber: string) => void;
+}
+export interface BookingDetails {
+  booking_id: number;
+  code: string;
+  status_id: string;
+  status_name: string;
+  created_date: number;
+  total: string;
+  tax_total: string;
+  paid_total: string;
+  customer_id: number;
+  customer_name: string;
+  customer_email: string;
+  summary: string;
+  date_desc: string;
+  tid: string;
+  token: string;
+}
+
+export interface BookingWithTime extends Booking {
+  time: string;
+}
