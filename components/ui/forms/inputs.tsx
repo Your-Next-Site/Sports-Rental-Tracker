@@ -59,7 +59,7 @@ export default function Inputs({
                     onChange={(selectedOption: any) => {
                         setRaftType(selectedOption);
                     }}
-                    placeholder="Select Raft Type"
+                    placeholder="Select Raft"
                     className=" rounded-sm md:w-2/6 w-full"
                     classNames={{
                         control: () => "h-10 w-full",

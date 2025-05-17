@@ -2,7 +2,7 @@
 import { useGetSearchPageTrips } from "@/hooks/hooks";
 import MainContainer from "../containers/main-container";
 import { Trip } from "@/types/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function SearchHistory() {
 
