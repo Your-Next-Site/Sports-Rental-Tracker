@@ -38,3 +38,36 @@ export interface InvoiceData {
     };
   };
 }
+
+export interface BookingData {
+  customer_name: string;
+  booking_id: number;
+  summary: string;
+}
+
+export interface GuestData {
+  name: string;
+  bookingId: number;
+  summary: string;
+}
+export interface GuestOption {
+  value: number;
+  label: string;
+  summary: string;
+}
+
+export interface RaftOption {
+  value: string;
+  label: string;
+}
+export interface InputsProps {
+  isPending: boolean;
+  guests: { name: string; bookingId: number; summary: string }[];
+  boatOptions: RaftOption[];
+  selectedGuest: { bookingId: number | null; name: string } | null;
+  setSelectedGuest: (guest: { bookingId: number | null; name: string } | null) => void;
+  raftType: RaftOption | null;
+  setRaftType: (raftType: RaftOption | null) => void;
+  unitNumber: string;
+  setUnitNumber: (unitNumber: string) => void;
+}
