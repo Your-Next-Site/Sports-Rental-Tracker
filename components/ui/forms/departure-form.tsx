@@ -8,11 +8,12 @@ import { boatOptions } from "@/lib/utils/rafts";
 import Inputs from "./inputs";
 
 export default function DepartureForm() {
-    const { data, isLoading, isError, refetch } = useGetBookings();
     const [selectedGuest, setSelectedGuest] = useState<{ bookingId: number | null; name: string } | null>(null);
     const [raftType, setRaftType] = useState<RaftOption | null>(null);
     const [unitNumber, setUnitNumber] = useState('');
+    const [date, setDate] = useState(new Date())
 
+    const { data, isLoading, isError, refetch } = useGetBookings(date);
     const { mutate, isPending } = useAddRaftToWater();
 
     const guests: GuestData[] = data
@@ -23,10 +24,15 @@ export default function DepartureForm() {
         }))
         : [];
 
+    function onRefetch() {
+        setDate(new Date)
+        refetch();
+    }
+
     return (
         <MainContainer>
             <h1 className="text-2xl">Show a guests departure </h1>
-            <button className='border rounded-sm md:w-1/6 w-2/6 mx-auto hover:bg-gray-100' onClick={() => refetch()}>Refetch Bookings</button>
+            <button className='border rounded-sm md:w-1/6 w-2/6 mx-auto hover:bg-gray-100' onClick={() => onRefetch()}>Refetch Bookings</button>
             {isLoading && <p>Loading bookings...</p>}
             {isError && <p className="text-red-500">Error loading bookings!</p>}
             <form

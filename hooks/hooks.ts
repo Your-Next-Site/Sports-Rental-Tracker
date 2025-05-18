@@ -38,15 +38,15 @@ export const useGetSearchPageTrips = ({ guestName, departureDate }: { guestName:
   })
 }
 
-const getBookings = async (): Promise<BookingWithTime[]> => {
-  const response = await fetch(`/api/checkfront`)
+const getBookings = async (date: Date): Promise<BookingWithTime[]> => {
+  const response = await fetch(`/api/checkfront?date=${date}`)
   return await response.json();
 }
 
-export const useGetBookings = () => {
+export const useGetBookings = (date: Date) => {
   return useQuery({
-    queryKey: ['bookingsFromCheckFront'],
-    queryFn: () => getBookings(),
+    queryKey: ['bookingsFromCheckFront', date],
+    queryFn: () => getBookings(date),
   })
 }
 

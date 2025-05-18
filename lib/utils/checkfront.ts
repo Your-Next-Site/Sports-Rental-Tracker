@@ -1,11 +1,12 @@
 import { Booking, BookingWithTime, InvoiceData } from "@/types/types";
 
-export async function fetchBookings(): Promise<BookingWithTime[]> {
+export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
   const apiKey = process.env.API_KEY_CHECKFRONT;
   const apiSecret = process.env.API_SECRET_CHECKFRONT;
   const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
-
+  console.log("date: ", date);
   const startDate = '2025-05-16T12:30:00';
+  console.log("startDate:  ", startDate);
 
   const response = await fetch(
     `https://thepaddlestation-2025test.checkfront.com/api/3.0/booking?start_date=${startDate}`,
