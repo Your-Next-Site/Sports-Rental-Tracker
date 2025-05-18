@@ -5,11 +5,14 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
   const apiSecret = process.env.API_SECRET_CHECKFRONT;
   const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
   console.log("date: ", date);
-  const startDate = '2025-05-16T12:30:00';
-  console.log("startDate:  ", startDate);
+  // const startDate = '2025-05-16T12:30:00';  
+
+  const dateObject = new Date(date);
+  const formattedDate = dateObject.toISOString()
+  console.log("formattedDate:  ", formattedDate);
 
   const response = await fetch(
-    `https://thepaddlestation-2025test.checkfront.com/api/3.0/booking?start_date=${startDate}`,
+    `https://thepaddlestation-2025test.checkfront.com/api/3.0/booking?start_date=${formattedDate}`,
     {
       method: 'GET',
       headers: {
@@ -21,6 +24,7 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
 
   const data: any = await response.json();
 
+  console.log("bookings: ", data)
   if (!data["booking/index"]) {
     console.log("No bookings found for the specified date.");
     return [];
@@ -50,10 +54,13 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
     })
   );
 
-  const targetTime = startDate.split('T')[1].substring(0, 5);
-  const start = convertTimeToMinutes(targetTime) - 30;
-  const end = convertTimeToMinutes(targetTime) + 30;
+  console.log("Booking times: ", bookingTimes)
+  const targetHour = dateObject.getHours();
+  const targetMinute = dateObject.getMinutes();
+  const targetTimeInMinutes = targetHour * 60 + targetMinute;
 
+  const start = targetTimeInMinutes - 30;
+  const end = targetTimeInMinutes + 30;
 
   const filteredBookings: BookingWithTime[] = bookingTimes
     .filter((booking) => {
@@ -61,7 +68,7 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
       return bookingTime >= start && bookingTime <= end;
     })
     .map((booking) => ({
-      ...booking.booking, // booking is of type Booking
+      ...booking.booking,
       time: booking.time,
     }));
   //   console.log("booking times:", bookingTimes.map((booking) => ({ code: booking.booking.code, time: booking.time })))

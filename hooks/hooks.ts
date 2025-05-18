@@ -40,7 +40,9 @@ export const useGetSearchPageTrips = ({ guestName, departureDate }: { guestName:
 
 const getBookings = async (date: Date): Promise<BookingWithTime[]> => {
   const response = await fetch(`/api/checkfront?date=${date}`)
-  return await response.json();
+  const result = await response.json();
+  console.log("result: ", result)
+  return result
 }
 
 export const useGetBookings = (date: Date) => {
