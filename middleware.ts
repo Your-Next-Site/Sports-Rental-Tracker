@@ -30,7 +30,7 @@ const rateLimit = (limit: number, interval: number) => {
     };
 };
 
-const limit = rateLimit(10, 60 * 1000);
+const limit = rateLimit(100, 60 * 1000);
 
 // Define admin routes array
 const adminRoutes = [
