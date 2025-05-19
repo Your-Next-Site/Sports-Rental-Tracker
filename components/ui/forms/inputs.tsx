@@ -20,6 +20,7 @@ export default function Inputs({
             <div className="flex flex-col md:flex-row w-full p-2 gap-4 justify-center items-center">
                 <CreatableSelect
                     required
+                    placeholder="Select Guest"
                     instanceId="guest-select"
                     options={guests.map(guest => ({
                         value: guest.bookingId,
