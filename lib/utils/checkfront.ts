@@ -5,11 +5,9 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
   const apiSecret = process.env.API_SECRET_CHECKFRONT;
   const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
   console.log("date: ", date);
-  // const startDate = '2025-05-16T12:30:00';  
 
   const dateObject = new Date(date);
   const formattedDate = dateObject.toISOString()
-  console.log("formattedDate:  ", formattedDate);
 
   const response = await fetch(
     `https://thepaddlestation-2025test.checkfront.com/api/3.0/booking?start_date=${formattedDate}`,
@@ -54,7 +52,6 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
     })
   );
 
-  console.log("Booking times: ", bookingTimes)
   const targetHour = dateObject.getHours();
   const targetMinute = dateObject.getMinutes();
   const targetTimeInMinutes = targetHour * 60 + targetMinute;

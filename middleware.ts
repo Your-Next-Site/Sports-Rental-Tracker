@@ -1,28 +1,29 @@
 import { auth } from "@/auth"
 import { NextResponse, NextRequest } from "next/server"
+import { Session } from "@auth/core/types";
 
 const requests = new Map();
 
 const rateLimit = (limit: number, interval: number) => {
-    return async (req: NextRequest) => {
+    return async (req: NextRequest, auth: any) => {
         const url = req.nextUrl.pathname;
         if (url.startsWith('/_next') || url === '/favicon.ico') {
             return null; // Don't rate limit HMR and favicon requests
         }
 
-        const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1';
-        console.log("ip:", ip)
-        if (!requests.has(ip)) {
-            requests.set(ip, { count: 0, firstRequest: Date.now() });
+        const identifier = auth?.user?.email + req.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1';
+        console.log("identifier:", identifier)
+        if (!requests.has(identifier)) {
+            requests.set(identifier, { count: 0, firstRequest: Date.now() });
         }
-        const data = requests.get(ip);
+        const data = requests.get(identifier);
         if (Date.now() - data.firstRequest > interval) {
             // Reset the count every interval
             data.count = 0;
             data.firstRequest = Date.now();
         }
         data.count += 1;
-        requests.set(ip, data);
+        requests.set(identifier, data);
         if (data.count > limit) {
             return new Response('Too many requests, please try again later.', { status: 429 });
         }
@@ -30,7 +31,7 @@ const rateLimit = (limit: number, interval: number) => {
     };
 };
 
-const limit = rateLimit(100, 60 * 1000);
+const limit = rateLimit(Number(process.env.RATE_LIMIT), 60 * 1000);
 
 // Define admin routes array
 const adminRoutes = [
@@ -46,7 +47,7 @@ const employeeRoutes = [
 
 export default auth(async (req) => {
     // Rate limit
-    const rateLimitResponse = await limit(req);
+    const rateLimitResponse = await limit(req, req.auth);
     if (rateLimitResponse) {
         return rateLimitResponse;
     }
