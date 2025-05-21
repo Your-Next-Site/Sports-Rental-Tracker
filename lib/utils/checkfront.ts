@@ -16,7 +16,7 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
       headers: {
         'Authorization': `Basic ${auth}`,
       },
-      next: { revalidate: 1800 }
+      next: { revalidate: 900 }
     },
   );
 
@@ -39,7 +39,7 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
           headers: {
             'Authorization': `Basic ${auth}`,
           },
-          next: { revalidate: 1800 }
+          next: { revalidate: 900 }
         }
       );
 
@@ -68,8 +68,8 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
       ...booking.booking,
       time: booking.time,
     }));
-  //   console.log("booking times:", bookingTimes.map((booking) => ({ code: booking.booking.code, time: booking.time })))
-  // console.log("bookings within time range: ", filteredBookings)
+  // console.log("booking times:", bookingTimes.map((booking) => ({ code: booking.booking.code, time: booking.time })))
+  console.log("bookings within time range: ", filteredBookings)
   return filteredBookings;
 }
 
