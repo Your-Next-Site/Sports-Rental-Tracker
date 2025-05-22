@@ -66,6 +66,7 @@ export default function Inputs({
                     })) as GuestOption[]}
                     value={selectedGuest ? { value: selectedGuest.bookingId, label: selectedGuest.name } : null}
                     onChange={(selectedOption: any) => {
+                        document.getElementById('target-element')?.scrollIntoView({ behavior: 'smooth' });
                         if (selectedOption) {
                             const guest = guests.find(g => g.bookingId === selectedOption.value);
                             if (guest) {
@@ -82,7 +83,6 @@ export default function Inputs({
                                 });
                                 setRaftType(null);
                             }
-                            document.getElementById('target-element')?.scrollIntoView({ behavior: 'smooth' });
                         }
                     }}
                     className=" rounded-sm md:w-2/6 w-full"
