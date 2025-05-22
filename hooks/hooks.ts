@@ -2,7 +2,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { BookingWithTime, Trip } from '@/types/types'
 import { User } from "@auth/core/types";
 
-const fetchTrips = async (currentTrip: boolean, currentPage:number): Promise<{ trips: Trip[], hasMore: boolean, totalPages:number }> => {
+export const fetchTrips = async (currentTrip: boolean, currentPage:number): Promise<{ trips: Trip[], hasMore: boolean, totalPages:number }> => {
   const response = await fetch(`/api/on-the-water?currentTrip=${currentTrip}&page=${currentPage}`)
   return await response.json();
 }
@@ -28,8 +28,7 @@ export const useGetUser = () => {
   })
 }
 
-
-const searchTrips = async (guestName:string, departureTime:any, page:number): Promise<{ trips: Trip[], hasMore: boolean, totalPages:number }> => {
+export const searchTrips = async (guestName:string, departureTime:any, page:number): Promise<{ trips: Trip[], hasMore: boolean, totalPages:number }> => {
   const response = await fetch(`/api/search-trips?guestName=${guestName}&departureTime=${departureTime}&page=${page}`)
   return await response.json();
 }
