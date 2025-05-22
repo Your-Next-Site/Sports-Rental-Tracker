@@ -15,14 +15,14 @@ export default function Tab() {
     if (tab === "On The Water") {
       queryClient.prefetchQuery({
         queryKey: ['trips', true],
-        queryFn: () => fetchTrips(true),
+        queryFn: () => fetchTrips(true, 1),
         staleTime: 600,
       });
     } else if (tab === "Search") {
       const currentDate = new Date();
       queryClient.prefetchQuery({
         queryKey: ['searchPageTrips', '', currentDate],
-        queryFn: () => searchTrips('', currentDate),
+        queryFn: () => searchTrips('', currentDate, 1),
         staleTime: 600,
       });
     }

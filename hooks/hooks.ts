@@ -1,16 +1,18 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { BookingWithTime, Trip } from '@/types/types'
 import { User } from "@auth/core/types";
 
-export const fetchTrips = async (currentTrip: boolean): Promise<Array<Trip>> => {
-  const response = await fetch(`/api/on-the-water?currentTrip=${currentTrip}`)
+export const fetchTrips = async (currentTrip: boolean, currentPage:number): Promise<{ trips: Trip[], hasMore: boolean, totalPages:number }> => {
+  const response = await fetch(`/api/on-the-water?currentTrip=${currentTrip}&page=${currentPage}`)
   return await response.json();
 }
 
-export const useGetTrips = (currentTrip: boolean) => {
+export const useGetTrips = (currentTrip: boolean, pageNumber:number) => {
   return useQuery({
-    queryKey: ['trips', currentTrip],
-    queryFn: () => fetchTrips(currentTrip),
+    queryKey: ['trips', currentTrip, pageNumber],
+    queryFn: () => fetchTrips(currentTrip, pageNumber),
+    placeholderData: keepPreviousData,
+
   })
 }
 
@@ -26,15 +28,17 @@ export const useGetUser = () => {
   })
 }
 
-export const searchTrips = async (guestName: string, departureTime: any): Promise<Array<Trip>> => {
-  const response = await fetch(`/api/search-trips?guestName=${guestName}&departureTime=${departureTime}`)
+export const searchTrips = async (guestName:string, departureTime:any, page:number): Promise<{ trips: Trip[], hasMore: boolean, totalPages:number }> => {
+  const response = await fetch(`/api/search-trips?guestName=${guestName}&departureTime=${departureTime}&page=${page}`)
   return await response.json();
 }
 
-export const useGetSearchPageTrips = ({ guestName, departureDate }: { guestName: string, departureDate: Date }) => {
+export const useGetSearchPageTrips = ({ guestName, departureDate, page }: { guestName: string, departureDate: Date, page:number }) => {
   return useQuery({
-    queryKey: ['searchPageTrips', guestName, departureDate],
-    queryFn: () => searchTrips(guestName, departureDate),
+    queryKey: ['searchPageTrips', guestName, departureDate, page],
+    queryFn: () => searchTrips(guestName, departureDate, page),
+    placeholderData: keepPreviousData,
+
   })
 }
 
@@ -51,5 +55,6 @@ export const useGetBookings = (date: Date) => {
     queryFn: () => getBookings(date),
   })
 }
+
 
 

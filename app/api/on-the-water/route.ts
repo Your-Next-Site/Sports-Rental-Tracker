@@ -5,8 +5,9 @@ export async function GET(request: NextRequest) {
     try {
         const searchParams = request.nextUrl.searchParams;
         const currentTrip = searchParams.get('currentTrip') === 'true';
+        const currentPage = parseInt(searchParams.get('page') || '0');
 
-        const result = await fetchTrips(currentTrip);
+        const result = await fetchTrips(currentTrip, currentPage);
 
         return new Response(JSON.stringify(result), { headers: { 'Content-Type': 'application/json' } });
     } catch (error) {

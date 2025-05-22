@@ -56,16 +56,16 @@ export default auth(async (req) => {
     const isEmployeeRoute = employeeRoutes.some(route =>
         req.nextUrl.pathname.includes(route)
     )
-
+    
     if (isEmployeeRoute && !req.auth?.user?.employee) {
         return NextResponse.redirect(new URL("/", req.nextUrl.origin))
     }
-
+    
     // Check if the current path is an admin route
     const isAdminRoute = adminRoutes.some(route =>
         req.nextUrl.pathname.includes(route)
     )
-
+    
     if (isAdminRoute && !req.auth?.user?.admin) {
         return NextResponse.redirect(new URL("/", req.nextUrl.origin))
     }
