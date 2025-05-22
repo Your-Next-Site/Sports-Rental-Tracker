@@ -2,12 +2,11 @@
 import { useGetSearchPageTrips } from "@/hooks/hooks";
 import MainContainer from "../containers/main-container";
 import { Trip } from "@/types/types";
-import { useEffect, useState } from "react";
 import PaginationBar from "../pagination/pagination-bar";
+import { useState } from "react";
 
 export default function SearchHistory() {
   const [page, setPage] = useState(0);
-
 
   const [guestName, setGuestName] = useState("");
   const [departureDate, setDepartureDate] = useState(new Date().toLocaleDateString('en-CA'));
@@ -26,7 +25,7 @@ export default function SearchHistory() {
             className="border-1 p-1"
             value={guestName}
             onChange={(e) => setGuestName(e.target.value)}
-          // onKeyDown={(e) => (e.key === "Enter" ? refetch : null)}
+            onKeyDown={(e) => (e.key === "Enter" ? refetch() : null)}
           />
           <label htmlFor="Date">Date</label>
           <input
@@ -143,7 +142,7 @@ function Trips({ trips }: { trips: Trip[] }) {
           </div>
         ))
       ) : (
-        <p className="bg-white p-4 rounded shadow-2xl md:w-1/2 lg:w-1/3 xl:w-1/4">
+        <p className="bg-white p-4 rounded shadow-2xl w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
           No results found
         </p>
       )}

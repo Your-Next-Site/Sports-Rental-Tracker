@@ -1,9 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ededed;
-  --foreground: #ededed;
+  --background: #83BCC2;
+  --foreground: #173D58;
   --bannertext: #d24f13;
+  --buttoncolormain: #83BCC2;
+  --buttoncolorsecend: #D24F13;
 }
 
 @theme inline {
