@@ -120,8 +120,13 @@ export async function toggleEmployeeDB(email: string) {
 
 export async function searchTripsDB(
   guestName: string | string,
-  departureTime: Date | string
+  departureTime: Date | string,
+  currentPage: number
 ) {
+  const pageSize: number = 10;
+  const offset = currentPage * pageSize; // Calculate where to start fetching results
+  console.log(offset)
+
   const sql = neon(`${process.env.DATABASE_URL}`);
 
   const dateCondition = !isNaN(new Date(departureTime).getTime());
@@ -136,7 +141,7 @@ export async function searchTripsDB(
     endTime.setHours(endTime.getHours() + 24);
   }
 
-  const result = await sql`
+  const trips = await sql`
             SELECT 
             row.id,
             row.guest_name,
@@ -154,6 +159,27 @@ export async function searchTripsDB(
                 ? sql`AND row.departure_time BETWEEN ${adjustedTime} AND ${endTime}`
                 : sql``
             }
-        ORDER BY row.departure_time DESC`;
-  return result as Trip[];
+        ORDER BY row.departure_time DESC
+        LIMIT ${pageSize} OFFSET ${offset}`;
+
+         // Fetch total trip count to determine if there are more pages
+        const totalTripsResult = await sql`
+        SELECT COUNT(*) FROM rafts_on_water row
+        WHERE 
+            LOWER(row.guest_name) LIKE LOWER(${"%" + guestName + "%"})
+            ${
+              dateCondition
+                ? sql`AND row.departure_time BETWEEN ${adjustedTime} AND ${endTime}`
+                : sql``
+            }`;
+
+
+  const totalTrips = Number(totalTripsResult[0].count);
+  const hasMore = offset + pageSize < totalTrips;
+  const totalPages = Math.ceil(Number(totalTripsResult[0].count)/pageSize);
+
+
+
+  return { trips, hasMore, totalPages };
+  // return result as Trip[];
 }

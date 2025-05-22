@@ -3,13 +3,16 @@ import { useGetSearchPageTrips } from "@/hooks/hooks";
 import MainContainer from "../containers/main-container";
 import { Trip } from "@/types/types";
 import { useEffect, useState } from "react";
+import PaginationBar from "../pagination/pagination-bar";
 
 export default function SearchHistory() {
+  const [page, setPage] = useState(0);
+
 
   const [guestName, setGuestName] = useState("");
   const [departureDate, setDepartureDate] = useState(new Date().toLocaleDateString('en-CA'));
 
-  const { data, isLoading, isError, refetch } = useGetSearchPageTrips({ guestName, departureDate: new Date(departureDate) });
+  const { data, isLoading, isError, isPlaceholderData, refetch } = useGetSearchPageTrips({ guestName, departureDate: new Date(departureDate), page });
 
   return (
     <MainContainer>
@@ -48,9 +51,12 @@ export default function SearchHistory() {
         ) : isError ? (
           <p>Error loading trips</p>
         ) : (
-          data && <Trips trips={data} />
+          data && <Trips trips={data.trips} />
         )}
       </div>
+      <PaginationBar
+            setPage={setPage} page={page} data={data ?? { trips: [], hasMore: false, totalPages: 1 }} isPlaceholderData={isPlaceholderData}
+            />
     </MainContainer>
   );
 }

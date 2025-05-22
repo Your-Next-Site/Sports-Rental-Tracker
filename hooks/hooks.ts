@@ -28,16 +28,24 @@ export const useGetUser = () => {
   })
 }
 
-const searchTrips = async (guestName:string, departureTime:any): Promise<Array<Trip>> => {
-  const response = await fetch(`/api/search-trips?guestName=${guestName}&departureTime=${departureTime}`)
+const searchTrips = async (guestName:string, departureTime:any, page:number): Promise<{ trips: Trip[], hasMore: boolean, totalPages:number }> => {
+  const response = await fetch(`/api/search-trips?guestName=${guestName}&departureTime=${departureTime}&page=${page}`)
   return await response.json();
 }
 
-export const useGetSearchPageTrips = ({ guestName, departureDate }: { guestName: string, departureDate: Date }) => {
+export const useGetSearchPageTrips = ({ guestName, departureDate, page }: { guestName: string, departureDate: Date, page:number }) => {
   return useQuery({
-    queryKey: ['searchPageTrips'],
-    queryFn: () => searchTrips(guestName, departureDate),
+    queryKey: ['searchPageTrips', guestName, departureDate, page],
+    queryFn: () => searchTrips(guestName, departureDate, page),
+    placeholderData: keepPreviousData,
   })
 }
+
+// return useQuery({
+//     queryKey: ['trips', currentTrip, pageNumber],
+//     queryFn: () => fetchTrips(currentTrip, pageNumber),
+//     placeholderData: keepPreviousData,
+
+//   })
 
 
