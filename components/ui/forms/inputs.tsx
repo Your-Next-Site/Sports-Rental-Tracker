@@ -66,7 +66,7 @@ export default function Inputs({
                         summary: guest.summary
                     })) as GuestOption[]}
                     value={selectedGuest ? { value: selectedGuest.bookingId, label: selectedGuest.name } : null}
-                    onFocus={() => window.scrollTo({ top: (document.activeElement as HTMLElement)?.offsetTop, behavior: 'smooth' })}
+                    onMenuOpen={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                     onChange={(selectedOption: any) => {
                         if (selectedOption) {
                             const guest = guests.find(g => g.bookingId === selectedOption.value);
