@@ -1,25 +1,28 @@
 import { Booking, BookingWithTime, InvoiceData } from "@/types/types";
 
-export async function fetchBookings(): Promise<BookingWithTime[]> {
+export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
   const apiKey = process.env.API_KEY_CHECKFRONT;
   const apiSecret = process.env.API_SECRET_CHECKFRONT;
   const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
+  console.log("date: ", date);
 
-  const startDate = '2025-05-16T12:30:00';
+  const dateObject = new Date(date);
+  const formattedDate = dateObject.toISOString()
 
   const response = await fetch(
-    `https://thepaddlestation-2025test.checkfront.com/api/3.0/booking?start_date=${startDate}`,
+    `https://thepaddlestation-2025test.checkfront.com/api/3.0/booking?start_date=${formattedDate}`,
     {
       method: 'GET',
       headers: {
         'Authorization': `Basic ${auth}`,
       },
-      next: { revalidate: 1800 }
+      next: { revalidate: 900 }
     },
   );
 
   const data: any = await response.json();
 
+  console.log("bookings: ", data)
   if (!data["booking/index"]) {
     console.log("No bookings found for the specified date.");
     return [];
@@ -36,7 +39,7 @@ export async function fetchBookings(): Promise<BookingWithTime[]> {
           headers: {
             'Authorization': `Basic ${auth}`,
           },
-          next: { revalidate: 1800 }
+          next: { revalidate: 900 }
         }
       );
 
@@ -49,10 +52,12 @@ export async function fetchBookings(): Promise<BookingWithTime[]> {
     })
   );
 
-  const targetTime = startDate.split('T')[1].substring(0, 5);
-  const start = convertTimeToMinutes(targetTime) - 30;
-  const end = convertTimeToMinutes(targetTime) + 30;
+  const targetHour = dateObject.getHours();
+  const targetMinute = dateObject.getMinutes();
+  const targetTimeInMinutes = targetHour * 60 + targetMinute;
 
+  const start = targetTimeInMinutes - 30;
+  const end = targetTimeInMinutes + 30;
 
   const filteredBookings: BookingWithTime[] = bookingTimes
     .filter((booking) => {
@@ -60,11 +65,11 @@ export async function fetchBookings(): Promise<BookingWithTime[]> {
       return bookingTime >= start && bookingTime <= end;
     })
     .map((booking) => ({
-      ...booking.booking, // booking is of type Booking
+      ...booking.booking,
       time: booking.time,
     }));
-  //   console.log("booking times:", bookingTimes.map((booking) => ({ code: booking.booking.code, time: booking.time })))
-  // console.log("bookings within time range: ", filteredBookings)
+  // console.log("booking times:", bookingTimes.map((booking) => ({ code: booking.booking.code, time: booking.time })))
+  console.log("bookings within time range: ", filteredBookings)
   return filteredBookings;
 }
 
