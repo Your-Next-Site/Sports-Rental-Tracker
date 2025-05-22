@@ -41,11 +41,5 @@ export const useGetSearchPageTrips = ({ guestName, departureDate, page }: { gues
   })
 }
 
-// return useQuery({
-//     queryKey: ['trips', currentTrip, pageNumber],
-//     queryFn: () => fetchTrips(currentTrip, pageNumber),
-//     placeholderData: keepPreviousData,
-
-//   })
 
 

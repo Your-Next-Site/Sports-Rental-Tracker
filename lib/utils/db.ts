@@ -125,7 +125,6 @@ export async function searchTripsDB(
 ) {
   const pageSize: number = 10;
   const offset = currentPage * pageSize; // Calculate where to start fetching results
-  console.log(offset)
 
   const sql = neon(`${process.env.DATABASE_URL}`);
 
