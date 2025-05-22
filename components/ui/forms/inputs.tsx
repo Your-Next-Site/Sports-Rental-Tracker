@@ -51,6 +51,7 @@ export default function Inputs({
     unitNumber,
     setUnitNumber
 }: InputsProps) {
+    // const box = document.activeElement as HTMLElement | null;
 
     return (
         <div className="flex flex-col md:flex-row gap-4">
@@ -65,7 +66,7 @@ export default function Inputs({
                         summary: guest.summary
                     })) as GuestOption[]}
                     value={selectedGuest ? { value: selectedGuest.bookingId, label: selectedGuest.name } : null}
-                    onMenuOpen={() => window.scrollTo({ top: 200, behavior: 'smooth' })}
+                    onFocus={() => window.scrollTo({ top: (document.activeElement as HTMLElement)?.offsetTop, behavior: 'smooth' })}
                     onChange={(selectedOption: any) => {
                         if (selectedOption) {
                             const guest = guests.find(g => g.bookingId === selectedOption.value);
