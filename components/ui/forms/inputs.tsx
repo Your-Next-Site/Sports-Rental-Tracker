@@ -66,7 +66,7 @@ export default function Inputs({
                         summary: guest.summary
                     })) as GuestOption[]}
                     value={selectedGuest ? { value: selectedGuest.bookingId, label: selectedGuest.name } : null}
-                    onMenuOpen={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    onMenuOpen={() => setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 300)}
                     onChange={(selectedOption: any) => {
                         if (selectedOption) {
                             const guest = guests.find(g => g.bookingId === selectedOption.value);
