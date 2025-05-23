@@ -33,7 +33,7 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
   const bookingTimes = await Promise.all(
     bookings.map(async (booking: Booking) => {
       const invoiceResponse = await fetch(
-        `https://thepaddlestation-2025test.checkfront.com/api/3.0/booking/${booking.booking_id}/invoice`,
+        `${process.env.CHECKFRONT_URL}/api/3.0/booking/${booking.booking_id}/invoice`,
         {
           method: 'GET',
           headers: {
