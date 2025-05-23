@@ -10,7 +10,7 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
   const formattedDate = dateObject.toISOString()
 
   const response = await fetch(
-    `https://thepaddlestation-2025test.checkfront.com/api/3.0/booking?start_date=${formattedDate}`,
+    `${process.env.CHECKFRONT_URL}/api/3.0/booking?start_date=${formattedDate}`,
     {
       method: 'GET',
       headers: {
