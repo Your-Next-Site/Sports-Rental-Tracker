@@ -8,7 +8,7 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
 
 
   const dateObject = new Date(date);
-  const formattedDate = dateObject.toISOString() + Number(process.env.OFFSET || 0)
+  const formattedDate = dateObject.toISOString()
 
   const response = await fetch(
     `${process.env.CHECKFRONT_URL}/api/3.0/booking?start_date=${formattedDate}`,
@@ -53,7 +53,7 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
     })
   );
 
-  const targetHour = dateObject.getHours();
+  const targetHour = dateObject.getHours() + Number(process.env.OFFSET || 0);
   const targetMinute = dateObject.getMinutes();
   const targetTimeInMinutes = targetHour * 60 + targetMinute;
 
