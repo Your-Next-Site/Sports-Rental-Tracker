@@ -16,13 +16,25 @@ export default function DepartureForm() {
     const { data, isLoading, isError, refetch } = useGetBookings(date);
     const { mutate, isPending } = useAddRaftToWater();
 
-    const guests: GuestData[] = data
-        ? Array.from(new Set((data as BookingData[]).map(booking => JSON.stringify({
-            name: booking.customer_name,
-            bookingId: booking.booking_id,
-            summary: booking.summary.replace(/Sit-on-top /i, '')
-        })))).map(str => JSON.parse(str))
-        : [];
+    if(data) {
+        const guests: GuestData[] = [];
+        const uniqueGuestsMap = new Map<string, GuestData>(); // Use a Map to track unique guest names
+
+        (data as BookingData[]).forEach((booking: BookingData) => {
+            const guestName = booking.customer_name;
+            // Only add the guest if their name hasn't been added yet
+            if (!uniqueGuestsMap.has(guestName)) {
+                uniqueGuestsMap.set(guestName, {
+                    name: guestName,
+                    bookingId: booking.booking_id,
+                    // Ensure summary is handled if it can be null
+                    summary: booking.summary?.replace(/Sit-on-top /i, '') || '',
+                });
+            }
+        });
+        // Convert the Map values back to an array
+        guests.push(...Array.from(uniqueGuestsMap.values()));
+    }
 
     function onRefetch() {
         setDate(new Date)
