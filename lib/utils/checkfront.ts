@@ -52,7 +52,9 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
     })
   );
 
-  const targetHour = dateObject.getHours() + Number(process.env.OFFSET || 0) - 1;
+  const offsetHours = Number(process.env.OFFSET || 0);
+  
+  let targetHour = dateObject.getHours() - offsetHours;
   const targetMinute = dateObject.getMinutes();
   const targetTimeInMinutes = targetHour * 60 + targetMinute;
 
