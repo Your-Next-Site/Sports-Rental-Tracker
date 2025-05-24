@@ -5,7 +5,7 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
   const apiSecret = process.env.API_SECRET_CHECKFRONT;
   const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
   console.log("date: ", date);
-  
+
 
   const dateObject = new Date(date);
   const formattedDate = dateObject.toISOString()
@@ -60,6 +60,12 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
   const start = targetTimeInMinutes - 30;
   const end = targetTimeInMinutes + 30;
 
+  console.log("targetHour:", targetHour);
+  console.log("targetMinute:", targetMinute);
+  console.log("targetTimeInMinutes:", targetTimeInMinutes);
+  console.log("start time range (minutes):", start);
+  console.log("end time range (minutes):", end);
+  
   const filteredBookings: BookingWithTime[] = bookingTimes
     .filter((booking) => {
       const bookingTime = convertTimeToMinutes(booking.time);
@@ -69,6 +75,7 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
       ...booking.booking,
       time: booking.time,
     }));
+
   console.log("booking times:", bookingTimes.map((booking) => ({ code: booking.booking.code, time: booking.time })))
   console.log("bookings within time range: ", filteredBookings)
   return filteredBookings;
