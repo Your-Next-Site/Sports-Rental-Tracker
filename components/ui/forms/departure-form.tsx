@@ -17,11 +17,11 @@ export default function DepartureForm() {
     const { mutate, isPending } = useAddRaftToWater();
 
     const guests: GuestData[] = data
-        ? (data as BookingData[]).map((booking: BookingData): GuestData => ({
+        ? Array.from(new Set((data as BookingData[]).map(booking => JSON.stringify({
             name: booking.customer_name,
             bookingId: booking.booking_id,
-            summary: booking.summary.replace(/Sit-on-top /i, ''),
-        }))
+            summary: booking.summary.replace(/Sit-on-top /i, '')
+        })))).map(str => JSON.parse(str))
         : [];
 
     function onRefetch() {

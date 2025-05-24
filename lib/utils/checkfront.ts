@@ -53,19 +53,13 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
   );
 
   const offsetHours = Number(process.env.OFFSET || 0);
-  
+
   let targetHour = dateObject.getHours() - offsetHours;
   const targetMinute = dateObject.getMinutes();
   const targetTimeInMinutes = targetHour * 60 + targetMinute;
 
   const start = targetTimeInMinutes - 30;
   const end = targetTimeInMinutes + 30;
-
-  console.log("targetHour:", targetHour);
-  console.log("targetMinute:", targetMinute);
-  console.log("targetTimeInMinutes:", targetTimeInMinutes);
-  console.log("start time range (minutes):", start);
-  console.log("end time range (minutes):", end);
 
   const filteredBookings: BookingWithTime[] = bookingTimes
     .filter((booking) => {
@@ -77,8 +71,8 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
       time: booking.time,
     }));
 
-  console.log("booking times:", bookingTimes.map((booking) => ({ code: booking.booking.code, time: booking.time })))
-  console.log("bookings within time range: ", filteredBookings)
+  // console.log("booking times:", bookingTimes.map((booking) => ({ code: booking.booking.code, time: booking.time })))
+  // console.log("bookings within time range: ", filteredBookings)
   return filteredBookings;
 }
 
