@@ -11,20 +11,26 @@ export default function Tab() {
   const tabs = ["Departure", "On The Water", "Search"];
   const queryClient = useQueryClient();
 
+  const [prefetchedTabs, setPrefetchedTabs] = useState<Set<string>>(new Set());
+
   const handleMouseOver = (tab?: string) => {
+    if (!tab || prefetchedTabs.has(tab)) return;
+
     if (tab === "On The Water") {
       queryClient.prefetchQuery({
         queryKey: ['trips', true],
         queryFn: () => fetchTrips(true, 1),
-        staleTime: 600,
+        staleTime: 120,
       });
+      setPrefetchedTabs(prev => new Set(prev).add(tab));
     } else if (tab === "Search") {
       const currentDate = new Date();
       queryClient.prefetchQuery({
         queryKey: ['searchPageTrips', '', currentDate],
         queryFn: () => searchTrips('', currentDate, 1),
-        staleTime: 600,
+        staleTime: 120,
       });
+      setPrefetchedTabs(prev => new Set(prev).add(tab));
     }
   };
 
