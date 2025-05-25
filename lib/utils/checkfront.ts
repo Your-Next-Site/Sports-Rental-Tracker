@@ -21,8 +21,7 @@ export async function fetchBookings(date: string): Promise<BookingWithTime[]> {
   );
 
   const data: any = await response.json();
-
-  console.log("bookings: ", data)
+ 
   if (!data["booking/index"]) {
     console.log("No bookings found for the specified date.");
     return [];

@@ -54,8 +54,8 @@ CREATE TABLE users (
 
 UPDATE users 
 SET admin = true, employee = true 
-WHERE id = 5;
+WHERE id = 8;
 
 
 SELECT * FROM users;
-DELETE FROM users WHERE id = 1;
+DELETE FROM users WHERE id = 7;

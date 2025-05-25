@@ -29,27 +29,25 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number) {
         FROM rafts_on_water row
         JOIN raft_types rt ON row.raft_type_id = rt.id
         WHERE departure_time > NOW() - INTERVAL '24 hours'
-        ${
-          tripCurrent
-            ? sql`AND row.arrival_time IS NULL`
-            : sql`AND row.arrival_time IS NOT NULL`
-        }
+        ${tripCurrent
+      ? sql`AND row.arrival_time IS NULL`
+      : sql`AND row.arrival_time IS NOT NULL`
+    }
         ORDER BY row.departure_time DESC
-        LIMIT ${pageSize} OFFSET ${offset}`; 
+        LIMIT ${pageSize} OFFSET ${offset}`;
 
   // Fetch total trip count to determine if there are more pages
   const totalTripsResult = await sql`
         SELECT COUNT(*) FROM rafts_on_water
         WHERE departure_time > NOW() - INTERVAL '24 hours'
-        ${
-          tripCurrent
-            ? sql`AND arrival_time IS NULL`
-            : sql`AND arrival_time IS NOT NULL`
-        }
+        ${tripCurrent
+      ? sql`AND arrival_time IS NULL`
+      : sql`AND arrival_time IS NOT NULL`
+    }
   `;
   const totalTrips = Number(totalTripsResult[0].count);
   const hasMore = offset + pageSize < totalTrips;
-  const totalPages = Math.ceil(Number(totalTripsResult[0].count)/pageSize);
+  const totalPages = Math.ceil(Number(totalTripsResult[0].count) / pageSize);
 
   return { trips, hasMore, totalPages };
 }
@@ -72,7 +70,7 @@ export async function addRaftToWaterDB(
                 ${validatedFields.guestName},
                 (SELECT id FROM raft_types WHERE name = ${validatedFields.raftType}),
                 ${validatedFields.unitNumber},
-                    1,
+                (SELECT id FROM users WHERE email = ${email}),
                 NOW()
                 )
                 RETURNING *;
@@ -153,29 +151,27 @@ export async function searchTripsDB(
         JOIN raft_types rt ON row.raft_type_id = rt.id
         WHERE 
             LOWER(row.guest_name) LIKE LOWER(${"%" + guestName + "%"})
-            ${
-              dateCondition
-                ? sql`AND row.departure_time BETWEEN ${adjustedTime} AND ${endTime}`
-                : sql``
-            }
+            ${dateCondition
+      ? sql`AND row.departure_time BETWEEN ${adjustedTime} AND ${endTime}`
+      : sql``
+    }
         ORDER BY row.departure_time DESC
         LIMIT ${pageSize} OFFSET ${offset}`;
 
-         // Fetch total trip count to determine if there are more pages
-        const totalTripsResult = await sql`
+  // Fetch total trip count to determine if there are more pages
+  const totalTripsResult = await sql`
         SELECT COUNT(*) FROM rafts_on_water row
         WHERE 
             LOWER(row.guest_name) LIKE LOWER(${"%" + guestName + "%"})
-            ${
-              dateCondition
-                ? sql`AND row.departure_time BETWEEN ${adjustedTime} AND ${endTime}`
-                : sql``
-            }`;
+            ${dateCondition
+      ? sql`AND row.departure_time BETWEEN ${adjustedTime} AND ${endTime}`
+      : sql``
+    }`;
 
 
   const totalTrips = Number(totalTripsResult[0].count);
   const hasMore = offset + pageSize < totalTrips;
-  const totalPages = Math.ceil(Number(totalTripsResult[0].count)/pageSize);
+  const totalPages = Math.ceil(Number(totalTripsResult[0].count) / pageSize);
 
 
 

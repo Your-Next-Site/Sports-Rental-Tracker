@@ -16,8 +16,8 @@ export default function PaginationBar({
   isPlaceholderData,
 }: PaginationProps): ReactElement {
 
-  console.log("data.totalPages")
-  console.log(data.totalPages)
+  // console.log("data.totalPages")
+  // console.log(data.totalPages)
   return (
     <>
       <div className="flex gap-3 text-2xl m-2 justify-center items-center">
