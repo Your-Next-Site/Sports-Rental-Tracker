@@ -4,7 +4,7 @@ export default function AddActiveTripButton ({ isPending }: { isPending: boolean
             disabled={isPending}
             className="bg-buttoncolormain hover:bg-buttoncolorsecend p-2 text-white md:w-2/6 text-center shadow-lg">
             {!isPending ?
-                'Mark Guest on The Water' : 'pending'
+                'Begin Guest Trip' : 'pending'
             }
         </button>
     );

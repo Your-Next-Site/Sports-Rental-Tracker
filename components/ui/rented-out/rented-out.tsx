@@ -5,7 +5,7 @@ import { useGetTrips } from "@/hooks/hooks";
 import { useState } from "react";
 import PaginationBar from "../pagination/pagination-bar";
 
-export default function OnTheWater() {
+export default function RentedOut() {
   const [page, setPage] = useState(0);
 
   const {
