@@ -5,7 +5,7 @@ import { boatOptions } from "@/lib/utils/rafts";
 import Inputs from "./inputs";
 
 export default function DepartureForm() {
-    const { mutate, isPending } = useAddRaftToWater();
+    const { mutate, isPending, isError } = useAddRaftToWater();
 
     return (
         <MainContainer>
@@ -15,7 +15,7 @@ export default function DepartureForm() {
                 className="flex flex-col gap-2 "
             >
                 <Inputs boatOptions={boatOptions} isPending={isPending} />
-
+                {isError && <p className="text-red-500">Error adding trip</p>}
             </form>
         </MainContainer>
     );

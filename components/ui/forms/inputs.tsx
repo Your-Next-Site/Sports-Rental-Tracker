@@ -12,7 +12,7 @@ export default function Inputs({
     return (
         <div className="flex flex-col md:flex-row gap-4">
             <div className="flex flex-col md:flex-row w-full p-2 gap-4 justify-center items-center">
-                <CreatableSelect
+                {/* <CreatableSelect
                     required
                     placeholder="Select Guest"
                     instanceId="guest-select"
@@ -21,7 +21,14 @@ export default function Inputs({
                     classNames={{
                         control: () => "h-10 w-full",
                     }}
-                />
+                /> */}
+                <input
+                    className="border border-gray-300 rounded-sm h-10 w-full md:w-2/6 p-2"
+                    type='text'
+                    required
+                    name="guest-name" 
+                    placeholder="Guests Name"
+                    />
                 <Select
                     required
                     instanceId="raft-type-select"
