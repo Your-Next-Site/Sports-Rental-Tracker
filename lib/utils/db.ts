@@ -1,8 +1,6 @@
 import { neon } from "@neondatabase/serverless";
 import { schemaAddRaft } from "./zod/schmeas";
-import { Trip } from "@/types/types";
 import { User } from "@auth/core/types";
-import { pages } from "next/dist/build/templates/app-page";
 
 export async function fetchUsersFromDB() {
   const sql = neon(`${process.env.DATABASE_URL}`);
@@ -76,7 +74,6 @@ export async function addRaftToWaterDB(
                 RETURNING *;
                 `;
   return [result];
-  // (SELECT id FROM users WHERE email = ${email}),
 }
 
 export async function removeRaftFromWater(
