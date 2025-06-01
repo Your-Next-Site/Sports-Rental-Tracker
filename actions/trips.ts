@@ -9,9 +9,10 @@ export async function addRaftToWater(formData: FormData) {
     const session = await auth();
     const email = session?.user.email;
 
+    console.log("data: ", formData.get("guest-name"),formData.get("item-type"),formData.get("unit-number") )
     const validatedFields = schemaAddRaft.safeParse({
         guestName: formData.get("guest-name"),
-        raftType: formData.get("raft-type"),
+        itemType: formData.get("item-type"),
         unitNumber: Number(formData.get("unit-number")),
     });
 

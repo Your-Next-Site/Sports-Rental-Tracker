@@ -19,13 +19,13 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number) {
         SELECT 
             row.id,
             row.guest_name,
-            rt.name as raft_type_name,
+            rt.name as item_type_name,
             row.unit_number,
             row.checked_out_by,
             row.departure_time,
             row.arrival_time                
         FROM items_rented row
-        JOIN item_types rt ON row.raft_type_id = rt.id
+        JOIN item_types rt ON row.item_type_id = rt.id
         WHERE departure_time > NOW() - INTERVAL '24 hours'
         ${tripCurrent
       ? sql`AND row.arrival_time IS NULL`
@@ -59,14 +59,14 @@ export async function addRaftToWaterDB(
   const [result] = await sql`
             INSERT INTO items_rented (
                 guest_name,
-                raft_type_id,
+                item_type_id,
                 unit_number,
                 checked_out_by,
                 departure_time
             )
             VALUES (
                 ${validatedFields.guestName},
-                (SELECT id FROM item_types WHERE name = ${validatedFields.raftType}),
+                (SELECT id FROM item_types WHERE name = ${validatedFields.itemType}),
                 ${validatedFields.unitNumber},
                 (SELECT id FROM users WHERE email = ${email}),
                 NOW()

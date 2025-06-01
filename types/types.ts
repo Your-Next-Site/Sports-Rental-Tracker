@@ -61,15 +61,8 @@ export interface RaftOption {
   label: string;
 }
 export interface InputsProps {
-  isPending: boolean;
-  guests: { name: string; bookingId: number; summary: string }[];
-  boatOptions: RaftOption[];
-  selectedGuest: { bookingId: number | null; name: string } | null;
-  setSelectedGuest: (guest: { bookingId: number | null; name: string } | null) => void;
-  raftType: RaftOption | null;
-  setRaftType: (raftType: RaftOption | null) => void;
-  unitNumber: string;
-  setUnitNumber: (unitNumber: string) => void;
+  isPending: boolean;  
+  boatOptions: RaftOption[];  
 }
 export interface BookingDetails {
   booking_id: number;

@@ -6,14 +6,7 @@ import AddActiveTripButton from "../buttons/add-active-trip-button";
 
 export default function Inputs({
     isPending,
-    guests,
     boatOptions,
-    selectedGuest,
-    setSelectedGuest,
-    raftType,
-    setRaftType,
-    unitNumber,
-    setUnitNumber
 }: InputsProps) {
 
     return (
@@ -23,31 +16,7 @@ export default function Inputs({
                     required
                     placeholder="Select Guest"
                     instanceId="guest-select"
-                    options={guests.map(guest => ({
-                        value: guest.bookingId,
-                        label: guest.name,
-                        summary: guest.summary
-                    })) as GuestOption[]}
-                    value={selectedGuest ? { value: selectedGuest.bookingId, label: selectedGuest.name } : null}
-                    onChange={(selectedOption: any) => {
-                        if (selectedOption) {
-                            const guest = guests.find(g => g.bookingId === selectedOption.value);
-                            if (guest) {
-                                setSelectedGuest({
-                                    bookingId: guest.bookingId,
-                                    name: guest.name,
-                                });
-                                const raftTypeValue = getRaftType(guest.summary);
-                                setRaftType(boatOptions.find(option => option.value === raftTypeValue) || null);
-                            } else {
-                                setSelectedGuest({
-                                    bookingId: null,
-                                    name: selectedOption.label,
-                                });
-                                setRaftType(null);
-                            }
-                        }
-                    }}
+                    name="guest-name"
                     className=" rounded-sm md:w-2/6 w-full"
                     classNames={{
                         control: () => "h-10 w-full",
@@ -56,11 +25,8 @@ export default function Inputs({
                 <Select
                     required
                     instanceId="raft-type-select"
+                    name="item-type"
                     options={boatOptions}
-                    value={raftType}
-                    onChange={(selectedOption: any) => {
-                        setRaftType(selectedOption);
-                    }}
                     placeholder="Select Raft"
                     className=" rounded-sm md:w-2/6 w-full"
                     classNames={{
@@ -69,14 +35,13 @@ export default function Inputs({
                 />
                 <input
                     className="border border-gray-300 rounded-sm h-10 w-full md:w-2/6 p-2"
+                    name="unit-number"
                     type="number"
-                    value={unitNumber}
-                    onChange={(e) => setUnitNumber(e.target.value)}
                     placeholder="Unit Number"
                     required
                 />
-            </div>            
-            < AddActiveTripButton isPending={isPending}/>
+            </div>
+            < AddActiveTripButton isPending={isPending} />
         </div>
     );
 }

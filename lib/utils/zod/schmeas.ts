@@ -2,7 +2,7 @@ import z from 'zod'
 
 export const schemaAddRaft = z.object({
     guestName: z.string(),
-    raftType: z.string(),
+    itemType: z.string(),
     unitNumber: z.number(),
 })
 
