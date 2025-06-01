@@ -3,7 +3,7 @@ import { BookingWithTime, Trip } from '@/types/types'
 import { User } from "@auth/core/types";
 
 export const fetchTrips = async (currentTrip: boolean, currentPage:number): Promise<{ trips: Trip[], hasMore: boolean, totalPages:number }> => {
-  const response = await fetch(`/api/on-the-water?currentTrip=${currentTrip}&page=${currentPage}`)
+  const response = await fetch(`/api/rented-out?currentTrip=${currentTrip}&page=${currentPage}`)
   return await response.json();
 }
 
