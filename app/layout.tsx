@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Raft Tracker 5000",
-  description: "A for staff to track rafts going down the river.",
+  title: "Sports Rental Tracker",
+  description: "A for staff to track rental duration.",
 };
 
 export default function RootLayout({

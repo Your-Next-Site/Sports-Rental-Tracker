@@ -6,15 +6,15 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const session = await auth();
-  if (session?.user.employee || session?.user.admin) redirect('/on-the-water');
+  // const session = await auth();
+  // if (session?.user.employee || session?.user.admin) redirect('/on-the-water');
 
 
   return (
     <PageContainer>
       <MainContainer>
-        {session && <p className="w-full text-center">If you are logged in and see this page, you must still contact your manager to be confirmed.</p>}
-        <AuthButtons session={session} />
+        {/* {session && <p className="w-full text-center">If you are logged in and see this page, you must still contact your manager to be confirmed.</p>} */}
+        {/* <AuthButtons session={session} /> */}
         <div className="mt-auto mx-auto">Please check out
           <Link className="underline" href="/terms-of-service" > Terms of Service </Link>
           and our

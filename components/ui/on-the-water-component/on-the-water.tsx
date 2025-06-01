@@ -94,7 +94,7 @@ function Trips({
               <button
                 onClick={() => mutate(trip.id)}
                 disabled={isPending}
-                className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-2 mt-auto md:w-full text-center mx-auto shadow-lg">
+                className="bg-buttoncolormain hover:bg-buttoncolorsecend text-white p-2 mt-auto md:w-full text-center mx-auto shadow-lg">
                 {!isPending ? 'Mark Arrived' : 'Pending'}
               </button>
             }

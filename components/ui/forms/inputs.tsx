@@ -2,6 +2,7 @@ import { getRaftType } from "@/lib/utils/functions";
 import { GuestOption, InputsProps } from "@/types/types";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
+import AddActiveTripButton from "../buttons/add-active-trip-button";
 
 export default function Inputs({
     isPending,
@@ -74,14 +75,8 @@ export default function Inputs({
                     placeholder="Unit Number"
                     required
                 />
-            </div>
-            <button
-                disabled={isPending}
-                className="bg-buttoncolormain hover:bg-buttoncolorsecend p-2 hover:text-white md:w-2/6 text-center shadow-lg">
-                {!isPending ?
-                    'Mark Guest on The Water' : 'pending'
-                }
-            </button>
+            </div>            
+            < AddActiveTripButton isPending={isPending}/>
         </div>
     );
 }
