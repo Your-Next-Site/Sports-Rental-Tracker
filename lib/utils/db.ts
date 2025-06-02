@@ -76,7 +76,7 @@ export async function addRentalStartDB(
   return [result];
 }
 
-export async function removeRaftFromWater(
+export async function endRentalDB(
   raftOnWaterId: number,
   email: string | null | undefined
 ) {

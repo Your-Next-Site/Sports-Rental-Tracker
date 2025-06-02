@@ -1,10 +1,10 @@
 'use client'
-import { useAddRaftToWater } from "@/mutations/mutations";
+import { useAddRentalStart} from "@/mutations/mutations";
 import MainContainer from "../containers/main-container";
 import Inputs from "./inputs";
 
 export default function DepartureForm() {
-    const { mutate, isPending, isError } = useAddRaftToWater();
+    const { mutate, isPending, isError } = useAddRentalStart();
 
     return (
         <MainContainer>

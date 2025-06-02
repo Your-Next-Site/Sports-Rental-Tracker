@@ -1,6 +1,6 @@
 'use server'
 import { auth } from "@/auth";
-import { addRentalStartDB, removeRaftFromWater } from "@/lib/utils/db";
+import { addRentalStartDB, endRentalDB } from "@/lib/utils/db";
 import { schemaAddRaft, schemaRemoveRaft } from "@/lib/utils/zod/schmeas";
 import { neon } from "@neondatabase/serverless";
 
@@ -30,7 +30,7 @@ export async function addRentalStart(formData: FormData) {
     }
 }
 
-export async function addRemoveRaftFromWater(raftOnWaterId: number) {
+export async function endRental(raftOnWaterId: number) {
     const session = await auth();
     const email = session?.user.email;
 
@@ -40,7 +40,7 @@ export async function addRemoveRaftFromWater(raftOnWaterId: number) {
 
     try {
         const sql = neon(`${ process.env.DATABASE_URL } `);
-        const [result] = await removeRaftFromWater(validatedFields.data.raftOnWaterId, email)
+        const [result] = await endRentalDB(validatedFields.data.raftOnWaterId, email)
 
         if (!result) throw new Error('Failed to mark raft as arrived');
         return result;
