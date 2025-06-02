@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
-import { addRaftToWater, addRemoveRaftFromWater } from "@/actions/trips"
+import { addRentalStart, addRemoveRaftFromWater } from "@/actions/trips"
 import { toggleAdmin, toggleEmployee } from "@/actions/users";
 import { Trip } from "@/types/types";
 
@@ -8,7 +8,7 @@ export const useAddRaftToWater = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (formData: FormData) => {
-            return addRaftToWater(formData);
+            return addRentalStart(formData);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['trips'] });

@@ -1,11 +1,11 @@
 'use server'
 import { auth } from "@/auth";
-import { addRaftToWaterDB, removeRaftFromWater } from "@/lib/utils/db";
+import { addRentalStartDB, removeRaftFromWater } from "@/lib/utils/db";
 import { schemaAddRaft, schemaRemoveRaft } from "@/lib/utils/zod/schmeas";
 import { neon } from "@neondatabase/serverless";
 
 
-export async function addRaftToWater(formData: FormData) {
+export async function addRentalStart(formData: FormData) {
     const session = await auth();
     const email = session?.user.email;
 
@@ -19,7 +19,7 @@ export async function addRaftToWater(formData: FormData) {
     if (!validatedFields.success) throw new Error("Invalid form data");
 
     try {
-        const [result] = await addRaftToWaterDB(validatedFields.data, email)            
+        const [result] = await addRentalStartDB(validatedFields.data, email)            
         
         if (!result) throw new Error('Failed to add raft to water');
         

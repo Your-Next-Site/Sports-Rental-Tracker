@@ -50,7 +50,7 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number) {
   return { trips, hasMore, totalPages };
 }
 
-export async function addRaftToWaterDB(
+export async function addRentalStartDB(
   validatedFields: typeof schemaAddRaft._type,
   email: string | null | undefined
 ) {
