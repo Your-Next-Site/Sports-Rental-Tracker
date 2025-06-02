@@ -1,5 +1,5 @@
 "use client";
-import { useRemoveRaftFromWater } from "@/mutations/mutations";
+import { useEndRental} from "@/mutations/mutations";
 import MainContainer from "../containers/main-container";
 import { useGetTrips } from "@/hooks/hooks";
 import { useState } from "react";
@@ -20,7 +20,7 @@ export default function RentedOut() {
     mutate,
     isPending,
     isError: isErrorMutate,
-  } = useRemoveRaftFromWater(page, setPage);
+  } = useEndRental(page, setPage);
 
   if (isLoading) return <MainContainer> Loading.... </MainContainer>;
   if (isErrorData) return <MainContainer>Error loading trips</MainContainer>;

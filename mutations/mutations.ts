@@ -19,7 +19,7 @@ export const useAddRentalStart = () => {
     });
 };
 
-export const useRemoveRaftFromWater = (currentPage: number, setPage: (page: number) => void) => {
+export const useEndRental = (currentPage: number, setPage: (page: number) => void) => {
     const queryClient = useQueryClient();
 
     return useMutation({
