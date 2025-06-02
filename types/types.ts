@@ -86,3 +86,16 @@ export interface BookingWithTime extends Booking {
   customer_name?: string;
   summary?: string;
 }
+
+
+export interface PaginationProps {
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  page: number;
+  data: { trips: Trip[]; hasMore: boolean; totalPages: number; };
+  isPlaceholderData: boolean;
+}
+export interface PaginationButtonProps {
+  onClick: () => void;
+  disabled: boolean;
+  children: React.ReactNode;
+}
