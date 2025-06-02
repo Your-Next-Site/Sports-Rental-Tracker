@@ -1,5 +1,5 @@
 // types/next-auth.d.ts
-import { DefaultSession, DefaultUser } from "@auth/core/types";
+import { DefaultSession, DefaultUser, Session } from "@auth/core/types";
 import { IconDefinition } from "@fortawesome/free-brands-svg-icons";
 
 // Extend the type for employee field as verification
@@ -105,4 +105,8 @@ export interface AuthButtonItemProps {
     icon: IconDefinition;
     label: string;
     onClick: () => void;
+}
+
+export interface AuthButtonProps {
+    session: Session | null;
 }

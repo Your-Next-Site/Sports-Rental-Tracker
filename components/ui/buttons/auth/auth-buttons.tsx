@@ -1,13 +1,9 @@
 'use client';
 import { loginGoogle, loginGithub, loginGitlab, loginDiscord, logout } from '@/actions/auth-actions'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faGithub, faGitlab, faDiscord, } from '@fortawesome/free-brands-svg-icons';
-import { Session } from '@auth/core/types';
 import { AuthButton } from './auth-button';
-
-interface AuthButtonProps {
-    session: Session | null;
-}
+import SignOutButton from './sign-out-button';
+import { AuthButtonProps } from '@/types/types';
 
 export default function Authbutton({ session }: AuthButtonProps) {
     return (
@@ -21,11 +17,7 @@ export default function Authbutton({ session }: AuthButtonProps) {
                         <AuthButton icon={faDiscord} label="Sign In With Discord" onClick={loginDiscord} />
                     </div>
                 ) : (
-
-                    <div className="flex justify-center w-full ">
-                        <button className='p-4 shadow-sm rounded-sm bg-background border hover:scale-110' onClick={() => logout()}>Sign Out</button>
-                    </div>
-
+                    <SignOutButton onClick={() => logout()} />
                 )}
             </div>
         </>
