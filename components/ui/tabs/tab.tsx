@@ -2,13 +2,13 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import DepartureForm from "../forms/departure-form";
-import OnTheWater from "../on-the-water-component/on-the-water";
+import RentedOut from "../rented-out/rented-out";
 import SearchHistory from "../search-history-component/search-history";
 import { fetchTrips, searchTrips } from "@/hooks/hooks";
 
 export default function Tab() {
   const [selectedTab, setSelectedTab] = useState("Departure");
-  const tabs = ["Departure", "On The Water", "Search"];
+  const tabs = ["Departure", "Rented Out", "Search"];
   const queryClient = useQueryClient();
 
   const [prefetchedTabs, setPrefetchedTabs] = useState<Set<string>>(new Set());
@@ -16,7 +16,7 @@ export default function Tab() {
   const handleMouseOver = (tab?: string) => {
     if (!tab || prefetchedTabs.has(tab)) return;
 
-    if (tab === "On The Water") {
+    if (tab === "Rented Out") {
       queryClient.prefetchQuery({
         queryKey: ['trips', true],
         queryFn: () => fetchTrips(true, 1),
@@ -51,7 +51,7 @@ export default function Tab() {
         ))}
       </div>
       {selectedTab == "Departure" && <DepartureForm />}
-      {selectedTab == "On The Water" && <OnTheWater />}
+      {selectedTab == "Rented Out" && <RentedOut />}
       {selectedTab == "Search" && <SearchHistory />}
     </div >
   );

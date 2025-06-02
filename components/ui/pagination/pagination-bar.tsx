@@ -20,16 +20,16 @@ export default function PaginationBar({
   // console.log(data.totalPages)
   return (
     <>
-      <div className="flex gap-3 text-2xl m-2 justify-center items-center">
+      <div className="flex gap-3 text-2xl m-2 justify-center items-center ">
         <button
-          className="rounded-md bg-buttoncolormain hover:brightness-90 hover:cursor-pointer select-none w-12 h-12 text-center p-1.5"
+          className="rounded-md bg-buttoncolormain hover:brightness-90 hover:cursor-pointer select-none w-12 h-12 text-center p-1.5 text-white"
           onClick={() => setPage(0)}
           disabled={page === 0}
         >
           «
         </button>
         <button
-          className="rounded-md bg-buttoncolormain hover:brightness-90 hover:cursor-pointer select-none w-12 h-12 text-center p-1.5"
+          className="rounded-md bg-buttoncolormain hover:brightness-90 hover:cursor-pointer select-none w-12 h-12 text-center p-1.5 text-white"
           onClick={() => setPage((old: number) => Math.max(old - 1, 0))}
           disabled={page === 0}
         >
@@ -39,7 +39,7 @@ export default function PaginationBar({
           {page + 1} / {data?.totalPages}
         </span>
         <button
-          className="rounded-md bg-buttoncolormain hover:brightness-90 hover:cursor-pointer select-none w-12 h-12 text-center p-1.5"
+          className="rounded-md bg-buttoncolormain hover:brightness-90 hover:cursor-pointer select-none w-12 h-12 text-center p-1.5 text-white"
           onClick={() => {
             if (!isPlaceholderData && data?.hasMore) {
               setPage((old: number) => old + 1);
@@ -50,7 +50,7 @@ export default function PaginationBar({
           ›
         </button>
         <button
-          className="rounded-md bg-buttoncolormain hover:brightness-90 hover:cursor-pointer select-none w-12 h-12 text-center p-1.5"
+          className="rounded-md bg-buttoncolormain hover:brightness-90 hover:cursor-pointer select-none w-12 h-12 text-center p-1.5 text-white"
           onClick={() => {
             if (!isPlaceholderData) {
               setPage(data?.totalPages -1);

@@ -1,3 +1,5 @@
+-- Active: 1748819154111@@ep-fancy-hat-a6sbdl46-pooler.us-west-2.aws.neon.tech@5432@neondb@public
+
 DROP TABLE IF EXISTS verification_token CASCADE;
 
 DROP TABLE IF EXISTS accounts CASCADE;
@@ -54,8 +56,8 @@ CREATE TABLE users (
 
 UPDATE users 
 SET admin = true, employee = true 
-WHERE id = 8;
+WHERE id = 1;
 
 
 SELECT * FROM users;
-DELETE FROM users WHERE id = 7;
+DELETE FROM users WHERE id = 1;

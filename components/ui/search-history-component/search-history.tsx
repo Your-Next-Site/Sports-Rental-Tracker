@@ -40,7 +40,7 @@ export default function SearchHistory() {
           />
           <button
             onClick={() => refetch()}
-            className="bg-buttoncolormain hover:bg-buttoncolorsecend hover:text-white p-2 rounded mr-4"
+            className="bg-buttoncolormain hover:bg-buttoncolorsecend text-white p-2 rounded mr-4"
           >
             Search
           </button>

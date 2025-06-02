@@ -40,8 +40,8 @@ const adminRoutes = [
 ]
 
 const employeeRoutes = [
-    "/on-the-water",
-    "/api/on-the-water",
+    "/main-rental-page",
+    "/api/rented-out",
     "/api/search-trips"
 ]
 

@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 
 export default async function Home() {
   const session = await auth();
-  if (session?.user.employee || session?.user.admin) redirect('/on-the-water');
+  if (session?.user.employee || session?.user.admin) redirect('/main-rental-page');
 
 
   return (

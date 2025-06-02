@@ -5,7 +5,7 @@ export default function Page() {
     return (
         <PageContainer>
             <Policy name="Privacy Policy" text="
-            At Raft Tracker 5000, we are committed to protecting your privacy. This Privacy Policy outlines how we 
+            At Sports Rental Tracker, we are committed to protecting your privacy. This Privacy Policy outlines how we 
             collect, use, and safeguard your personal information. We collect and store only essential information 
             including customer names, user names, and email addresses. This information is used exclusively for account 
             management, service-related communications, and essential system notifications. We implement appropriate 

@@ -6,9 +6,9 @@ export default function Page() {
     <PageContainer>
       <Policy
         name="Terms of Service"
-        text="Only authorized employees are allowed access to the Raft Tracker 5000 system. By using this system, you agree to:
+        text="Only authorized clients are allowed access to the Sports Rental Tracker system. By using this system, you agree to:
         Maintain strict confidentiality of all data and information accessed through this system.
-        Use the system only for official business purposes related to raft and paddle station operations.
+        Use the system only for official business purposes related to your origination operations.
         Not share your login credentials with any other person.
         Report any security concerns or unauthorized access immediately.
         Ensure all submitted data is accurate and truthful.

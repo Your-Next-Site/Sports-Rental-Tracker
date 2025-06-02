@@ -3,7 +3,7 @@ import { BookingWithTime, Trip } from '@/types/types'
 import { User } from "@auth/core/types";
 
 export const fetchTrips = async (currentTrip: boolean, currentPage:number): Promise<{ trips: Trip[], hasMore: boolean, totalPages:number }> => {
-  const response = await fetch(`/api/on-the-water?currentTrip=${currentTrip}&page=${currentPage}`)
+  const response = await fetch(`/api/rented-out?currentTrip=${currentTrip}&page=${currentPage}`)
   return await response.json();
 }
 
@@ -42,18 +42,7 @@ export const useGetSearchPageTrips = ({ guestName, departureDate, page }: { gues
   })
 }
 
-const getBookings = async (date: Date): Promise<BookingWithTime[]> => {
-  const response = await fetch(`/api/checkfront?date=${date}`)
-  const result = await response.json();  
-  return result
-}
 
-export const useGetBookings = (date: Date) => {
-  return useQuery({
-    queryKey: ['bookingsFromCheckFront', date],
-    queryFn: () => getBookings(date),
-  })
-}
 
 
 

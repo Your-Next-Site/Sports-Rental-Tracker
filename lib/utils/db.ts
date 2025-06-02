@@ -19,13 +19,13 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number) {
         SELECT 
             row.id,
             row.guest_name,
-            rt.name as raft_type_name,
+            rt.name as item_type_name,
             row.unit_number,
             row.checked_out_by,
             row.departure_time,
             row.arrival_time                
-        FROM rafts_on_water row
-        JOIN raft_types rt ON row.raft_type_id = rt.id
+        FROM items_rented row
+        JOIN item_types rt ON row.item_type_id = rt.id
         WHERE departure_time > NOW() - INTERVAL '24 hours'
         ${tripCurrent
       ? sql`AND row.arrival_time IS NULL`
@@ -36,7 +36,7 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number) {
 
   // Fetch total trip count to determine if there are more pages
   const totalTripsResult = await sql`
-        SELECT COUNT(*) FROM rafts_on_water
+        SELECT COUNT(*) FROM items_rented
         WHERE departure_time > NOW() - INTERVAL '24 hours'
         ${tripCurrent
       ? sql`AND arrival_time IS NULL`
@@ -57,16 +57,16 @@ export async function addRaftToWaterDB(
   const sql = neon(`${process.env.DATABASE_URL}`);
 
   const [result] = await sql`
-            INSERT INTO rafts_on_water (
+            INSERT INTO items_rented (
                 guest_name,
-                raft_type_id,
+                item_type_id,
                 unit_number,
                 checked_out_by,
                 departure_time
             )
             VALUES (
                 ${validatedFields.guestName},
-                (SELECT id FROM raft_types WHERE name = ${validatedFields.raftType}),
+                (SELECT id FROM item_types WHERE name = ${validatedFields.itemType}),
                 ${validatedFields.unitNumber},
                 (SELECT id FROM users WHERE email = ${email}),
                 NOW()
@@ -82,7 +82,7 @@ export async function removeRaftFromWater(
 ) {
   const sql = neon(`${process.env.DATABASE_URL}`);
   const [result] = await sql`
-        UPDATE rafts_on_water 
+        UPDATE items_rented 
         SET arrival_time = NOW(),
             checked_in_by = (SELECT id FROM users WHERE email = ${email})
         WHERE id = ${raftOnWaterId}
@@ -144,8 +144,8 @@ export async function searchTripsDB(
             row.checked_out_by,
             row.departure_time,
             row.arrival_time                
-        FROM rafts_on_water row
-        JOIN raft_types rt ON row.raft_type_id = rt.id
+        FROM items_rented row
+        JOIN item_types rt ON row.raft_type_id = rt.id
         WHERE 
             LOWER(row.guest_name) LIKE LOWER(${"%" + guestName + "%"})
             ${dateCondition
@@ -157,7 +157,7 @@ export async function searchTripsDB(
 
   // Fetch total trip count to determine if there are more pages
   const totalTripsResult = await sql`
-        SELECT COUNT(*) FROM rafts_on_water row
+        SELECT COUNT(*) FROM items_rented row
         WHERE 
             LOWER(row.guest_name) LIKE LOWER(${"%" + guestName + "%"})
             ${dateCondition
