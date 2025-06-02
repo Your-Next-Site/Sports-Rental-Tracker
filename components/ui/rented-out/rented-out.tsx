@@ -13,7 +13,7 @@ export default function RentedOut() {
     isLoading,
     isError: isErrorData,
     isPlaceholderData,
-    refetch, // Get the refetch function
+    refetch, 
   } = useGetTrips(true, page);
 
   const {
@@ -22,7 +22,7 @@ export default function RentedOut() {
     isError: isErrorMutate,
   } = useEndRental(page, setPage);
 
-  if (isLoading) return <MainContainer> Loading.... </MainContainer>;
+  if (isLoading) return <MainContainer>Loading.... </MainContainer>;
   if (isErrorData) return <MainContainer>Error loading trips</MainContainer>;
 
   return (

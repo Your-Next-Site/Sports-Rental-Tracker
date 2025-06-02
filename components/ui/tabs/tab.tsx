@@ -44,7 +44,7 @@ export default function Tab() {
             onClick={(e) => { setSelectedTab(e.currentTarget.innerText); handleMouseOver(tab) }}
             onMouseOver={() => handleMouseOver(tab)}
             className={`${selectedTab == tab ? "bg-foreground text-white" : "bg-white"
-              } grow rounded-t-md border-[1px] border-foreground py-2`}
+              } grow rounded-t-md border-[1px] hover:bg-background border-foreground py-2`}
           >
             {tab}
           </button>
