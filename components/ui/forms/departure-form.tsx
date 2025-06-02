@@ -1,7 +1,6 @@
 'use client'
 import { useAddRaftToWater } from "@/mutations/mutations";
 import MainContainer from "../containers/main-container";
-import { boatOptions } from "@/lib/utils/rafts";
 import Inputs from "./inputs";
 
 export default function DepartureForm() {
@@ -14,7 +13,7 @@ export default function DepartureForm() {
                 action={mutate}
                 className="flex flex-col gap-2 "
             >
-                <Inputs boatOptions={boatOptions} isPending={isPending} />
+                <Inputs  isPending={isPending} />
                 {isError && <p className="text-red-500">Error adding trip</p>}
             </form>
         </MainContainer>

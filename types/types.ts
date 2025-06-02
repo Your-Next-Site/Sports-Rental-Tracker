@@ -62,7 +62,6 @@ export interface RaftOption {
 }
 export interface InputsProps {
   isPending: boolean;  
-  boatOptions: RaftOption[];  
 }
 export interface BookingDetails {
   booking_id: number;

@@ -139,13 +139,13 @@ export async function searchTripsDB(
             SELECT 
             row.id,
             row.guest_name,
-            rt.name as raft_type_name,
+            it.name as item_type_name,
             row.unit_number,
             row.checked_out_by,
             row.departure_time,
             row.arrival_time                
         FROM items_rented row
-        JOIN item_types rt ON row.raft_type_id = rt.id
+        JOIN item_types it ON row.item_type_id = it.id
         WHERE 
             LOWER(row.guest_name) LIKE LOWER(${"%" + guestName + "%"})
             ${dateCondition

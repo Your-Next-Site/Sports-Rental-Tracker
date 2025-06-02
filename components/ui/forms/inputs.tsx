@@ -1,34 +1,29 @@
-import { getRaftType } from "@/lib/utils/functions";
-import { GuestOption, InputsProps } from "@/types/types";
+import { InputsProps } from "@/types/types";
 import Select from "react-select";
-import CreatableSelect from "react-select/creatable";
 import AddActiveTripButton from "../buttons/add-active-trip-button";
 
+const boatOptions = [
+    { value: 'single-kayak', label: 'Single Kayak' },
+    { value: 'double-kayak', label: 'Double Kayak' },
+    { value: 'small-raft', label: 'Small Raft' },
+    { value: 'round-raft', label: 'Round Raft' },
+    { value: 'medium-raft', label: 'Medium Raft' },
+    { value: 'large-raft', label: 'Large Raft' }
+];
 export default function Inputs({
     isPending,
-    boatOptions,
 }: InputsProps) {
 
     return (
         <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex flex-col md:flex-row w-full p-2 gap-4 justify-center items-center">
-                {/* <CreatableSelect
-                    required
-                    placeholder="Select Guest"
-                    instanceId="guest-select"
-                    name="guest-name"
-                    className=" rounded-sm md:w-2/6 w-full"
-                    classNames={{
-                        control: () => "h-10 w-full",
-                    }}
-                /> */}
+            <div className="flex flex-col md:flex-row w-full p-2 gap-4 justify-center items-center">              
                 <input
                     className="border border-gray-300 rounded-sm h-10 w-full md:w-2/6 p-2"
                     type='text'
                     required
-                    name="guest-name" 
+                    name="guest-name"
                     placeholder="Guests Name"
-                    />
+                />
                 <Select
                     required
                     instanceId="raft-type-select"
