@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #83BCC2;
-  --foreground: #173D58;
-  --bannertext: #d24f13;
-  --buttoncolormain: #83BCC2;
-  --buttoncolorsecend: #D24F13;
-}
+    --background: #72a4d0;
+    --foreground: #116dae;
+    --bannertext: #116dae;
+    --buttoncolormain: #116dae;
+    --buttoncolorsecend: #4bc9e5;
+  }
 
 @theme inline {
   --color-background: var(--background);
@@ -24,7 +24,7 @@
     --foreground: #116dae;
     --bannertext: #116dae;
     --buttoncolormain: #116dae;
-    --buttoncolorsecend: #4bc9e5;
+    --background: linear-gradient(to right, #3a8acf, #4eb9ef);
   }
 }
 

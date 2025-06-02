@@ -1,5 +1,6 @@
 // types/next-auth.d.ts
 import { DefaultSession, DefaultUser } from "@auth/core/types";
+import { IconDefinition } from "@fortawesome/free-brands-svg-icons";
 
 // Extend the type for employee field as verification
 declare module "@auth/core/types" {
@@ -98,4 +99,10 @@ export interface PaginationButtonProps {
   onClick: () => void;
   disabled: boolean;
   children: React.ReactNode;
+}
+
+export interface AuthButtonItemProps {
+    icon: IconDefinition;
+    label: string;
+    onClick: () => void;
 }
