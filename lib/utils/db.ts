@@ -1,6 +1,7 @@
 import { neon } from "@neondatabase/serverless";
 import { schemaAddRaft } from "./zod/schmeas";
 import { User } from "@auth/core/types";
+import { ItemTypes } from "@/types/types";
 
 export async function fetchUsersFromDB() {
   const sql = neon(`${process.env.DATABASE_URL}`);
@@ -9,6 +10,15 @@ export async function fetchUsersFromDB() {
     `;
   return result as User[];
 }
+
+export async function fetchTItemTypes() {
+  const sql = neon(`${process.env.DATABASE_URL}`);
+  const result = await sql`
+    SELECT * FROM item_types;
+    `;
+  return result as ItemTypes[];
+}
+
 export async function fetchTrips(tripCurrent: boolean, currentPage: number) {
   const pageSize: number = 10;
   const sql = neon(`${process.env.DATABASE_URL}`);

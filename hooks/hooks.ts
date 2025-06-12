@@ -1,6 +1,19 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { BookingWithTime, Trip } from '@/types/types'
+import { Trip, ItemTypes } from '@/types/types'
 import { User } from "@auth/core/types";
+
+
+export const fetchTItemTypes = async (): Promise<ItemTypes[]> => {
+  const response = await fetch(`/api/item-types`)
+  return await response.json();
+}
+
+export const useGetItemTypes = () => {
+  return useQuery<ItemTypes[]>({
+    queryKey: ['item-types'],
+    queryFn: fetchTItemTypes,
+  })
+}
 
 export const fetchTrips = async (currentTrip: boolean, currentPage:number): Promise<{ trips: Trip[], hasMore: boolean, totalPages:number }> => {
   const response = await fetch(`/api/rented-out?currentTrip=${currentTrip}&page=${currentPage}`)

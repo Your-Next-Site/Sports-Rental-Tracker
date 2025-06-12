@@ -46,47 +46,47 @@ export interface BookingData {
   summary: string;
 }
 
-export interface GuestData {
-  name: string;
-  bookingId: number;
-  summary: string;
-}
-export interface GuestOption {
-  value: number;
-  label: string;
-  summary: string;
-}
+// export interface GuestData {
+//   name: string;
+//   bookingId: number;
+//   summary: string;
+// }
+// export interface GuestOption {
+//   value: number;
+//   label: string;
+//   summary: string;
+// }
 
-export interface RaftOption {
-  value: string;
-  label: string;
-}
+// export interface RaftOption {
+//   value: string;
+//   label: string;
+// }
 export interface InputsProps {
-  isPending: boolean;  
+  isPending: boolean;
 }
-export interface BookingDetails {
-  booking_id: number;
-  code: string;
-  status_id: string;
-  status_name: string;
-  created_date: number;
-  total: string;
-  tax_total: string;
-  paid_total: string;
-  customer_id: number;
-  customer_name: string;
-  customer_email: string;
-  summary: string;
-  date_desc: string;
-  tid: string;
-  token: string;
-}
+// export interface BookingDetails {
+//   booking_id: number;
+//   code: string;
+//   status_id: string;
+//   status_name: string;
+//   created_date: number;
+//   total: string;
+//   tax_total: string;
+//   paid_total: string;
+//   customer_id: number;
+//   customer_name: string;
+//   customer_email: string;
+//   summary: string;
+//   date_desc: string;
+//   tid: string;
+//   token: string;
+// }
 
-export interface BookingWithTime extends Booking {
-  time: string;
-  customer_name?: string;
-  summary?: string;
-}
+// export interface BookingWithTime extends Booking {
+//   time: string;
+//   customer_name?: string;
+//   summary?: string;
+// }
 
 
 export interface PaginationProps {
@@ -102,11 +102,17 @@ export interface PaginationButtonProps {
 }
 
 export interface AuthButtonItemProps {
-    icon: IconDefinition;
-    label: string;
-    onClick: () => void;
+  icon: IconDefinition;
+  label: string;
+  onClick: () => void;
 }
 
 export interface AuthButtonProps {
-    session: Session | null;
+  session: Session | null;
+}
+
+
+export interface ItemTypes {
+  id: number;
+  name: string;
 }
