@@ -1,6 +1,7 @@
 import SimpleSubmitButton from "@/components/ui/buttons/simple-submit-button";
 import MainContainer from "@/components/ui/containers/main-container";
 import PageContainer from "@/components/ui/containers/page-container";
+import AddUnitForm from "@/components/ui/forms/add-unit-form";
 
 const dummyData = [
     { unitNumber: '001', type: 'Kayak', rented: 'Yes', email: 'john@example.com' },
@@ -46,43 +47,6 @@ export default function Page() {
     );
 }
 
-function AddUnitForm() {
-    return (
-        <form className="flex flex-col min-w-full border border-gray-300">
-            <div className="bg-gray-100 w-full border-b border-gray-300">
-                <div className="px-4 py-2 text-center font-semibold">Add Unit</div>
-            </div>
-            <div className="flex flex-col md:flex-row">
-                <div className="flex-1 border-b md:border-b-0 md:border-r border-gray-300">
-                    <input
-                        className="px-4 py-2 w-full h-full"
-                        placeholder="Unit Number"
-                        type="text"
-                        name="unit-number"
-                        required
-                    />
-                </div>
-                <div className="flex-1 border-b md:border-b-0 md:border-r border-gray-300">
-                    <select
-                        className="px-4 py-2 w-full h-full"
-                        name="unit-type"
-                        required
-                    >
-                        <option value="">Select Unit Type</option>
-                        {['Kayak', 'Canoe', 'Paddleboard', 'Surfboard', 'Jet Ski'].map((type, index) => (
-                            <option key={index} value={type}>
-                                {type}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className="px-4 py-2 flex items-center justify-center">
-                    <SimpleSubmitButton />
-                </div>
-            </div>
-        </form>
-    );
-}
 
 function TableHead() {
     return (
