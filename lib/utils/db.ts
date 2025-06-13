@@ -28,13 +28,13 @@ export async function addInventoryItem(
   const [result] = await sql`
             INSERT INTO inventory_item (                
                 item_type_id,
-                unit_number, 
+                unit_number
             )
             VALUES (               
                 (SELECT id FROM item_types WHERE name = ${validatedFields.itemType}),
-                ${validatedFields.unitNumber},                                
-                RETURNING *;
-                `;
+                ${validatedFields.unitNumber}                                
+            )
+            RETURNING *`;
   return [result];
 }
 

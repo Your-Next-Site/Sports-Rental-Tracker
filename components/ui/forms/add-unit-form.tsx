@@ -1,12 +1,16 @@
 'use client'
 import { useGetItemTypes } from "@/hooks/hooks";
 import SimpleSubmitButton from "../buttons/simple-submit-button";
+import { useAddInventory } from "@/mutations/mutations";
 
 export default function AddUnitForm() {
 
     const { data, isError: isErrorData, isLoading: isLoadingData } = useGetItemTypes();
+    const { mutate } = useAddInventory();
     return (
-        <form className="flex flex-col min-w-full border border-gray-300">
+        <form
+            action={mutate}
+            className="flex flex-col min-w-full border border-gray-300">
             <div className="bg-gray-100 w-full border-b border-gray-300">
                 <div className="px-4 py-2 text-center font-semibold">Add Unit</div>
             </div>
@@ -23,7 +27,7 @@ export default function AddUnitForm() {
                 <div className="flex-1 border-b md:border-b-0 md:border-r border-gray-300">
                     <select
                         className="px-4 py-2 w-full h-full"
-                        name="unit-type"
+                        name="item-type"
                         required
                         defaultValue={isLoadingData ? "isLoading" : isErrorData ? "isError" : ""}
                         disabled={isLoadingData}

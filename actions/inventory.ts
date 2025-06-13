@@ -1,3 +1,4 @@
+'use server'
 import { auth } from "@/auth";
 import { addInventoryItem } from "@/lib/utils/db";
 import { schemaAddInventoryItem } from "@/lib/utils/zod/schmeas";
