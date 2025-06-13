@@ -1,7 +1,7 @@
 import { neon } from "@neondatabase/serverless";
 import { schemaAddInventoryItem, schemaAddRaft } from "./zod/schmeas";
 import { User } from "@auth/core/types";
-import { ItemTypes } from "@/types/types";
+import { ItemTypes,Items } from "@/types/types";
 
 export async function fetchUsersFromDB() {
   const sql = neon(`${process.env.DATABASE_URL}`);
@@ -11,12 +11,30 @@ export async function fetchUsersFromDB() {
   return result as User[];
 }
 
-export async function fetchTItemTypes() {
+export async function fetchItemTypes() {
   const sql = neon(`${process.env.DATABASE_URL}`);
   const result = await sql`
     SELECT * FROM item_types;
     `;
   return result as ItemTypes[];
+}
+
+export async function fetchItems() {
+  const sql = neon(`${process.env.DATABASE_URL}`);
+  const result = await sql`
+    SELECT 
+      ii.unit_number as unitNumber,
+      it.name as type,
+      EXISTS (
+        SELECT 1 FROM items_rented ir 
+        WHERE ir.unit_number = ii.unit_number 
+        AND ir.item_type_id = ii.item_type_id 
+        AND ir.arrival_time IS NULL
+      ) as rented
+    FROM inventory_item ii
+    JOIN item_types it ON ii.item_type_id = it.id;
+    `;
+  return result as Items[];
 }
 
 export async function addInventoryItem(

@@ -12,7 +12,7 @@ export const useAddInventory = () => {
             return addInventory(formData);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['item-types'] });
+            queryClient.invalidateQueries({ queryKey: ['items'] });
         },
         onError: (error) => {
             console.error('Mutation error:', error);

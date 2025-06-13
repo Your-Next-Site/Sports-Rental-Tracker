@@ -1,9 +1,9 @@
-import { fetchItemTypes } from '@/lib/utils/db';
+import { fetchItems} from '@/lib/utils/db';
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-        const result = await fetchItemTypes();
+        const result = await fetchItems();
         return new Response(JSON.stringify(result), { headers: { 'Content-Type': 'application/json' } });
     } catch (error) {
         console.log(error)

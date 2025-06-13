@@ -25,26 +25,26 @@ export interface Trip {
   checked_in_by: number | null;
 }
 
-export interface Booking {
-  booking_id: number;
-  code: string;
-  start_date: string;
-  time: string;
-}
+// export interface Booking {
+//   booking_id: number;
+//   code: string;
+//   start_date: string;
+//   time: string;
+// }
 
-export interface InvoiceData {
-  booking: {
-    invoice: {
-      html: string;
-    };
-  };
-}
+// export interface InvoiceData {
+//   booking: {
+//     invoice: {
+//       html: string;
+//     };
+//   };
+// }
 
-export interface BookingData {
-  customer_name: string;
-  booking_id: number;
-  summary: string;
-}
+// export interface BookingData {
+//   customer_name: string;
+//   booking_id: number;
+//   summary: string;
+// }
 
 // export interface GuestData {
 //   name: string;
@@ -115,4 +115,10 @@ export interface AuthButtonProps {
 export interface ItemTypes {
   id: number;
   name: string;
+}
+
+export interface Items {
+  unitnumber: number;
+  type: string;
+  rented: boolean;
 }
