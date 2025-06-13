@@ -1,4 +1,6 @@
 -- Drop tables if they exist, in the correct dependency order
+DROP TABLE IF EXISTS inventory_item CASCADE;
+
 DROP TABLE IF EXISTS items_rented CASCADE;
 
 DROP TABLE IF EXISTS item_types CASCADE;
@@ -9,7 +11,6 @@ CREATE TABLE item_types (
     name VARCHAR(50) UNIQUE NOT NULL
 );
 
--- Insert raft types first
 INSERT INTO
     item_types (name)
 VALUES ('single-kayak'),
@@ -19,7 +20,6 @@ VALUES ('single-kayak'),
     ('medium-raft'),
     ('large-raft');
 
--- Rafts on Water (track which user is using which raft type and unit number)
 CREATE TABLE items_rented (
     id SERIAL PRIMARY KEY,
     guest_name VARCHAR(150) NOT NULL,
@@ -33,6 +33,31 @@ CREATE TABLE items_rented (
     FOREIGN KEY (checked_in_by) REFERENCES users (id) ON DELETE SET NULL,
     FOREIGN KEY (item_type_id) REFERENCES item_types (id) ON DELETE CASCADE
 );
+
+CREATE TABLE inventory_item (
+    id SERIAL PRIMARY KEY,
+    unit_number INTEGER NOT NULL,
+    item_type_id INTEGER NOT NULL REFERENCES item_types (id),
+    rented BOOLEAN DEFAULT FALSE,
+    renter_name VARCHAR(150)
+);
+
+CREATE OR REPLACE FUNCTION update_inventory_rented_status()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE inventory_item
+    SET rented = EXISTS (
+        SELECT 1 FROM items_rented ir
+        WHERE ir.unit_number = inventory_item.unit_number
+        AND ir.arrival_time IS NULL
+    );
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER maintain_rented_status
+AFTER INSERT OR UPDATE OR DELETE ON items_rented
+FOR EACH STATEMENT EXECUTE FUNCTION update_inventory_rented_status();
 
 -- Indexes for performance
 CREATE INDEX idx_items_rented_checked_out_by ON items_rented (checked_out_by);

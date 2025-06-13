@@ -9,3 +9,8 @@ export const schemaAddRaft = z.object({
 export const schemaRemoveRaft = z.object({
     raftOnWaterId: z.number(),
 })
+
+export const schemaAddInventoryItem = z.object({
+    itemType: z.string(),
+    unitNumber: z.number(),
+})

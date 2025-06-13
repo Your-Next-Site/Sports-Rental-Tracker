@@ -1,5 +1,5 @@
 import { neon } from "@neondatabase/serverless";
-import { schemaAddRaft } from "./zod/schmeas";
+import { schemaAddInventoryItem, schemaAddRaft } from "./zod/schmeas";
 import { User } from "@auth/core/types";
 import { ItemTypes } from "@/types/types";
 
@@ -17,6 +17,25 @@ export async function fetchTItemTypes() {
     SELECT * FROM item_types;
     `;
   return result as ItemTypes[];
+}
+
+export async function addInventoryItem(
+  validatedFields: typeof schemaAddInventoryItem._type,
+  email: string | null | undefined
+) {
+  const sql = neon(`${process.env.DATABASE_URL}`);
+
+  const [result] = await sql`
+            INSERT INTO inventory_item (                
+                item_type_id,
+                unit_number, 
+            )
+            VALUES (               
+                (SELECT id FROM item_types WHERE name = ${validatedFields.itemType}),
+                ${validatedFields.unitNumber},                                
+                RETURNING *;
+                `;
+  return [result];
 }
 
 export async function fetchTrips(tripCurrent: boolean, currentPage: number) {

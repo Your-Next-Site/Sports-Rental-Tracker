@@ -3,6 +3,22 @@ import { useQueryClient } from "@tanstack/react-query";
 import { addRentalStart, endRental } from "@/actions/trips"
 import { toggleAdmin, toggleEmployee } from "@/actions/users";
 import { Trip } from "@/types/types";
+import { addInventory } from "@/actions/inventory";
+
+export const useAddInventory = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (formData: FormData) => {
+            return addInventory(formData);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['item-types'] });
+        },
+        onError: (error) => {
+            console.error('Mutation error:', error);
+        }
+    });
+};
 
 export const useAddRentalStart = () => {
     const queryClient = useQueryClient();
