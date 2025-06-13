@@ -11,9 +11,8 @@ CREATE TABLE item_types (
     name VARCHAR(50) UNIQUE NOT NULL
 );
 
-INSERT INTO
-    item_types (name)
-VALUES ('single-kayak'),
+INSERT INTO item_types (name) VALUES 
+('single-kayak'),
     ('double-kayak'),
     ('small-raft'),
     ('round-raft'),
@@ -37,28 +36,9 @@ CREATE TABLE items_rented (
 CREATE TABLE inventory_item (
     id SERIAL PRIMARY KEY,
     unit_number INTEGER NOT NULL,
-    item_type_id INTEGER NOT NULL REFERENCES item_types (id),
-    rented BOOLEAN DEFAULT FALSE,
-    renter_name VARCHAR(150)
+    item_type_id INTEGER NOT NULL REFERENCES item_types (id)    
 );
-
-CREATE OR REPLACE FUNCTION update_inventory_rented_status()
-RETURNS TRIGGER AS $$
-BEGIN
-    UPDATE inventory_item
-    SET rented = EXISTS (
-        SELECT 1 FROM items_rented ir
-        WHERE ir.unit_number = inventory_item.unit_number
-        AND ir.arrival_time IS NULL
-    );
-    RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER maintain_rented_status
-AFTER INSERT OR UPDATE OR DELETE ON items_rented
-FOR EACH STATEMENT EXECUTE FUNCTION update_inventory_rented_status();
-
+SELECT * from inventory_item;
 -- Indexes for performance
 CREATE INDEX idx_items_rented_checked_out_by ON items_rented (checked_out_by);
 -- Index for checked_out_by
