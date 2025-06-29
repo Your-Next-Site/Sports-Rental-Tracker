@@ -1,7 +1,7 @@
 import { clerkClient, clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 
-const isOrgRoute = createRouteMatcher(['/main-rental-page(.*)'])
+const isOrgRoute = createRouteMatcher(['/(.*)'])
 const isProtectedRoute = createRouteMatcher(['/main-rental-page(.*)'])
 
 export default clerkMiddleware(async (auth, req) => {
