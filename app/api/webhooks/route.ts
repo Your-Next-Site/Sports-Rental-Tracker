@@ -1,9 +1,14 @@
-import { auth, clerkClient } from '@clerk/nextjs/server';
+import { clerkClient } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 interface WebhookPayload {
     type: string;
-    [key: string]: any;
+    data: {
+        id: string;
+        public_metadata?: any;
+        private_metadata?: any;
+        [key: string]: any;
+    };
 }
 
 export async function POST(request: NextRequest) {
@@ -12,27 +17,31 @@ export async function POST(request: NextRequest) {
         console.log('Received webhook:', payload);
         console.log('Webhook type:', payload.type);
 
-        const { has, orgId, userId } = await auth()
+        const orgId = payload.data.id;
+        const clerk = await clerkClient();
 
-        if (orgId) {
-            // Check which plan the org has and set appropriate limit
-            if (has({ plan: 'basic_10_people_org' })) {
-                // Set limit for basic plan (e.g., 10 users)
-                const clerk = await clerkClient()
+        if (orgId && payload.type === 'organization.updated') {
+            // Get the organization to check its metadata for plan information
+            const organization = await clerk.organizations.getOrganization({
+                organizationId: orgId
+            });
+
+            // Access plan from public or private metadata
+            const plan = organization.publicMetadata?.plan || organization.privateMetadata?.plan;
+
+            if (plan === 'basic_10_people_org') {
                 await clerk.organizations.updateOrganization(orgId, {
                     maxAllowedMemberships: 10
-                })
+                });
             }
-            else if (has({ plan: 'pro_25_people_org' })) {
-                // Set limit for pro plan (e.g., 25 users)
-                const clerk = await clerkClient()
-                const result = await clerk.organizations.updateOrganization(orgId, {
+            else if (plan === 'pro_25_people_org') {
+                await clerk.organizations.updateOrganization(orgId, {
                     maxAllowedMemberships: 25
                 })
-                console.log("Result: ", result)
             }
         }
 
+        return NextResponse.json({ message: 'Webhook processed successfully' });
 
     } catch (error) {
         console.error('Error handling webhook:', error);
