@@ -5,9 +5,8 @@ import { schemaAddRaft, schemaRemoveRaft } from "@/lib/utils/zod/schmeas";
 import { auth } from "@clerk/nextjs/server";
 import { neon } from "@neondatabase/serverless";
 
-
 export async function addRentalStart(formData: FormData) {
-    const { userId } = await auth()
+    const { userId, orgId } = await auth()
     if (!userId) throw new Error("No user is authenticated");
 
     console.log("data: ", formData.get("guest-name"), formData.get("item-type"), formData.get("unit-number"))
@@ -20,7 +19,7 @@ export async function addRentalStart(formData: FormData) {
     if (!validatedFields.success) throw new Error("Invalid form data");
 
     try {
-        const [result] = await addRentalStartDB(validatedFields.data, userId)
+        const [result] = await addRentalStartDB(validatedFields.data, userId, orgId || userId)
 
         if (!result) throw new Error('Failed to add raft to water');
 
