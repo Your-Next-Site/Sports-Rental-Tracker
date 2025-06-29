@@ -11,7 +11,11 @@ export async function POST(req: NextRequest) {
         console.log(`Received webhook with event type: ${evt.type}`)
         console.log('Webhook payload:', evt.data)
 
-        if (evt.type === 'organization.updated') {
+        if (
+            evt.type === 'organization.updated' ||
+            evt.type === 'organizationMembership.created' ||
+            evt.type === 'organizationMembership.deleted' ||
+            evt.type === 'organizationMembership.updated') {
             // Get user ID from session data
             const orgId = evt.data.id;
             const clerk = await clerkClient();
