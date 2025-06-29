@@ -1,50 +1,94 @@
-import { clerkClient } from '@clerk/nextjs/server';
-import { NextRequest, NextResponse } from 'next/server';
+import { verifyWebhook } from '@clerk/nextjs/webhooks'
+import { NextRequest } from 'next/server'
+import { clerkClient } from '@clerk/nextjs/server'
 
-interface WebhookPayload {
-    type: string;
-    data: {
-        id: string;
-        public_metadata?: any;
-        private_metadata?: any;
-        [key: string]: any;
-    };
-}
-
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
     try {
-        const payload: WebhookPayload = await request.json();
-        console.log('Received webhook:', payload);
-        console.log('Webhook type:', payload.type);
+        const evt = await verifyWebhook(req, {
+            signingSecret: process.env.CLERK_WEBHOOK_SIGNING_SECRET,
+        })
 
-        const orgId = payload.data.id;
-        const clerk = await clerkClient();
+        console.log(`Received webhook with event type: ${evt.type}`)
+        console.log('Webhook payload:', evt.data)
 
-        if (orgId && payload.type === 'organization.updated') {
-            // Get the organization to check its metadata for plan information
-            const organization = await clerk.organizations.getOrganization({
-                organizationId: orgId
-            });
+        if (evt.type === 'organization.updated') {
+            // Get user ID from session data
+            const orgId = evt.data.id;
+            const clerk = await clerkClient();
 
-            // Access plan from public or private metadata
-            const plan = organization.publicMetadata?.plan || organization.privateMetadata?.plan;
+            if (orgId) {
+                const organization = await clerk.organizations.getOrganization({ organizationId: orgId });
 
-            if (plan === 'basic_10_people_org') {
-                await clerk.organizations.updateOrganization(orgId, {
-                    maxAllowedMemberships: 10
-                });
-            }
-            else if (plan === 'pro_25_people_org') {
-                await clerk.organizations.updateOrganization(orgId, {
-                    maxAllowedMemberships: 25
-                })
+                // Access plan from public or private metadata
+                const plan = organization.publicMetadata?.plan || organization.privateMetadata?.plan;
+                console.log("Plan: ", plan)
+                if (plan === 'basic_10_people_org') {
+                    await clerk.organizations.updateOrganization(orgId, {
+                        maxAllowedMemberships: 10
+                    });
+                }
+                else if (plan === 'pro_25_people_org') {
+                    await clerk.organizations.updateOrganization(orgId, {
+                        maxAllowedMemberships: 25
+                    })
+                }
             }
         }
 
-        return NextResponse.json({ message: 'Webhook processed successfully' });
-
-    } catch (error) {
-        console.error('Error handling webhook:', error);
-        return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+        return new Response('Webhook received', { status: 200 })
+    } catch (err) {
+        console.error('Error verifying webhook:', err)
+        return new Response('Error verifying webhook', { status: 400 })
     }
 }
+
+// import { clerkClient } from '@clerk/nextjs/server';
+// import { NextRequest, NextResponse } from 'next/server';
+
+// interface WebhookPayload {
+//     type: string;
+//     data: {
+//         id: string;
+//         public_metadata?: any;
+//         private_metadata?: any;
+//         [key: string]: any;
+//     };
+// }
+
+// export async function POST(request: NextRequest) {
+//     try {
+//         const payload: WebhookPayload = await request.json();
+//         console.log('Received webhook:', payload);
+//         console.log('Webhook type:', payload.type);
+
+//         const orgId = payload.data.id;
+//         const clerk = await clerkClient();
+
+//         if (orgId && payload.type === 'organization.updated') {
+//             // Get the organization to check its metadata for plan information
+//             const organization = await clerk.organizations.getOrganization({
+//                 organizationId: orgId
+//             });
+
+//             // Access plan from public or private metadata
+//             const plan = organization.publicMetadata?.plan || organization.privateMetadata?.plan;
+
+//             if (plan === 'basic_10_people_org') {
+//                 await clerk.organizations.updateOrganization(orgId, {
+//                     maxAllowedMemberships: 10
+//                 });
+//             }
+//             else if (plan === 'pro_25_people_org') {
+//                 await clerk.organizations.updateOrganization(orgId, {
+//                     maxAllowedMemberships: 25
+//                 })
+//             }
+//         }
+
+//         return NextResponse.json({ message: 'Webhook processed successfully' });
+
+//     } catch (error) {
+//         console.error('Error handling webhook:', error);
+//         return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+//     }
+// }
