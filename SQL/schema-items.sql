@@ -25,12 +25,10 @@ CREATE TABLE items_rented (
     guest_name VARCHAR(150) NOT NULL,
     item_type_id INTEGER NOT NULL, -- Raft type being used
     unit_number INTEGER NOT NULL, -- Specific unit number for the raft
-    checked_out_by INTEGER NOT NULL, -- Staff user who checked out the trip
+    checked_out_by VARCHAR(175) NOT NULL, -- Staff user who checked out the trip
     departure_time TIMESTAMP NOT NULL, -- Time raft departed
     arrival_time TIMESTAMP,
-    checked_in_by INTEGER,
-    FOREIGN KEY (checked_out_by) REFERENCES users (id) ON DELETE SET NULL,
-    FOREIGN KEY (checked_in_by) REFERENCES users (id) ON DELETE SET NULL,
+    checked_in_by VARCHAR(175) NOT NULL,    
     FOREIGN KEY (item_type_id) REFERENCES item_types (id) ON DELETE CASCADE
 );
 
