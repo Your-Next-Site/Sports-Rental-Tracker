@@ -18,9 +18,10 @@ export async function POST(req: NextRequest) {
             evt.type === 'organizationMembership.updated') {
             // Get user ID from session data
             const orgId = evt.data.id;
-            const clerk = await clerkClient();
+
 
             if (orgId) {
+                const clerk = await clerkClient();
                 const organization = await clerk.organizations.getOrganization({ organizationId: orgId });
                 console.log("Org: ", organization)
                 //     // Access plan from public or private metadata
