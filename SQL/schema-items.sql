@@ -35,7 +35,8 @@ CREATE TABLE items_rented (
 CREATE TABLE inventory_item (
     id SERIAL PRIMARY KEY,
     unit_number INTEGER NOT NULL,
-    item_type_id INTEGER NOT NULL REFERENCES item_types (id)    
+    item_type_id INTEGER NOT NULL REFERENCES item_types (id) ,
+    status BOOLEAN DEFAULT true   
 );
 SELECT * from inventory_item;
 -- Indexes for performance
@@ -46,4 +47,4 @@ CREATE INDEX idx_items_rented_item_type_id ON items_rented (item_type_id);
 CREATE INDEX idx_items_rented_unit_number ON items_rented (unit_number);
 -- New index for unit_number
 
-select * from items_rented
+-- select * from items_rented
