@@ -35,12 +35,12 @@ export async function endRental(raftOnWaterId: number) {
 
     if (!validatedFields.success) throw new Error("Invalid data");
 
-    const { userId } = await auth()
+    const { userId, orgId } = await auth()
     if (!userId) throw new Error("No user is authenticated");
 
     try {
         const sql = neon(`${process.env.DATABASE_URL} `);
-        const [result] = await endRentalDB(validatedFields.data.raftOnWaterId, userId)
+        const [result] = await endRentalDB(validatedFields.data.raftOnWaterId, userId, orgId || userId)
 
         if (!result) throw new Error('Failed to mark raft as arrived');
         return result;

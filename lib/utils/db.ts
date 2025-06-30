@@ -148,15 +148,17 @@ export async function addRentalStartDB(
 }
 
 export async function endRentalDB(
-  raftOnWaterId: number,
-  userId: string | null | undefined
+  rentedUnitId: number,
+  userId: string | null | undefined,
+  orgId: string
 ) {
   const sql = neon(`${process.env.DATABASE_URL}`);
   const [result] = await sql`
         UPDATE items_rented 
         SET arrival_time = NOW(),
             checked_in_by = ${userId}
-        WHERE id = ${raftOnWaterId}
+        WHERE id = ${rentedUnitId}
+        AND organization_id  =${orgId}
         RETURNING *;
         `;
   return [result];
