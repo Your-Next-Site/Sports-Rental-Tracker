@@ -56,7 +56,7 @@ export async function addInventoryItem(
   return [result];
 }
 
-export async function fetchTrips(tripCurrent: boolean, currentPage: number) {
+export async function fetchTrips(tripCurrent: boolean, currentPage: number, orgId: string) {
   const pageSize: number = 10;
   const sql = neon(`${process.env.DATABASE_URL}`);
   const offset = currentPage * pageSize; // Calculate where to start fetching results
@@ -69,11 +69,13 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number) {
             rt.name as item_type_name,
             row.unit_number,
             row.checked_out_by,
+            row.organization_id,
             row.departure_time,
             row.arrival_time                
         FROM items_rented row
         JOIN item_types rt ON row.item_type_id = rt.id
         WHERE departure_time > NOW() - INTERVAL '24 hours'
+        AND row.organization_id = ${orgId}
         ${tripCurrent
       ? sql`AND row.arrival_time IS NULL`
       : sql`AND row.arrival_time IS NOT NULL`
@@ -99,7 +101,8 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number) {
 
 export async function addRentalStartDB(
   validatedFields: typeof schemaAddRaft._type,
-  email: string | null | undefined
+  userId: string | null | undefined,
+  orgId: string
 ) {
   const sql = neon(`${process.env.DATABASE_URL}`);
 
@@ -109,13 +112,15 @@ export async function addRentalStartDB(
                 item_type_id,
                 unit_number,
                 checked_out_by,
+                organization_id,
                 departure_time
             )
             VALUES (
                 ${validatedFields.guestName},
                 (SELECT id FROM item_types WHERE name = ${validatedFields.itemType}),
                 ${validatedFields.unitNumber},
-                (SELECT id FROM users WHERE email = ${email}),
+                ${userId},
+                ${orgId},
                 NOW()
                 )
                 RETURNING *;
@@ -125,13 +130,13 @@ export async function addRentalStartDB(
 
 export async function endRentalDB(
   raftOnWaterId: number,
-  email: string | null | undefined
+  userId: string | null | undefined
 ) {
   const sql = neon(`${process.env.DATABASE_URL}`);
   const [result] = await sql`
         UPDATE items_rented 
         SET arrival_time = NOW(),
-            checked_in_by = (SELECT id FROM users WHERE email = ${email})
+            checked_in_by = ${userId}
         WHERE id = ${raftOnWaterId}
         RETURNING *;
         `;

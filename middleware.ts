@@ -1,74 +1,45 @@
-import { auth } from "@/auth"
-import { NextResponse, NextRequest } from "next/server"
-import { Session } from "@auth/core/types";
+import { clerkClient, clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 
-const requests = new Map();
+const isOrgRoute = createRouteMatcher(['/(.*)'])
+const isProtectedRoute = createRouteMatcher(['/main-rental-page(.*)'])
 
-const rateLimit = (limit: number, interval: number) => {
-    return async (req: NextRequest, auth: any) => {
-        const url = req.nextUrl.pathname;
-        if (url.startsWith('/_next') || url === '/favicon.ico') {
-            return null; // Don't rate limit HMR and favicon requests
-        }
+const clerk = await clerkClient()
 
-        const identifier = auth?.user?.email + req.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1';
-        console.log("identifier:", identifier)
-        if (!requests.has(identifier)) {
-            requests.set(identifier, { count: 0, firstRequest: Date.now() });
-        }
-        const data = requests.get(identifier);
-        if (Date.now() - data.firstRequest > interval) {
-            // Reset the count every interval
-            data.count = 0;
-            data.firstRequest = Date.now();
-        }
-        data.count += 1;
-        requests.set(identifier, data);
-        if (data.count > limit) {
-            return new Response('Too many requests, please try again later.', { status: 429 });
-        }
-        return null;
-    };
-};
+export default clerkMiddleware(async (auth, req) => {
+  const { has, orgId, userId } = await auth()
 
-const limit = rateLimit(Number(process.env.RATE_LIMIT), 60 * 1000);
 
-// Define admin routes array
-const adminRoutes = [
-    "/admin/confirm-emails",
-    "/api/emails"
-]
+  if (isProtectedRoute(req) && !userId) {
+    const url = req.nextUrl.clone()
+    url.pathname = '/'
+    return NextResponse.redirect(url)
+  }
 
-const employeeRoutes = [
-    "/main-rental-page",
-    "/api/rented-out",
-    "/api/search-trips"
-]
+  if (isOrgRoute(req)) {
+    if (orgId) {
+      // Check which plan the org has and set appropriate limit
+      if (has({ plan: 'basic_10_people_org' })) {        // Set limit for basic plan (e.g., 10 users)
+        // console.log("HasPlan 10 : ", (has({ plan: 'basic_10_people_org' })))
+        clerk.organizations.updateOrganization(orgId, {
+          maxAllowedMemberships: 10
+        })
 
-export default auth(async (req) => {
-    // Rate limit
-    const rateLimitResponse = await limit(req, req.auth);
-    if (rateLimitResponse) {
-        return rateLimitResponse;
+      }
+      else if (has({ plan: 'pro_25_people_org' })) {
+        // console.log("HasPlan 25 : ", (has({ plan: 'pro_25_people_org' })))
+        clerk.organizations.updateOrganization(orgId, {
+          maxAllowedMemberships: 25
+        })
+      }
     }
-
-    // Check employees routes 
-    const isEmployeeRoute = employeeRoutes.some(route =>
-        req.nextUrl.pathname.includes(route)
-    )
-    
-    if (isEmployeeRoute && !req.auth?.user?.employee) {
-        return NextResponse.redirect(new URL("/", req.nextUrl.origin))
-    }
-    
-    // Check if the current path is an admin route
-    const isAdminRoute = adminRoutes.some(route =>
-        req.nextUrl.pathname.includes(route)
-    )
-    
-    if (isAdminRoute && !req.auth?.user?.admin) {
-        return NextResponse.redirect(new URL("/", req.nextUrl.origin))
-    }
-
-    return NextResponse.next()
+  }
 })
+
+export const config = {
+  matcher: [
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    '/(api|trpc)(.*)',
+    '/(protected)(.*)',
+  ],
+}
