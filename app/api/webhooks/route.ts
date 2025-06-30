@@ -34,20 +34,20 @@ export async function POST(req: NextRequest) {
                 const clerk = await clerkClient();
                 const organization = await clerk.organizations.getOrganization({ organizationId: "org_29w9IfBrPmcpi0IeBVaKtA7R94W" });
                 console.log("Org: ", organization)
-                //     // Access plan from public or private metadata
-                // const plan = organization.publicMetadata?.plan || organization.privateMetadata?.plan;
-                // console.log("Plan:", plan)
-                //     console.log("Plan: ", plan)
-                //     if (plan === 'basic_10_people_org') {
-                //         await clerk.organizations.updateOrganization(orgId, {
-                //             maxAllowedMemberships: 10
-                //         });
-                //     }
-                //     else if (plan === 'pro_25_people_org') {
-                //         await clerk.organizations.updateOrganization(orgId, {
-                //             maxAllowedMemberships: 25
-                //         })
-                //     }
+                // Access plan from public or private metadata
+                const plan = organization.publicMetadata?.plan || organization.privateMetadata?.plan;
+                console.log("Plan:", plan)
+                console.log("Plan: ", plan)
+                if (plan === 'basic_10_people_org') {
+                    await clerk.organizations.updateOrganization(orgId, {
+                        maxAllowedMemberships: 10
+                    });
+                }
+                else if (plan === 'pro_25_people_org') {
+                    await clerk.organizations.updateOrganization(orgId, {
+                        maxAllowedMemberships: 25
+                    })
+                }
             }
         }
 
