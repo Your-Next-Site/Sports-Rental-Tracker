@@ -21,7 +21,7 @@ export async function fetchItemTypes() {
   return result as ItemTypes[];
 }
 
-export async function fetchItems(orgId: number) {
+export async function fetchItems(orgId: string) {
 
   const sql = neon(`${process.env.DATABASE_URL}`);
   const result = await sql`
