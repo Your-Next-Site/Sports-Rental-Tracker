@@ -21,8 +21,7 @@ export async function fetchItemTypes() {
   return result as ItemTypes[];
 }
 
-export async function fetchItems() {
-  const { orgId } = await auth()
+export async function fetchItems(orgId: number) {
 
   const sql = neon(`${process.env.DATABASE_URL}`);
   const result = await sql`
