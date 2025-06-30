@@ -30,7 +30,8 @@ export async function fetchItems() {
         WHERE ir.unit_number = ii.unit_number 
         AND ir.item_type_id = ii.item_type_id 
         AND ir.arrival_time IS NULL
-      ) as rented
+      ) as rented,
+      ii.status
     FROM inventory_item ii
     JOIN item_types it ON ii.item_type_id = it.id;
     `;
@@ -221,8 +222,6 @@ export async function searchTripsDB(
   const totalTrips = Number(totalTripsResult[0].count);
   const hasMore = offset + pageSize < totalTrips;
   const totalPages = Math.ceil(Number(totalTripsResult[0].count) / pageSize);
-
-
 
   return { trips, hasMore, totalPages };
   // return result as Trip[];

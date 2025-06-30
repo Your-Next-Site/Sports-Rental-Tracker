@@ -121,4 +121,5 @@ export interface Items {
   unitnumber: number;
   type: string;
   rented: boolean;
+  status: boolean;
 }
