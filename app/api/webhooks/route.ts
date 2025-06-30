@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
             }
             const clerk = await clerkClient();
 
+            console.log("Org Id:", orgId)
             if (orgId) {
 
                 const organization = await clerk.organizations.getOrganization({ organizationId: orgId });
