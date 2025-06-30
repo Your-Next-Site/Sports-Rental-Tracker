@@ -10,11 +10,11 @@ CREATE TABLE item_types (
     id SERIAL PRIMARY KEY,
     value VARCHAR(75) UNIQUE NOT NULL,
     label VARCHAR(75) UNIQUE NOT NULL,
-    orgId VARCHAR(75) NOT NULL
+    organization_id VARCHAR(75) NOT NULL
 );
 
 INSERT INTO
-    item_types (value, label, orgId)
+    item_types (value, label, organization_id)
 VALUES (
         'single-kayak',
         'Single Kayak',
@@ -63,7 +63,7 @@ CREATE TABLE inventory_item (
     id SERIAL PRIMARY KEY,
     unit_number INTEGER NOT NULL,
     item_type_id INTEGER NOT NULL REFERENCES item_types (id),
-    status BOOLEAN DEFAULT true ,
+    status BOOLEAN DEFAULT true,
     organization_id VARCHAR(175) NOT NULL
 );
 
