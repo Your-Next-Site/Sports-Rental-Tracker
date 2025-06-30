@@ -17,11 +17,20 @@ export async function POST(req: NextRequest) {
             evt.type === 'organizationMembership.deleted' ||
             evt.type === 'organizationMembership.updated') {
             // Get user ID from session data
-            const orgId = evt.data.id;
-
+            let orgId: string | undefined;
+            if (evt.type === 'organization.updated') {
+                orgId = evt.data.id;
+            } else if (
+                evt.type === 'organizationMembership.created' ||
+                evt.type === 'organizationMembership.deleted' ||
+                evt.type === 'organizationMembership.updated'
+            ) {
+                orgId = evt.data.organization.id;
+            }
+            const clerk = await clerkClient();
 
             if (orgId) {
-                const clerk = await clerkClient();
+
                 const organization = await clerk.organizations.getOrganization({ organizationId: orgId });
                 console.log("Org: ", organization)
                 //     // Access plan from public or private metadata
