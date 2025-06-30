@@ -32,9 +32,9 @@ export async function POST(req: NextRequest) {
             console.log("Org Id:", orgId)
             if (orgId) {
                 const clerk = await clerkClient();
-                const organization = await clerk.organizations.getOrganization({ organizationId: "org_29w9IfBrPmcpi0IeBVaKtA7R94W" });
+                const organization = await clerk.organizations.getOrganization({ organizationId: orgId });
                 console.log("Org: ", organization)
-                // Access plan from public or private metadata
+                //     // Access plan from public or private metadata
                 const plan = organization.publicMetadata?.plan || organization.privateMetadata?.plan;
                 console.log("Plan:", plan)
                 console.log("Plan: ", plan)
