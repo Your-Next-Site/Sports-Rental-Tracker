@@ -7,7 +7,7 @@ export default async function Home() {
 
   return (
     <PageContainer>
-      <MainContainer>
+      <MainContainer>      
         <div className="mt-auto mx-auto">Please check out
           <Link className="underline" href="/terms-of-service" > Terms of Service </Link>
           and our
