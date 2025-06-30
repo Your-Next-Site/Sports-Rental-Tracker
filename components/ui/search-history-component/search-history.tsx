@@ -137,7 +137,7 @@ function Trips({ trips }: { trips: Trip[] }) {
                 hours
               </p>
             )}
-            <p>Raft Size: {trip.raft_type_name}</p>
+            <p>Item Type: {trip.item_type_id}</p>
             <p>Unit Number: {trip.unit_number}</p>
           </div>
         ))

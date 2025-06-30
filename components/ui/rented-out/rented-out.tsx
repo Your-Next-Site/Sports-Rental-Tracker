@@ -28,7 +28,7 @@ export default function RentedOut() {
   return (
     <MainContainer>
       <div className="flex flex-col gap-8">
-        <h1 className="text-2xl">Guests on the Water</h1>
+        <h1 className="text-2xl">Guests with rented equipment</h1>
         <button className='border rounded-sm md:w-1/6 w-2/6 mx-auto hover:bg-gray-100' onClick={() => refetch()}>Refetch</button>
       </div>
       <Trips
@@ -88,7 +88,7 @@ function Trips({
                   (1000 * 60 * 60)).toFixed(2)} hours
               </p>
             }
-            <p>Raft Size: {trip.raft_type_name}</p>
+            <p>Item Type: {trip.item_type_id}</p>
             <p>Unit Number: {trip.unit_number}</p>
             {mutate &&
               <button

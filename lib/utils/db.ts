@@ -74,7 +74,7 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number, orgI
         SELECT 
             row.id,
             row.guest_name,
-            rt.value as item_type_name,
+            rt.label as item_type_id,
             row.unit_number,
             row.checked_out_by,
             row.organization_id,
@@ -202,7 +202,7 @@ export async function searchTripsDB(
             SELECT 
             ir.id,
             ir.guest_name,
-            it.label as item_type_name,
+            it.label as item_type_id,
             ir.unit_number,
             ir.checked_out_by,
             ir.departure_time,
