@@ -24,8 +24,8 @@ export async function POST(req: NextRequest) {
                 const organization = await clerk.organizations.getOrganization({ organizationId: orgId });
                 console.log("Org: ", organization)
                 //     // Access plan from public or private metadata
-                const plan = organization.publicMetadata?.plan || organization.privateMetadata?.plan;
-                console.log("Plan:", plan)
+                // const plan = organization.publicMetadata?.plan || organization.privateMetadata?.plan;
+                // console.log("Plan:", plan)
                 //     console.log("Plan: ", plan)
                 //     if (plan === 'basic_10_people_org') {
                 //         await clerk.organizations.updateOrganization(orgId, {
