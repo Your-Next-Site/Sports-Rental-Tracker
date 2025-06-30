@@ -5,9 +5,9 @@ import { auth } from "@clerk/nextjs/server";
 
 export async function addInventory(formData: FormData) {
 
-    const { orgId } = await auth()
-    if (!orgId) {
-        throw new Error("No organization ID found");
+    const { orgId, userId } = await auth()
+    if (!userId) {
+        throw new Error("No user ID found");
     }
     const validatedFields = schemaAddInventoryItem.safeParse({
         itemType: formData.get("item-type"),
@@ -17,7 +17,7 @@ export async function addInventory(formData: FormData) {
     if (!validatedFields.success) throw new Error("Invalid form data");
 
     try {
-        const [result] = await addInventoryItem(validatedFields.data, orgId)
+        const [result] = await addInventoryItem(validatedFields.data, orgId || userId)
 
         if (!result) throw new Error('Failed to add raft to water');
 
@@ -29,8 +29,12 @@ export async function addInventory(formData: FormData) {
 }
 
 export async function toggleAvailability(unitNumber: number) {
+    const { orgId, userId } = await auth()
+    if (!userId) {
+        throw new Error("No user ID found");
+    }
     try {
-        const [result] = await toggleAvailabilityDb(unitNumber)
+        const [result] = await toggleAvailabilityDb(unitNumber, orgId || userId)
         if (!result) throw new Error('Failed toggle Availability');
 
         return result;

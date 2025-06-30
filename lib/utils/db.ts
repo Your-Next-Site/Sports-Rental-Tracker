@@ -65,12 +65,13 @@ export async function addInventoryItem(
   return [result];
 }
 
-export async function toggleAvailabilityDb(unitNumber: number) {
+export async function toggleAvailabilityDb(unitNumber: number, orgId: string) {
   const sql = neon(`${process.env.DATABASE_URL}`);
   const result = await sql`
     UPDATE inventory_item ii
     SET status = CASE WHEN status = true THEN false ELSE true END
     WHERE ii.unit_number = ${unitNumber}
+    AND ii.organization_id = ${orgId}
     RETURNING *;
   `;
   return [result];

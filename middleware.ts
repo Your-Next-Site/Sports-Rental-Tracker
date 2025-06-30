@@ -3,12 +3,18 @@ import { NextResponse } from 'next/server'
 
 const isOrgRoute = createRouteMatcher(['/(.*)'])
 const isProtectedRoute = createRouteMatcher(['/main-rental-page(.*)'])
+const isAdminRoute = createRouteMatcher(['/admin(.*)','/api/items(.*)'])
 
-const clerk = await clerkClient()
 
 export default clerkMiddleware(async (auth, req) => {
-  const { has, orgId, userId } = await auth()
-
+  const clerk = await clerkClient()
+  const { has, orgId, userId, sessionClaims } = await auth()
+  // console.log("Admin?: ", sessionClaims?.orgRole)
+  if (isAdminRoute(req) && sessionClaims?.orgRole !== 'org:admin') {
+    const url = req.nextUrl.clone()
+    url.pathname = '/'
+    return NextResponse.redirect(url)
+  }
 
   if (isProtectedRoute(req) && !userId) {
     const url = req.nextUrl.clone()
