@@ -5,8 +5,10 @@ import { auth } from "@clerk/nextjs/server";
 
 export async function addInventory(formData: FormData) {
 
-    await auth.protect()
-
+    const { orgId } = await auth()
+    if (!orgId) {
+        throw new Error("No organization ID found");
+    }
     const validatedFields = schemaAddInventoryItem.safeParse({
         itemType: formData.get("item-type"),
         unitNumber: Number(formData.get("unit-number")),
@@ -15,7 +17,7 @@ export async function addInventory(formData: FormData) {
     if (!validatedFields.success) throw new Error("Invalid form data");
 
     try {
-        const [result] = await addInventoryItem(validatedFields.data)
+        const [result] = await addInventoryItem(validatedFields.data, orgId)
 
         if (!result) throw new Error('Failed to add raft to water');
 

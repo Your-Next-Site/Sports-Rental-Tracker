@@ -15,7 +15,7 @@ export default clerkMiddleware(async (auth, req) => {
     url.pathname = '/'
     return NextResponse.redirect(url)
   }
-
+  // console.log("ORG ID: ", orgId)
   if (isOrgRoute(req)) {
     if (orgId) {
       // Check which plan the org has and set appropriate limit

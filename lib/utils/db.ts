@@ -3,6 +3,7 @@ import { schemaAddInventoryItem, schemaAddRaft } from "./zod/schmeas";
 import { User } from "@auth/core/types";
 import { ItemTypes, Items } from "@/types/types";
 import { toggleAvailability } from "@/actions/inventory";
+import { auth } from "@clerk/nextjs/server";
 
 export async function fetchUsersFromDB() {
   const sql = neon(`${process.env.DATABASE_URL}`);
@@ -21,6 +22,8 @@ export async function fetchItemTypes() {
 }
 
 export async function fetchItems() {
+  const { orgId } = await auth()
+
   const sql = neon(`${process.env.DATABASE_URL}`);
   const result = await sql`
     SELECT 
@@ -34,25 +37,30 @@ export async function fetchItems() {
       ) as rented,
       ii.status
     FROM inventory_item ii
-    JOIN item_types it ON ii.item_type_id = it.id;
-    `;
+    JOIN item_types it ON ii.item_type_id = it.id
+    WHERE ii.organization_id = ${orgId};
+  `;
   return result as Items[];
 }
 
 export async function addInventoryItem(
   validatedFields: typeof schemaAddInventoryItem._type,
+  orgId: string
 ) {
   const sql = neon(`${process.env.DATABASE_URL}`);
 
   const [result] = await sql`
             INSERT INTO inventory_item (                
                 item_type_id,
-                unit_number
+                unit_number,
+                organization_id
             )
             VALUES (               
                 (SELECT id FROM item_types WHERE value = ${validatedFields.itemType}),
-                ${validatedFields.unitNumber}                                
+                ${validatedFields.unitNumber},
+                ${orgId}                                
             )
+            
             RETURNING *`;
   return [result];
 }

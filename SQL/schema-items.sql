@@ -9,23 +9,42 @@ DROP TABLE IF EXISTS item_types CASCADE;
 CREATE TABLE item_types (
     id SERIAL PRIMARY KEY,
     value VARCHAR(75) UNIQUE NOT NULL,
-    label VARCHAR(75) UNIQUE NOT NULL
+    label VARCHAR(75) UNIQUE NOT NULL,
+    orgId VARCHAR(75) NOT NULL
 );
 
 INSERT INTO
-    item_types (value, label)
+    item_types (value, label, orgId)
 VALUES (
         'single-kayak',
-        'Single Kayak'
+        'Single Kayak',
+        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
     ),
     (
         'double-kayak',
-        'Double Kayak'
+        'Double Kayak',
+        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
     ),
-    ('small-raft', 'Small Raft'),
-    ('round-raft', 'Round Raft'),
-    ('medium-raft', 'Medium-Raft'),
-    ('large-raft', 'Large Raft');
+    (
+        'small-raft',
+        'Small Raft',
+        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
+    ),
+    (
+        'round-raft',
+        'Round Raft',
+        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
+    ),
+    (
+        'medium-raft',
+        'Medium-Raft',
+        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
+    ),
+    (
+        'large-raft',
+        'Large Raft',
+        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
+    );
 
 CREATE TABLE items_rented (
     id SERIAL PRIMARY KEY,
@@ -44,7 +63,8 @@ CREATE TABLE inventory_item (
     id SERIAL PRIMARY KEY,
     unit_number INTEGER NOT NULL,
     item_type_id INTEGER NOT NULL REFERENCES item_types (id),
-    status BOOLEAN DEFAULT true
+    status BOOLEAN DEFAULT true ,
+    organization_id VARCHAR(175) NOT NULL
 );
 
 SELECT * from inventory_item;
