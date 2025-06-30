@@ -4,9 +4,7 @@ import { clerkClient } from '@clerk/nextjs/server'
 
 export async function POST(req: NextRequest) {
     try {
-        const evt = await verifyWebhook(req, {
-            signingSecret: process.env.CLERK_WEBHOOK_SIGNING_SECRET,
-        })
+       const evt = await verifyWebhook(req)
 
         console.log(`Received webhook with event type: ${evt.type}`)
         console.log('Webhook payload:', evt.data)
