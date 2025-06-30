@@ -20,23 +20,23 @@ export async function POST(req: NextRequest) {
             const orgId = evt.data.id;
             const clerk = await clerkClient();
 
-            if (orgId) {
-                const organization = await clerk.organizations.getOrganization({ organizationId: orgId });
+            // if (orgId) {
+            //     const organization = await clerk.organizations.getOrganization({ organizationId: orgId });
 
-                // Access plan from public or private metadata
-                const plan = organization.publicMetadata?.plan || organization.privateMetadata?.plan;
-                console.log("Plan: ", plan)
-                if (plan === 'basic_10_people_org') {
-                    await clerk.organizations.updateOrganization(orgId, {
-                        maxAllowedMemberships: 10
-                    });
-                }
-                else if (plan === 'pro_25_people_org') {
-                    await clerk.organizations.updateOrganization(orgId, {
-                        maxAllowedMemberships: 25
-                    })
-                }
-            }
+            //     // Access plan from public or private metadata
+            //     const plan = organization.publicMetadata?.plan || organization.privateMetadata?.plan;
+            //     console.log("Plan: ", plan)
+            //     if (plan === 'basic_10_people_org') {
+            //         await clerk.organizations.updateOrganization(orgId, {
+            //             maxAllowedMemberships: 10
+            //         });
+            //     }
+            //     else if (plan === 'pro_25_people_org') {
+            //         await clerk.organizations.updateOrganization(orgId, {
+            //             maxAllowedMemberships: 25
+            //         })
+            //     }
+            // }
         }
 
         return new Response('Webhook received', { status: 200 })
