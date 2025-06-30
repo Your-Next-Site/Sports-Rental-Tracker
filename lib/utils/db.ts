@@ -1,7 +1,7 @@
 import { neon } from "@neondatabase/serverless";
 import { schemaAddInventoryItem, schemaAddRaft } from "./zod/schmeas";
 import { User } from "@auth/core/types";
-import { ItemTypes,Items } from "@/types/types";
+import { ItemTypes, Items } from "@/types/types";
 
 export async function fetchUsersFromDB() {
   const sql = neon(`${process.env.DATABASE_URL}`);
@@ -39,7 +39,6 @@ export async function fetchItems() {
 
 export async function addInventoryItem(
   validatedFields: typeof schemaAddInventoryItem._type,
-  email: string | null | undefined
 ) {
   const sql = neon(`${process.env.DATABASE_URL}`);
 
@@ -168,7 +167,8 @@ export async function toggleEmployeeDB(email: string) {
 export async function searchTripsDB(
   guestName: string | string,
   departureTime: Date | string,
-  currentPage: number
+  currentPage: number,
+  orgId: string
 ) {
   const pageSize: number = 10;
   const offset = currentPage * pageSize; // Calculate where to start fetching results
@@ -200,13 +200,13 @@ export async function searchTripsDB(
         JOIN item_types it ON row.item_type_id = it.id
         WHERE 
             LOWER(row.guest_name) LIKE LOWER(${"%" + guestName + "%"})
+            AND organization_id = ${orgId}
             ${dateCondition
       ? sql`AND row.departure_time BETWEEN ${adjustedTime} AND ${endTime}`
       : sql``
     }
         ORDER BY row.departure_time DESC
-        LIMIT ${pageSize} OFFSET ${offset}`;
-
+        LIMIT ${pageSize} OFFSET ${offset}`;  
   // Fetch total trip count to determine if there are more pages
   const totalTripsResult = await sql`
         SELECT COUNT(*) FROM items_rented row

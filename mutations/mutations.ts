@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { addRentalStart, endRental } from "@/actions/trips"
-import { toggleAdmin, toggleEmployee } from "@/actions/users";
+import { toggleAdmin, toggleEmployee } from "@/actions/users-old";
 import { Trip } from "@/types/types";
 import { addInventory } from "@/actions/inventory";
 
