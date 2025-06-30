@@ -27,11 +27,11 @@ export async function POST(req: NextRequest) {
             ) {
                 orgId = evt.data.organization.id;
             }
-            const clerk = await clerkClient();
+
 
             console.log("Org Id:", orgId)
             if (orgId) {
-
+                const clerk = await clerkClient();
                 const organization = await clerk.organizations.getOrganization({ organizationId: orgId });
                 console.log("Org: ", organization)
                 //     // Access plan from public or private metadata
