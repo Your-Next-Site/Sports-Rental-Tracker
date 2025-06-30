@@ -2,12 +2,10 @@ import { neon } from "@neondatabase/serverless";
 import { schemaAddInventoryItem, schemaAddRaft } from "./zod/schmeas";
 import { ItemTypes, Items } from "@/types/types";
 
-
-
 export async function fetchItemTypes(orgId: string) {
   const sql = neon(`${process.env.DATABASE_URL}`);
   const result = await sql`
-    SELECT * FROM item_types WHERE  organization_id = ${orgId};
+    SELECT * FROM item_types WHERE organization_id = ${orgId};
     `;
   return result as ItemTypes[];
 }
@@ -202,23 +200,23 @@ export async function searchTripsDB(
 
   const trips = await sql`
             SELECT 
-            row.id,
-            row.guest_name,
+            ir.id,
+            ir.guest_name,
             it.label as item_type_name,
-            row.unit_number,
-            row.checked_out_by,
-            row.departure_time,
-            row.arrival_time                
-        FROM items_rented row
-        JOIN item_types it ON row.item_type_id = it.id
+            ir.unit_number,
+            ir.checked_out_by,
+            ir.departure_time,
+            ir.arrival_time                
+        FROM items_rented ir
+        JOIN item_types it ON ir.item_type_id = it.id
         WHERE 
-            LOWER(row.guest_name) LIKE LOWER(${"%" + guestName + "%"})
-            AND organization_id = ${orgId}
+            LOWER(ir.guest_name) LIKE LOWER(${"%" + guestName + "%"})
+            AND ir.organization_id = ${orgId}
             ${dateCondition
-      ? sql`AND row.departure_time BETWEEN ${adjustedTime} AND ${endTime}`
+      ? sql`AND ir.departure_time BETWEEN ${adjustedTime} AND ${endTime}`
       : sql``
     }
-        ORDER BY row.departure_time DESC
+        ORDER BY ir.departure_time DESC
         LIMIT ${pageSize} OFFSET ${offset}`;
   // Fetch total trip count to determine if there are more pages
   const totalTripsResult = await sql`
