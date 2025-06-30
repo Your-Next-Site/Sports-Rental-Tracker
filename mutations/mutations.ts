@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { addRentalStart, endRental } from "@/actions/trips"
 import { toggleAdmin, toggleEmployee } from "@/actions/users-old";
 import { Trip } from "@/types/types";
-import { addInventory } from "@/actions/inventory";
+import { addInventory, toggleAvailability } from "@/actions/inventory";
 
 export const useAddInventory = () => {
     const queryClient = useQueryClient();
@@ -28,6 +28,22 @@ export const useAddRentalStart = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['trips'] });
+        },
+        onError: (error) => {
+            console.error('Mutation error:', error);
+        }
+    });
+};
+
+
+export const useToggleAvailability = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (unitNumber: number) => {
+            return toggleAvailability(unitNumber);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['items'] });
         },
         onError: (error) => {
             console.error('Mutation error:', error);

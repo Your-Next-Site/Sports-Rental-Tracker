@@ -2,6 +2,7 @@ import { neon } from "@neondatabase/serverless";
 import { schemaAddInventoryItem, schemaAddRaft } from "./zod/schmeas";
 import { User } from "@auth/core/types";
 import { ItemTypes, Items } from "@/types/types";
+import { toggleAvailability } from "@/actions/inventory";
 
 export async function fetchUsersFromDB() {
   const sql = neon(`${process.env.DATABASE_URL}`);
@@ -56,6 +57,16 @@ export async function addInventoryItem(
   return [result];
 }
 
+export async function toggleAvailabilityDb(unitNumber: number) {
+  const sql = neon(`${process.env.DATABASE_URL}`);
+  const result = await sql`
+    UPDATE inventory_item ii
+    SET status = CASE WHEN status = true THEN false ELSE true END
+    WHERE ii.unit_number = ${unitNumber}
+    RETURNING *;
+  `;
+  return [result];
+}
 export async function fetchTrips(tripCurrent: boolean, currentPage: number, orgId: string) {
   const pageSize: number = 10;
   const sql = neon(`${process.env.DATABASE_URL}`);
@@ -207,7 +218,7 @@ export async function searchTripsDB(
       : sql``
     }
         ORDER BY row.departure_time DESC
-        LIMIT ${pageSize} OFFSET ${offset}`;  
+        LIMIT ${pageSize} OFFSET ${offset}`;
   // Fetch total trip count to determine if there are more pages
   const totalTripsResult = await sql`
         SELECT COUNT(*) FROM items_rented row
