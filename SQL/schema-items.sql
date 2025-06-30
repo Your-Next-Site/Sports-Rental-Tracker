@@ -8,16 +8,24 @@ DROP TABLE IF EXISTS item_types CASCADE;
 -- Raft types
 CREATE TABLE item_types (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(50) UNIQUE NOT NULL
+    value VARCHAR(75) UNIQUE NOT NULL,
+    label VARCHAR(75) UNIQUE NOT NULL
 );
 
-INSERT INTO item_types (name) VALUES 
-('single-kayak'),
-    ('double-kayak'),
-    ('small-raft'),
-    ('round-raft'),
-    ('medium-raft'),
-    ('large-raft');
+INSERT INTO
+    item_types (value, label)
+VALUES (
+        'single-kayak',
+        'Single Kayak'
+    ),
+    (
+        'double-kayak',
+        'Double Kayak'
+    ),
+    ('small-raft', 'Small Raft'),
+    ('round-raft', 'Round Raft'),
+    ('medium-raft', 'Medium-Raft'),
+    ('large-raft', 'Large Raft');
 
 CREATE TABLE items_rented (
     id SERIAL PRIMARY KEY,
@@ -35,9 +43,10 @@ CREATE TABLE items_rented (
 CREATE TABLE inventory_item (
     id SERIAL PRIMARY KEY,
     unit_number INTEGER NOT NULL,
-    item_type_id INTEGER NOT NULL REFERENCES item_types (id) ,
-    status BOOLEAN DEFAULT true   
+    item_type_id INTEGER NOT NULL REFERENCES item_types (id),
+    status BOOLEAN DEFAULT true
 );
+
 SELECT * from inventory_item;
 -- Indexes for performance
 CREATE INDEX idx_items_rented_checked_out_by ON items_rented (checked_out_by);

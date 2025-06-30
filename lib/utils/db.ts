@@ -25,7 +25,7 @@ export async function fetchItems() {
   const result = await sql`
     SELECT 
       ii.unit_number as unitNumber,
-      it.name as type,
+      it.value as type,
       EXISTS (
         SELECT 1 FROM items_rented ir 
         WHERE ir.unit_number = ii.unit_number 
@@ -50,7 +50,7 @@ export async function addInventoryItem(
                 unit_number
             )
             VALUES (               
-                (SELECT id FROM item_types WHERE name = ${validatedFields.itemType}),
+                (SELECT id FROM item_types WHERE value = ${validatedFields.itemType}),
                 ${validatedFields.unitNumber}                                
             )
             RETURNING *`;
@@ -77,7 +77,7 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number, orgI
         SELECT 
             row.id,
             row.guest_name,
-            rt.name as item_type_name,
+            rt.value as item_type_name,
             row.unit_number,
             row.checked_out_by,
             row.organization_id,
@@ -128,7 +128,7 @@ export async function addRentalStartDB(
             )
             VALUES (
                 ${validatedFields.guestName},
-                (SELECT id FROM item_types WHERE name = ${validatedFields.itemType}),
+                (SELECT id FROM item_types WHERE value = ${validatedFields.itemType}),
                 ${validatedFields.unitNumber},
                 ${userId},
                 ${orgId},
@@ -203,7 +203,7 @@ export async function searchTripsDB(
             SELECT 
             row.id,
             row.guest_name,
-            it.name as item_type_name,
+            it.label as item_type_name,
             row.unit_number,
             row.checked_out_by,
             row.departure_time,

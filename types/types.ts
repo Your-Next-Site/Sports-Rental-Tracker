@@ -114,7 +114,8 @@ export interface AuthButtonProps {
 
 export interface ItemTypes {
   id: number;
-  name: string;
+  value: string;
+  label: string;
 }
 
 export interface Items {

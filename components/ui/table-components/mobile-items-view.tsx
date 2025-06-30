@@ -1,8 +1,10 @@
 'use client'
 import { useGetItems } from "@/hooks/hooks";
+import { useToggleAvailability } from "@/mutations/mutations";
 
 export default function MobileItemsView() {
     const { data, isError, isLoading } = useGetItems();
+    const { mutate } = useToggleAvailability();
     if (isLoading) {
         return (
             <div >
@@ -25,11 +27,17 @@ export default function MobileItemsView() {
                     <div><span className="font-bold">Unit Number:</span> {item.unitnumber}</div>
                     <div><span className="font-bold">Type:</span> {item.type}</div>
                     <div><span className="font-bold">Rented:</span> {item.rented ? 'Yes' : 'No'}</div>
-                    <div><span><select className="w-full" defaultValue={item.status ? "available" : "unavailable"}>
-                        <option value="available">Available</option>
-                        <option value="unavailable">Unavailable</option>
-                    </select>
-                    </span>
+                    <div>
+                        <span className="font-bold">
+                            <select
+                                className="w-full"
+                                defaultValue={item.status ? "available" : "unavailable"}
+                                onChange={() => mutate(item.unitnumber)}
+                            >
+                                <option value="available">Available</option>
+                                <option value="unavailable">Unavailable</option>
+                            </select>
+                        </span>
                     </div>
                 </div>
             ))}

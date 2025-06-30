@@ -39,8 +39,8 @@ export default function AddUnitForm({
                             <>
                                 <option value="" disabled hidden>Select Unit Type</option>
                                 {data?.map((item) => (
-                                    <option key={item.id} value={item.name}>
-                                        {item.name}
+                                    <option key={item.id} value={item.value}>
+                                        {item.label}
                                     </option>
                                 ))}
                             </>
