@@ -26,7 +26,7 @@ export default function TableBodyItems() {
             </tbody>
         );
     }
-    
+
     return (
         <tbody>
             {data?.map((item, index) => (
@@ -34,6 +34,12 @@ export default function TableBodyItems() {
                     <td className="border border-gray-300 px-4 py-2">{item.unitnumber}</td>
                     <td className="border border-gray-300 px-4 py-2">{item.type}</td>
                     <td className="border border-gray-300 px-4 py-2">{item.rented ? 'Yes' : 'No'}</td>
+                    <td className="border border-gray-300 px-4 py-2">
+                        <select  className="w-full" defaultValue={item.status ? "available" : "unavailable"}>
+                            <option value="available">Available</option>
+                            <option value="unavailable">Unavailable</option>
+                        </select>
+                    </td>
                     {/* <td className="border border-gray-300 px-4 py-2">{item.email}</td> */}
                 </tr>
             ))}
