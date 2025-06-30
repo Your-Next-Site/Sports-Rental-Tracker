@@ -24,7 +24,8 @@ export async function POST(req: NextRequest) {
                 const organization = await clerk.organizations.getOrganization({ organizationId: orgId });
                 console.log("Org: ", organization)
                 //     // Access plan from public or private metadata
-                //     const plan = organization.publicMetadata?.plan || organization.privateMetadata?.plan;
+                const plan = organization.publicMetadata?.plan || organization.privateMetadata?.plan;
+                console.log("Plan:", plan)
                 //     console.log("Plan: ", plan)
                 //     if (plan === 'basic_10_people_org') {
                 //         await clerk.organizations.updateOrganization(orgId, {
@@ -41,8 +42,12 @@ export async function POST(req: NextRequest) {
 
         return new Response('Webhook received', { status: 200 })
     } catch (err) {
-        console.error('Error verifying webhook:', err)
-        return new Response('Error verifying webhook', { status: 400 })
+        if (err instanceof Error) {
+            console.error('Error :', err.message)
+        } else {
+            console.error('Error :', err)
+        }
+        return new Response('Error', { status: 400 })
     }
 }
 
