@@ -9,11 +9,9 @@ import MobileItemsView from "@/components/ui/table-components/mobile-items-view"
 import TableBodyItems from "@/components/ui/table-components/table-body-items";
 import { TableHeadItems } from "@/components/ui/table-components/table-head-items";
 import { fetchItemTypes } from '@/lib/utils/db'
-import { auth } from "@clerk/nextjs/server";
 import { Suspense } from "react";
-export default async function Page() {
-    const { userId, orgId } = await auth.protect()
-    const itemTypesPromise = fetchItemTypes(orgId || userId);
+export default async function Page() {    
+    const itemTypesPromise = fetchItemTypes();
 
     return (
         <PageContainer>

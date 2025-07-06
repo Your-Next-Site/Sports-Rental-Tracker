@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const result = await fetchItemTypes(orgId || userId);
+    const result = await fetchItemTypes();
     return new Response(JSON.stringify(result), { headers: { 'Content-Type': 'application/json' } });
   } catch (error) {
     console.log(error)

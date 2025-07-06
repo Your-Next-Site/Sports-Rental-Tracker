@@ -1,11 +1,14 @@
 import { neon } from "@neondatabase/serverless";
 import { schemaAddInventoryItem, schemaAddInventoryItemType, schemaAddRaft } from "./zod/schemas";
 import { ItemTypes, Items } from "@/types/types";
+import { auth } from "@clerk/nextjs/server";
 
-export async function fetchItemTypes(orgId: string) {
+export async function fetchItemTypes() {
+  const { userId, orgId } = await auth.protect()
+  console.log("userId: ", userId)
   const sql = neon(`${process.env.DATABASE_URL}`);
   const result = await sql`
-    SELECT * FROM item_types WHERE organization_id = ${orgId};
+    SELECT * FROM item_types WHERE organization_id = ${orgId || userId};
     `;
   return result as ItemTypes[];
 }
