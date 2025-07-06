@@ -4,7 +4,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import DepartureForm from "../forms/departure-form";
 import RentedOut from "../rented-out/rented-out";
 import SearchHistory from "../search-history-component/search-history";
-import { fetchTrips, searchTrips } from "@/hooks/hooks";
+import { fetchTrips } from "@/hooks/hooks";
+import { searchTrips } from "@/lib/utils/fetchData";
 
 export default function Tab() {
   const [selectedTab, setSelectedTab] = useState("Departure");

@@ -10,6 +10,7 @@ import TableBodyItems from "@/components/ui/table-components/table-body-items";
 import { TableHeadItems } from "@/components/ui/table-components/table-head-items";
 import { fetchItemTypes } from '@/lib/utils/db'
 import { Suspense } from "react";
+
 export default async function Page() {    
     const itemTypesPromise = fetchItemTypes();
 

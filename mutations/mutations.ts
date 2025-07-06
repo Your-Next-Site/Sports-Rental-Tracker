@@ -1,9 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { addRentalStart, endRental } from "@/actions/trips"
-import { toggleAdmin, toggleEmployee } from "@/actions/users-old";
-import { Trip } from "@/types/types";
+// import { toggleAdmin, toggleEmployee } from "@/actions/users-old";
+// import { Trip } from "@/types/types";
 import { addInventory, addInventoryType, toggleAvailability } from "@/actions/inventory";
+import revalidatePathAction from "@/actions/revalidatePath";
 
 export const useAddInventory = () => {
     const queryClient = useQueryClient();
@@ -28,7 +29,8 @@ export const useAddInventoryType = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['items'] });
-               queryClient.invalidateQueries({ queryKey: [ 'item-types'] });
+            queryClient.invalidateQueries({ queryKey: ['item-types'] });
+            revalidatePathAction("/admin/inventory")
         },
         onError: (error) => {
             console.error('Mutation error:', error);

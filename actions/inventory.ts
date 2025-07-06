@@ -2,6 +2,7 @@
 import { addInventoryItem, addInventoryItemType, toggleAvailabilityDb } from "@/lib/utils/db";
 import { schemaAddInventoryItem, schemaAddInventoryItemType } from "@/lib/utils/zod/schemas";
 import { auth } from "@clerk/nextjs/server";
+import { revalidateTag } from "next/cache";
 
 export async function addInventory(formData: FormData) {
 
@@ -18,6 +19,8 @@ export async function addInventory(formData: FormData) {
 
     try {
         const [result] = await addInventoryItem(validatedFields.data, orgId || userId)
+
+        // revalidateTag('item-types'); // This will invalidate the cache for the tag
 
         if (!result) throw new Error('Failed to add to inventory');
 
