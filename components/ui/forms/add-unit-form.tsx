@@ -1,21 +1,25 @@
 'use client'
-import { useGetItemTypes } from "@/hooks/hooks";
-import SimpleSubmitButton from "../buttons/simple-submit-button";
+// import { useGetItemTypes } from "@/hooks/hooks";
 import { useAddInventory } from "@/mutations/mutations";
+import { ItemTypes } from "@/types/types";
+import { use } from "react";
 
 export default function AddUnitForm({
+    itemTypesPromise,
     child1,
     child2,
     child3,
 }: {
+    itemTypesPromise: Promise<ItemTypes[]>
     child1: React.ReactNode;
     child2: React.ReactNode;
     child3: React.ReactNode;
 }) {
 
-    const { data, isError: isErrorData, isLoading: isLoadingData } = useGetItemTypes();
+    // const { data, isError: isErrorData, isLoading: isLoadingData } = useGetItemTypes();
     const { mutate, isError: isErrorMutate } = useAddInventory();
-
+    const itemsTypes = use(itemTypesPromise);
+    
     return (
         <form
             action={mutate}
@@ -27,24 +31,17 @@ export default function AddUnitForm({
                     <select
                         className="px-4 py-2 w-full h-full"
                         name="item-type"
-                        required
-                        defaultValue={isLoadingData ? "isLoading" : isErrorData ? "isError" : ""}
-                        disabled={isLoadingData}
+                        required                       
                     >
-                        {isLoadingData ? (
-                            <option value="isLoading" disabled hidden>Loading Types of Units</option>
-                        ) : isErrorData ? (
-                            <option value="isError" disabled hidden>Error Loading Unit Types</option>
-                        ) : (
+                       
                             <>
                                 <option value="" disabled hidden>Select Unit Type</option>
-                                {data?.map((item) => (
+                                {itemsTypes?.map((item) => (
                                     <option key={item.id} value={item.value}>
                                         {item.label}
                                     </option>
                                 ))}
-                            </>
-                        )}
+                            </>                      
                     </select>
                 </div>
                 {child3}

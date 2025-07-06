@@ -20,7 +20,7 @@ export async function addRentalStart(formData: FormData) {
     try {
         const [result] = await addRentalStartDB(validatedFields.data, userId, orgId || userId)
 
-        if (!result) throw new Error('Failed to add raft to water');
+        if (!result) throw new Error('Failed to start units trips');
 
         return result;
     } catch (e: unknown) {
@@ -37,12 +37,10 @@ export async function endRental(raftOnWaterId: number) {
 
     const { userId, orgId } = await auth()
     if (!userId) throw new Error("No user is authenticated");
-
     try {
-        const sql = neon(`${process.env.DATABASE_URL} `);
         const [result] = await endRentalDB(validatedFields.data.raftOnWaterId, userId, orgId || userId)
 
-        if (!result) throw new Error('Failed to mark raft as arrived');
+        if (!result) throw new Error('Failed to mark unit as arrived');
         return result;
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : String(error);
