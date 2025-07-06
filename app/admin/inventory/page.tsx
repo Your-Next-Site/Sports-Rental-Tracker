@@ -8,12 +8,12 @@ import InputFormElement from "@/components/ui/inputs/input-form-element";
 import MobileItemsView from "@/components/ui/table-components/mobile-items-view";
 import TableBodyItems from "@/components/ui/table-components/table-body-items";
 import { TableHeadItems } from "@/components/ui/table-components/table-head-items";
-import { fetchItemTypes } from '@/lib/utils/fetchData'
+import { fetchItemTypes } from '@/lib/utils/db'
 import { auth } from "@clerk/nextjs/server";
 import { Suspense } from "react";
 export default async function Page() {
-    const { userId, orgId } = await auth()
-    const itemTypesPromise = fetchItemTypes(userId, orgId);
+    const { userId, orgId } = await auth.protect()
+    const itemTypesPromise = fetchItemTypes(orgId || userId);
 
     return (
         <PageContainer>
