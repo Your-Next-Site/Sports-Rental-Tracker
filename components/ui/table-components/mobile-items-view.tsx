@@ -5,6 +5,7 @@ import { useToggleAvailability } from "@/mutations/mutations";
 export default function MobileItemsView() {
     const { data, isError, isLoading } = useGetItems();
     const { mutate } = useToggleAvailability();
+    
     if (isLoading) {
         return (
             <div >

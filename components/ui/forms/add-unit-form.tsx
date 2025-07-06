@@ -34,7 +34,7 @@ export default function AddUnitForm({
                         {isLoadingData ? (
                             <option value="isLoading" disabled hidden>Loading Types of Units</option>
                         ) : isErrorData ? (
-                            <option value="isError" disabled hidden>Error loading unit types</option>
+                            <option value="isError" disabled hidden>Error Loading Unit Types</option>
                         ) : (
                             <>
                                 <option value="" disabled hidden>Select Unit Type</option>
