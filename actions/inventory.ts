@@ -1,6 +1,6 @@
 'use server'
-import { addInventoryItem, toggleAvailabilityDb } from "@/lib/utils/db";
-import { schemaAddInventoryItem } from "@/lib/utils/zod/schmeas";
+import { addInventoryItem, addInventoryItemType, toggleAvailabilityDb } from "@/lib/utils/db";
+import { schemaAddInventoryItem, schemaAddInventoryItemType } from "@/lib/utils/zod/schemas";
 import { auth } from "@clerk/nextjs/server";
 
 export async function addInventory(formData: FormData) {
@@ -19,7 +19,7 @@ export async function addInventory(formData: FormData) {
     try {
         const [result] = await addInventoryItem(validatedFields.data, orgId || userId)
 
-        if (!result) throw new Error('Failed to add raft to water');
+        if (!result) throw new Error('Failed to add to inventory');
 
         return result;
     } catch (e: unknown) {
@@ -43,4 +43,28 @@ export async function toggleAvailability(unitNumber: number) {
         throw new Error(errorMessage);
     }
 
+}
+
+export async function addInventoryType(formData: FormData) {
+    const { orgId, userId } = await auth()
+    if (!userId) {
+        throw new Error("No user ID found");
+    }
+    const validatedFields = schemaAddInventoryItemType.safeParse({
+        unitTypeValue: formData.get("unit-type-value"),
+        unitTypeLabel: formData.get("unit-type-label"),
+    });
+
+    if (!validatedFields.success) throw new Error("Invalid form data");
+
+    try {
+        const [result] = await addInventoryItemType(validatedFields.data, orgId || userId)
+
+        if (!result) throw new Error('Failed to add to inventory');
+
+        return result;
+    } catch (e: unknown) {
+        const errorMessage = e instanceof Error ? e.message : String(e);
+        throw new Error(errorMessage);
+    }
 }

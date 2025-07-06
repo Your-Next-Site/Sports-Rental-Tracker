@@ -2,7 +2,6 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { Trip, ItemTypes, Items } from '@/types/types'
 import { User } from "@auth/core/types";
 
-
 export const fetchItemTypes = async (): Promise<ItemTypes[]> => {
   const response = await fetch(`/api/item-types`)
   return await response.json();

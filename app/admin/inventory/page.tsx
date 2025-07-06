@@ -17,8 +17,9 @@ export default function Page() {
                     <h1 className="text-2xl font-semibold" >Inventory List</h1>
                     <AddUnitTypeForm                       
                         child1={<FormHeader title="Add Unit Type" />}
-                        child2={<InputFormElement placeholder="Unit Type" type="text" name="unit-type" />}
-                        child3={<SimpleSubmitButton />}
+                        child2={<InputFormElement placeholder="Unit Type Value" type="text" name="unit-type-value" />}
+                        child3={<InputFormElement placeholder="Unit Type Label" type="text" name="unit-type-label" />}
+                        child4={<SimpleSubmitButton />}
                     />
                     <AddUnitForm
                         child1={<FormHeader title='Add Unit' />}

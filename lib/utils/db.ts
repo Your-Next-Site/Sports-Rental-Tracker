@@ -1,5 +1,5 @@
 import { neon } from "@neondatabase/serverless";
-import { schemaAddInventoryItem, schemaAddRaft } from "./zod/schmeas";
+import { schemaAddInventoryItem, schemaAddInventoryItemType, schemaAddRaft } from "./zod/schemas";
 import { ItemTypes, Items } from "@/types/types";
 
 export async function fetchItemTypes(orgId: string) {
@@ -46,6 +46,28 @@ export async function addInventoryItem(
             VALUES (               
                 (SELECT id FROM item_types WHERE value = ${validatedFields.itemType}),
                 ${validatedFields.unitNumber},
+                ${orgId}                                
+            )
+            
+            RETURNING *`;
+  return [result];
+}
+
+export async function addInventoryItemType(
+  validatedFields: typeof schemaAddInventoryItemType._type,
+  orgId: string
+) {
+  const sql = neon(`${process.env.DATABASE_URL}`);
+
+  const [result] = await sql`
+            INSERT INTO item_types (                
+                value,
+                label,
+                organization_id
+            )
+            VALUES (               
+                ${validatedFields.unitTypeValue},
+                ${validatedFields.unitTypeLabel},
                 ${orgId}                                
             )
             

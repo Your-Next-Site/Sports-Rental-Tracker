@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { addRentalStart, endRental } from "@/actions/trips"
 import { toggleAdmin, toggleEmployee } from "@/actions/users-old";
 import { Trip } from "@/types/types";
-import { addInventory, toggleAvailability } from "@/actions/inventory";
+import { addInventory, addInventoryType, toggleAvailability } from "@/actions/inventory";
 
 export const useAddInventory = () => {
     const queryClient = useQueryClient();
@@ -13,6 +13,22 @@ export const useAddInventory = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['items'] });
+        },
+        onError: (error) => {
+            console.error('Mutation error:', error);
+        }
+    });
+};
+
+export const useAddInventoryType = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (formData: FormData) => {
+            return addInventoryType(formData);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['items'] });
+               queryClient.invalidateQueries({ queryKey: [ 'item-types'] });
         },
         onError: (error) => {
             console.error('Mutation error:', error);

@@ -1,24 +1,38 @@
+'use client'
+import { useAddInventoryType } from "@/mutations/mutations";
+
 export default function AddUnitTypeForm({
     child1,
     child2,
     child3,
+    child4,
 }: {
     child1: React.ReactNode;
     child2: React.ReactNode;
     child3: React.ReactNode;
+    child4: React.ReactNode;
 }) {
+    const { mutate, isError: isErrorMutate } = useAddInventoryType();
     return (
         <form
-            // action={'use() => { }}
-            className="flex flex-1 flex-col md:flex-row min-w-full border border-gray-300">
-            <div className="w-full flex-1 border-b md:border-b-0 md:border-r border-gray-300">
-                {child1}
+            action={mutate}
+            className="flex flex-1 flex-col min-w-full border border-gray-300"
+        >
+            <div className="w-full border-b border-gray-300">
+            {child1}
+            </div>
+            <div className="flex flex-col md:flex-row w-full">
+            <div className="flex-1 flex flex-col md:flex-row">
                 {child2}
-            </div>
-            <div className="md:ml-auto">
                 {child3}
+                 {isErrorMutate && <p className="text-red-500">Error Adding Item</p>}
             </div>
+            {child4}
+            </div>
+           
         </form>
 
     );
 }
+
+

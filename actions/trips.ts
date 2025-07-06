@@ -1,6 +1,6 @@
 'use server'
 import { addRentalStartDB, endRentalDB } from "@/lib/utils/db";
-import { schemaAddRaft, schemaRemoveRaft } from "@/lib/utils/zod/schmeas";
+import { schemaAddRaft, schemaRemoveRaft } from "@/lib/utils/zod/schemas";
 import { auth } from "@clerk/nextjs/server";
 import { neon } from "@neondatabase/serverless";
 
