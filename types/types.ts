@@ -27,6 +27,7 @@ export interface Trip {
 
 export interface InputsProps {
   isPending: boolean;
+  itemTypesPromise: Promise<ItemTypes[]>
 }
 
 export interface PaginationProps {
