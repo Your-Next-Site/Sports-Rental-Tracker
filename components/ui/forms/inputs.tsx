@@ -9,10 +9,9 @@ import { use } from "react";
 export default function Inputs({
     isPending,
     itemTypesPromise,
-}: InputsProps) {
-    // const { data, isError: isErrorData, isLoading: isLoadingData } = useGetItemTypes();
+}: InputsProps) {    
     const itemsTypes = use(itemTypesPromise);
-    console.log("item types:", itemsTypes)
+    
     return (
         <div className="flex flex-col md:flex-row gap-4">
             <div className="flex flex-col md:flex-row w-full p-2 gap-4 justify-center items-center">

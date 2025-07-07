@@ -1,6 +1,7 @@
 import SimpleSubmitButton from "@/components/ui/buttons/simple-submit-button";
 import MainContainer from "@/components/ui/containers/main-container";
 import PageContainer from "@/components/ui/containers/page-container";
+import DisplayUintTypes from "@/components/ui/display-data/display-unit-types";
 import AddUnitForm from "@/components/ui/forms/add-unit-form";
 import AddUnitTypeForm from "@/components/ui/forms/add-unit-type-form";
 import FormHeader from "@/components/ui/forms/form-header";
@@ -26,6 +27,14 @@ export default async function Page() {
                         child3={<InputFormElement placeholder="Unit Type Label" type="text" name="unit-type-label" />}
                         child4={<SimpleSubmitButton />}
                     />
+                    {/* Dummy list of unit types */}
+
+                    <div className="flex flex-1 flex-col min-w-full border border-gray-300">
+                        <div className="w-full border-b border-gray-300">
+                            <FormHeader title="Unit Types" />
+                        </div>
+                        <DisplayUintTypes itemTypesPromise={itemTypesPromise} />
+                    </div>
                     <Suspense fallback={<h1>Loading...</h1>}>
                         <AddUnitForm
                             itemTypesPromise={itemTypesPromise}
