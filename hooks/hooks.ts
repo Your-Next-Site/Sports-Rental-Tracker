@@ -1,7 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { Trip, ItemTypes, Items } from '@/types/types'
 import { User } from "@auth/core/types";
-import { searchTrips } from '@/lib/utils/fetchData';
 
 
 export const fetchItemTypes = async (): Promise<ItemTypes[]> => {
@@ -42,6 +41,11 @@ export const useGetTrips = (currentTrip: boolean, pageNumber: number) => {
   })
 }
 
+
+export const searchTrips = async (guestName: string, departureTime: any, page: number): Promise<{ trips: Trip[], hasMore: boolean, totalPages: number }> => {
+  const response = await fetch(`/api/search-trips?guestName=${guestName}&departureTime=${departureTime}&page=${page}`)
+  return await response.json();
+}
 
 export const useGetSearchPageTrips = ({ guestName, departureDate, page }: { guestName: string, departureDate: Date, page: number }) => {
   return useQuery({

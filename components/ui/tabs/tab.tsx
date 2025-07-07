@@ -4,8 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import DepartureForm from "../forms/departure-form";
 import RentedOut from "../rented-out/rented-out";
 import SearchHistory from "../search-history-component/search-history";
-import { fetchTrips } from "@/hooks/hooks";
-import { searchTrips } from "@/lib/utils/fetchData";
+import { fetchTrips,searchTrips } from "@/hooks/hooks";
 import { ItemTypes } from "@/types/types";
 
 export default function Tab({ itemTypesPromise }: { itemTypesPromise: Promise<ItemTypes[]> }) {

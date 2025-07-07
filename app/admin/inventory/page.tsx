@@ -13,6 +13,7 @@ import { fetchItemTypes, fetchItems } from '@/lib/utils/db'
 import { Suspense } from "react";
 
 
+
 export default async function Page() {
     const itemTypesPromise = fetchItemTypes();
     const itemPromise = fetchItems();
@@ -48,19 +49,12 @@ export default async function Page() {
                     {/* Desktop view (md and above) */}
                     <table className="hidden md:table min-w-full border-collapse border border-gray-300">
                         <TableHeadItems />
-                        <Suspense fallback={
-                            <tbody>
-                                <tr>
-                                    <td className="border border-gray-300 px-4 py-2 text-center" colSpan={4}>
-                                        Loading inventory...
-                                    </td>
-                                </tr>
-                            </tbody>}>
+                        <Suspense fallback={<FallBackTableBody />}>
                             <TableBodyItems itemPromise={itemPromise} />
                         </Suspense>
                     </table>
                     {/* Mobile view (below md breakpoint) */}
-                    <Suspense fallback={<h1>Loading...</h1>}>
+                    <Suspense fallback={<h1 className="md:hidden block">Loading...</h1>}>
                         <MobileItemsView itemPromise={itemPromise} />
                     </Suspense>
                 </div>
@@ -69,5 +63,15 @@ export default async function Page() {
     );
 }
 
-
+function FallBackTableBody() {
+    return (
+        <tbody>
+            <tr>
+                <td className="border border-gray-300 px-4 py-2 text-center" colSpan={4}>
+                    Loading inventory...
+                </td>
+            </tr>
+        </tbody>
+    );
+}
 

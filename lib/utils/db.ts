@@ -1,5 +1,5 @@
 import { neon } from "@neondatabase/serverless";
-import { schemaAddInventoryItem, schemaAddInventoryItemType, schemaAddRaft } from "./zod/schemas";
+import { schemaAddInventoryItem, schemaAddInventoryItemType, schemaAddRaft, schemaRemoveInventoryItemType } from "./zod/schemas";
 import { ItemTypes, Items } from "@/types/types";
 import { auth } from "@clerk/nextjs/server";
 
@@ -79,6 +79,20 @@ export async function addInventoryItemType(
   return [result];
 }
 
+export async function
+  removeInventoryItemTypeDb(
+    itemTypeId: number
+
+  ) {
+  const sql = neon(`${process.env.DATABASE_URL}`);
+
+  const [result] = await sql`
+    DELETE FROM item_types
+    WHERE id = ${itemTypeId}
+    RETURNING *;
+  `;
+  return [result];
+}
 export async function toggleAvailabilityDb(unitNumber: number, orgId: string) {
   const sql = neon(`${process.env.DATABASE_URL}`);
   const result = await sql`

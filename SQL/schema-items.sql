@@ -62,9 +62,9 @@ CREATE TABLE items_rented (
 CREATE TABLE inventory_item (
     id SERIAL PRIMARY KEY,
     unit_number INTEGER NOT NULL,
-    item_type_id INTEGER NOT NULL REFERENCES item_types (id),
-    status BOOLEAN DEFAULT true,
-    organization_id VARCHAR(175) NOT NULL
+    item_type_id INTEGER NOT NULL REFERENCES item_types (id) ON DELETE CASCADE,
+    organization_id VARCHAR(175) NOT NULL,
+    status BOOLEAN DEFAULT True
 );
 
 SELECT * from inventory_item;

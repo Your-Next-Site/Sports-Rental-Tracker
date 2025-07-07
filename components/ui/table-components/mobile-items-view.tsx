@@ -11,7 +11,7 @@ export default function MobileItemsView({itemPromise}:{itemPromise: Promise<Item
     return (
         <div className="md:hidden block">
             {items?.map((item, index) => (
-                <div key={index} className="border-b border-gray-300 p-4">
+                <div key={index} className="border border-gray-300 p-4">
                     <div><span className="font-bold">Unit Number:</span> {item.unitnumber}</div>
                     <div><span className="font-bold">Type:</span> {item.type}</div>
                     <div><span className="font-bold">Rented:</span> {item.rented ? 'Yes' : 'No'}</div>

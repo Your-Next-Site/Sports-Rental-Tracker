@@ -15,11 +15,9 @@ export default function AddUnitForm({
     child2: React.ReactNode;
     child3: React.ReactNode;
 }) {
-
-    // const { data, isError: isErrorData, isLoading: isLoadingData } = useGetItemTypes();
     const { mutate, isError: isErrorMutate } = useAddInventory();
     const itemsTypes = use(itemTypesPromise);
-    
+
     return (
         <form
             action={mutate}
@@ -31,17 +29,16 @@ export default function AddUnitForm({
                     <select
                         className="px-4 py-2 w-full h-full"
                         name="item-type"
-                        required                       
+                        required
                     >
-                       
-                            <>
-                                <option value="" disabled hidden>Select Unit Type</option>
-                                {itemsTypes?.map((item) => (
-                                    <option key={item.id} value={item.value}>
-                                        {item.label}
-                                    </option>
-                                ))}
-                            </>                      
+                        <>
+                            <option value="" disabled hidden>Select Unit Type</option>
+                            {itemsTypes?.map((item) => (
+                                <option key={item.id} value={item.value}>
+                                    {item.label}
+                                </option>
+                            ))}
+                        </>
                     </select>
                 </div>
                 {child3}

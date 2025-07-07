@@ -1,5 +1,4 @@
 'use client'
-import { useGetItems } from "@/hooks/hooks";
 import { useToggleAvailability } from "@/mutations/mutations";
 import { Items } from "@/types/types";
 import { use } from "react";
@@ -21,14 +20,13 @@ export default function TableBodyItems({
                     <td className="border border-gray-300 px-4 py-2">
                         <select
                             className="w-full"
-                            defaultValue={item.status ? "available" : "unavailable"}
+                            defaultValue={item.rented ? "unavailable" : "available"}
                             onChange={() => mutate(item.unitnumber)}
                         >
                             <option value="available">Available</option>
                             <option value="unavailable">Unavailable</option>
                         </select>
                     </td>
-                    {/* <td className="border border-gray-300 px-4 py-2">{item.email}</td> */}
                 </tr>
             ))}
         </tbody>
