@@ -33,7 +33,9 @@ export default async function Page() {
                         <div className="w-full border-b border-gray-300">
                             <FormHeader title="Unit Types" />
                         </div>
-                        <DisplayUintTypes itemTypesPromise={itemTypesPromise} />
+                        <Suspense fallback={<h1>Loading...</h1>}>
+                            <DisplayUintTypes itemTypesPromise={itemTypesPromise} />
+                        </Suspense>
                     </div>
                     <Suspense fallback={<h1>Loading...</h1>}>
                         <AddUnitForm
