@@ -1,39 +1,19 @@
 'use client'
 import { useGetItems } from "@/hooks/hooks";
 import { useToggleAvailability } from "@/mutations/mutations";
+import { Items } from "@/types/types";
+import { use } from "react";
 
-export default function TableBodyItems() {
+export default function TableBodyItems({
+    itemPromise,
+}: { itemPromise: Promise<Items[]> }) {
 
-    const { mutate } = useToggleAvailability();
-
-    const { data, isError, isLoading } = useGetItems();
-    if (isLoading) {
-        return (
-            <tbody>
-                <tr>
-                    <td colSpan={4} className="border border-gray-300 px-4 py-2 text-center">
-                        Loading...
-                    </td>
-                </tr>
-            </tbody>
-        );
-    }
-
-    if (isError) {
-        return (
-            <tbody>
-                <tr>
-                    <td colSpan={4} className="border border-gray-300 px-4 py-2 text-center text-red-500">
-                        Error loading data
-                    </td>
-                </tr>
-            </tbody>
-        );
-    }
-
+    const { mutate } = useToggleAvailability();   
+    const items = use(itemPromise);
+    
     return (
         <tbody>
-            {data?.map((item, index) => (
+            {items?.map((item, index) => (
                 <tr key={index}>
                     <td className="border border-gray-300 px-4 py-2">{item.unitnumber}</td>
                     <td className="border border-gray-300 px-4 py-2">{item.type}</td>

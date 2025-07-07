@@ -8,12 +8,13 @@ import InputFormElement from "@/components/ui/inputs/input-form-element";
 import MobileItemsView from "@/components/ui/table-components/mobile-items-view";
 import TableBodyItems from "@/components/ui/table-components/table-body-items";
 import { TableHeadItems } from "@/components/ui/table-components/table-head-items";
-import { fetchItemTypes } from '@/lib/utils/db'
+import { fetchItemTypes, fetchItems } from '@/lib/utils/db'
 import { Suspense } from "react";
 
-export default async function Page() {    
-    const itemTypesPromise = fetchItemTypes();
 
+export default async function Page() {
+    const itemTypesPromise = fetchItemTypes();
+    const itemPromise = fetchItems();
     return (
         <PageContainer>
             <MainContainer>
@@ -36,7 +37,16 @@ export default async function Page() {
                     {/* Desktop view (md and above) */}
                     <table className="hidden md:table min-w-full border-collapse border border-gray-300">
                         <TableHeadItems />
-                        <TableBodyItems />
+                        <Suspense fallback={
+                            <tbody>
+                                <tr>
+                                    <td className="border border-gray-300 px-4 py-2 text-center" colSpan={4}>
+                                        Loading inventory...
+                                    </td>
+                                </tr>
+                            </tbody>}>
+                            <TableBodyItems itemPromise={itemPromise} />
+                        </Suspense>
                     </table>
                     {/* Mobile view (below md breakpoint) */}
                     <MobileItemsView />
@@ -45,5 +55,6 @@ export default async function Page() {
         </PageContainer>
     );
 }
+
 
 

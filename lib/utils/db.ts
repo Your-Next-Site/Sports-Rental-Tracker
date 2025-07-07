@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 
 export async function fetchItemTypes() {
   const { userId, orgId } = await auth.protect()
-  console.log("userId: ", userId)
+
   const sql = neon(`${process.env.DATABASE_URL}`);
   const result = await sql`
     SELECT * FROM item_types WHERE organization_id = ${orgId || userId};
@@ -13,7 +13,8 @@ export async function fetchItemTypes() {
   return result as ItemTypes[];
 }
 
-export async function fetchItems(orgId: string) {
+export async function fetchItems() {
+  const { userId, orgId } = await auth.protect()
 
   const sql = neon(`${process.env.DATABASE_URL}`);
   const result = await sql`
@@ -29,7 +30,7 @@ export async function fetchItems(orgId: string) {
       ii.status
     FROM inventory_item ii
     JOIN item_types it ON ii.item_type_id = it.id
-    WHERE ii.organization_id = ${orgId};
+    WHERE ii.organization_id = ${orgId || userId};
   `;
   return result as Items[];
 }
