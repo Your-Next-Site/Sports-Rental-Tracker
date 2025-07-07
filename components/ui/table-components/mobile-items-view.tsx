@@ -1,29 +1,16 @@
 'use client'
-import { useGetItems } from "@/hooks/hooks";
 import { useToggleAvailability } from "@/mutations/mutations";
+import { Items } from "@/types/types";
+import { use } from "react";
 
-export default function MobileItemsView() {
-    const { data, isError, isLoading } = useGetItems();
-    const { mutate } = useToggleAvailability();
+export default function MobileItemsView({itemPromise}:{itemPromise: Promise<Items[]>}) {
     
-    if (isLoading) {
-        return (
-            <div >
-                Loading data
-            </div>
-        );
-    }
-
-    if (isError) {
-        return (
-            <div className="text-red-500">
-                Error loading data
-            </div>
-        );
-    }
+    const { mutate } = useToggleAvailability();
+     const items = use(itemPromise);
+   
     return (
         <div className="md:hidden block">
-            {data?.map((item, index) => (
+            {items?.map((item, index) => (
                 <div key={index} className="border-b border-gray-300 p-4">
                     <div><span className="font-bold">Unit Number:</span> {item.unitnumber}</div>
                     <div><span className="font-bold">Type:</span> {item.type}</div>

@@ -49,7 +49,9 @@ export default async function Page() {
                         </Suspense>
                     </table>
                     {/* Mobile view (below md breakpoint) */}
-                    <MobileItemsView />
+                    <Suspense fallback={<h1>Loading...</h1>}>
+                        <MobileItemsView itemPromise={itemPromise} />
+                    </Suspense>
                 </div>
             </MainContainer>
         </PageContainer>
