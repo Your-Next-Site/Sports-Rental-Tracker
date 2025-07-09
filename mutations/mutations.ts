@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { addRentalStart, endRental } from "@/actions/trips"
-import { addInventory, addInventoryType, toggleAvailability, removeInventoryType } from "@/actions/inventory";
+import { addInventory, addInventoryType, toggleAvailability, removeInventoryType, removeInventory } from "@/actions/inventory";
 import revalidatePathAction from "@/actions/revalidatePath";
 
 export const useAddInventory = () => {
@@ -17,6 +17,21 @@ export const useAddInventory = () => {
         }
     });
 };
+
+export const useRemoveInventory = () => {
+    return useMutation({
+        mutationFn: (id: number) => {
+            return removeInventory(id);
+        },
+        onSuccess: () => {
+            revalidatePathAction("/admin/inventory")
+        },
+        onError: (error) => {
+            console.error('Mutation error:', error);
+        }
+    });
+};
+
 
 export const useRemoveInventoryType = () => {
     return useMutation({

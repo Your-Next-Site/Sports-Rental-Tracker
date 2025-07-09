@@ -64,4 +64,5 @@ export interface Items {
   type: string;
   rented: boolean;
   status: boolean;
+  id: number;
 }

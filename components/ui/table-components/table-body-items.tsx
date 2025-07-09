@@ -1,5 +1,5 @@
 'use client'
-import { useToggleAvailability } from "@/mutations/mutations";
+import { useRemoveInventory, useToggleAvailability } from "@/mutations/mutations";
 import { Items } from "@/types/types";
 import { use } from "react";
 import RemoveButton from "../buttons/remove";
@@ -10,8 +10,8 @@ export default function TableBodyItems({
 }: { itemPromise: Promise<Items[]> }) {
 
     const { mutate } = useToggleAvailability();
+    const { mutate: mutateRemoveInventory } = useRemoveInventory();
     const items = use(itemPromise);
-
     return (
         <tbody>
             {items?.map((item, index) => (
@@ -28,11 +28,11 @@ export default function TableBodyItems({
                             <option value="available">Available</option>
                             <option value="unavailable">Unavailable</option>
                         </select>
-                        <AlertDialogComponent text="X" func={function (id: number): void {
-                            throw new Error("Function not implemented.");
-                        } } id={0}>
-
-                        </AlertDialogComponent>
+                        <AlertDialogComponent
+                            text="X"
+                            func={(id) => mutateRemoveInventory(id)}
+                            id={item.id}
+                        />
                     </td>
                 </tr>
             ))}

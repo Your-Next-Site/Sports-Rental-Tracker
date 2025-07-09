@@ -15,6 +15,11 @@ export const schemaAddInventoryItem = z.object({
     unitNumber: z.number(),
 })
 
+export const schemaRemoveInventoryItem = z.object({    
+    inventoryId: z.number(),
+})
+
+
 export const schemaAddInventoryItemType = z.object({
     unitTypeValue: z.string(),
     unitTypeLabel: z.string(),

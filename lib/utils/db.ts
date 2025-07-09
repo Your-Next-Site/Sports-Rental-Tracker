@@ -1,5 +1,5 @@
 import { neon } from "@neondatabase/serverless";
-import { schemaAddInventoryItem, schemaAddInventoryItemType, schemaAddRaft, schemaRemoveInventoryItemType } from "./zod/schemas";
+import { schemaAddInventoryItem, schemaAddInventoryItemType, schemaAddRaft, schemaRemoveInventoryItem, schemaRemoveInventoryItemType } from "./zod/schemas";
 import { ItemTypes, Items } from "@/types/types";
 import { auth } from "@clerk/nextjs/server";
 
@@ -19,6 +19,7 @@ export async function fetchItems() {
   const sql = neon(`${process.env.DATABASE_URL}`);
   const result = await sql`
     SELECT 
+      ii.id as id,
       ii.unit_number as unitNumber,
       it.value as type,
       EXISTS (
@@ -54,6 +55,19 @@ export async function addInventoryItem(
             )
             
             RETURNING *`;
+  return [result];
+}
+
+export async function removeInventoryItem(
+  id: number,
+  orgId: string
+) {
+  const sql = neon(`${process.env.DATABASE_URL}`);
+
+  const [result] = await sql`
+    DELETE FROM inventory_item
+    WHERE id = ${id} AND organization_id = ${orgId}
+    RETURNING *`;
   return [result];
 }
 
