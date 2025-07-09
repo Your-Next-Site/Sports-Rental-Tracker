@@ -3,8 +3,10 @@ export default function RemoveButton({ isPending, mutate, itemType }: { isPendin
     return (
         <button
             disabled={isPending}
-            className="border p-1 text-center rounded-sm hover:bg-gray-300"
+            className="border p-2 text-center rounded-sm hover:bg-gray-300"
             onClick={() => mutate(itemType.id)}
-        >X</button>
+        >
+            X
+        </button>
     );
 }

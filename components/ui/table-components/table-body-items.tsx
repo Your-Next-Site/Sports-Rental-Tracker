@@ -18,7 +18,7 @@ export default function TableBodyItems({
                     <td className="border border-gray-300 px-4 py-2">{item.unitnumber}</td>
                     <td className="border border-gray-300 px-4 py-2">{item.type}</td>
                     <td className="border border-gray-300 px-4 py-2">{item.rented ? 'Yes' : 'No'}</td>
-                    <td className="border border-gray-300 px-4 py-2">
+                    <td className="flex gap-2 border border-gray-300 px-4 py-2">
                         <select
                             className="w-full"
                             defaultValue={item.rented ? "unavailable" : "available"}
@@ -27,14 +27,12 @@ export default function TableBodyItems({
                             <option value="available">Available</option>
                             <option value="unavailable">Unavailable</option>
                         </select>
-                    </td>
-                    <td className="border border-gray-300 px-4 py-2">
                         <RemoveButton isPending={false} mutate={function (argument: number): void {
                             throw new Error("Function not implemented.");
                         }} itemType={{
                             id: 0
                         }} />
-                    </td>
+                    </td>                    
                 </tr>
             ))}
         </tbody>

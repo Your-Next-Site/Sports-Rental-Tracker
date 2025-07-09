@@ -5,9 +5,7 @@ export function TableHeadItems() {
                 <th className="border border-gray-300 px-4 py-2">Unit Number</th>
                 <th className="border border-gray-300 px-4 py-2">Type</th>
                 <th className="border border-gray-300 px-4 py-2">Rented</th>
-                <th className="border border-gray-300 px-4 py-2">Status</th>
-                <th className="border border-gray-300 px-4 py-2"></th>
-                {/* <th className="border border-gray-300 px-4 py-2">Renter Email</th> */}
+                <th className="border border-gray-300 px-4 py-2 ">Status</th>
             </tr>
         </thead>
     );
