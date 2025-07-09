@@ -3,6 +3,7 @@ import { useToggleAvailability } from "@/mutations/mutations";
 import { Items } from "@/types/types";
 import { use } from "react";
 import RemoveButton from "../buttons/remove";
+import { AlertDialogComponent } from "../alerts/alert";
 
 export default function TableBodyItems({
     itemPromise,
@@ -27,12 +28,12 @@ export default function TableBodyItems({
                             <option value="available">Available</option>
                             <option value="unavailable">Unavailable</option>
                         </select>
-                        <RemoveButton isPending={false} mutate={function (argument: number): void {
+                        <AlertDialogComponent text="X" func={function (id: number): void {
                             throw new Error("Function not implemented.");
-                        }} itemType={{
-                            id: 0
-                        }} />
-                    </td>                    
+                        } } id={0}>
+
+                        </AlertDialogComponent>
+                    </td>
                 </tr>
             ))}
         </tbody>
