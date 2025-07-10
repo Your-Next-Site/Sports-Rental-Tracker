@@ -1,8 +1,65 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { addRentalStart, endRental } from "@/actions/trips"
-import { toggleAdmin, toggleEmployee } from "@/actions/users";
-import { Trip } from "@/types/types";
+import { addInventory, addInventoryType, toggleAvailability, removeInventoryType, removeInventory } from "@/actions/inventory";
+import revalidatePathAction from "@/actions/revalidatePath";
+
+export const useAddInventory = () => {
+    return useMutation({
+        mutationFn: (formData: FormData) => {
+            return addInventory(formData);
+        },
+        onSuccess: () => {
+            revalidatePathAction("/admin/inventory")
+        },
+        onError: (error) => {
+            console.error('Mutation error:', error);
+        }
+    });
+};
+
+export const useRemoveInventory = () => {
+    return useMutation({
+        mutationFn: (id: number) => {
+            return removeInventory(id);
+        },
+        onSuccess: () => {
+            revalidatePathAction("/admin/inventory")
+        },
+        onError: (error) => {
+            console.error('Mutation error:', error);
+        }
+    });
+};
+
+
+export const useRemoveInventoryType = () => {
+    return useMutation({
+        mutationFn: (itemTypeId: number) => {
+            return removeInventoryType(itemTypeId);
+        },
+        onSuccess: () => {
+            revalidatePathAction("/admin/inventory")
+        },
+        onError: (error) => {
+            console.error('Mutation error:', error);
+        }
+    });
+};
+
+export const useAddInventoryType = () => {
+    return useMutation({
+        mutationFn: (formData: FormData) => {
+            return addInventoryType(formData);
+        },
+        onSuccess: () => {
+            revalidatePathAction("/admin/inventory")
+        },
+        onError: (error) => {
+            console.error('Mutation error:', error);
+        }
+    });
+};
 
 export const useAddRentalStart = () => {
     const queryClient = useQueryClient();
@@ -19,75 +76,34 @@ export const useAddRentalStart = () => {
     });
 };
 
+
+export const useToggleAvailability = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (unitNumber: number) => {
+            return toggleAvailability(unitNumber);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['items'] });
+        },
+        onError: (error) => {
+            console.error('Mutation error:', error);
+        }
+    });
+};
+
 export const useEndRental = (currentPage: number, setPage: (page: number) => void) => {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: (raftOnWaterId: number) => endRental(raftOnWaterId),
-        onSuccess: (_, raftOnWaterId) => {
-            // Remove trip locally before refetch
-            queryClient.setQueryData(["trips", true, currentPage], (oldData: { trips: Trip[] }) => {
-                if (!oldData) return oldData;
-                const updatedTrips = oldData.trips.filter((trip) => trip.id !== raftOnWaterId);
-
-                // If no trips remain, move to previous page
-                if (updatedTrips.length === 0 && currentPage > 0) {
-                    setPage(currentPage - 1);
-                }
-
-                return { ...oldData, trips: updatedTrips };
-            });
-            queryClient.clear();
-        },
-        onError: (error) => {
-            console.error('Mutation error:', error);
-        }
-    });
-};
-
-export const useToggleAdmin = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (email: string) => {
-            return toggleAdmin(email);
-        },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['users'] });
+            queryClient.invalidateQueries({ queryKey: ["trips", true, currentPage] });
         },
         onError: (error) => {
             console.error('Mutation error:', error);
         }
     });
 };
-
-export const useToggleEmployee = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (email: string) => {
-            return toggleEmployee(email);
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['users'] });
-        },
-        onError: (error) => {
-            console.error('Mutation error:', error);
-        }
-    });
-};
-
-// export const useSearchTrips = () => {
-//     const queryClient = useQueryClient();
-//     return useMutation({
-//         mutationFn: ({ guestName, departureDate }: { guestName: string, departureDate: Date }) => {
-//             return searchTrips(guestName, departureDate);
-//         },
-//         onSuccess: (data: Trip[]) => {
-//             queryClient.invalidateQueries({ queryKey: ['searchPageTrips'] });
-//         },
-//         onError: (error) => {
-//             console.error('Mutation error:', error);
-//         }
-//     });
-// };
 
 

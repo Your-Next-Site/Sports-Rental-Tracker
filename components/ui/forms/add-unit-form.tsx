@@ -1,53 +1,49 @@
 'use client'
-import { useGetItemTypes } from "@/hooks/hooks";
-import SimpleSubmitButton from "../buttons/simple-submit-button";
+// import { useGetItemTypes } from "@/hooks/hooks";
+import { useAddInventory } from "@/mutations/mutations";
+import { ItemTypes } from "@/types/types";
+import { use } from "react";
 
-export default function AddUnitForm() {
+export default function AddUnitForm({
+    itemTypesPromise,
+    child1,
+    child2,
+    child3,
+}: {
+    itemTypesPromise: Promise<ItemTypes[]>
+    child1: React.ReactNode;
+    child2: React.ReactNode;
+    child3: React.ReactNode;
+}) {
+    const { mutate, isError: isErrorMutate } = useAddInventory();
+    const itemsTypes = use(itemTypesPromise);
 
-    const { data, isError: isErrorData, isLoading: isLoadingData } = useGetItemTypes();
     return (
-        <form className="flex flex-col min-w-full border border-gray-300">
-            <div className="bg-gray-100 w-full border-b border-gray-300">
-                <div className="px-4 py-2 text-center font-semibold">Add Unit</div>
-            </div>
+        <form
+            action={mutate}
+            className="flex flex-col min-w-full border border-gray-300">
+            {child1}
             <div className="flex flex-col md:flex-row">
-                <div className="flex-1 border-b md:border-b-0 md:border-r border-gray-300">
-                    <input
-                        className="px-4 py-2 w-full h-full"
-                        placeholder="Unit Number"
-                        type="number"
-                        name="unit-number"
-                        required
-                    />
-                </div>
+                {child2}
                 <div className="flex-1 border-b md:border-b-0 md:border-r border-gray-300">
                     <select
                         className="px-4 py-2 w-full h-full"
-                        name="unit-type"
+                        name="item-type"
                         required
-                        defaultValue={isLoadingData ? "isLoading" : isErrorData ? "isError" : ""}
-                        disabled={isLoadingData}
                     >
-                        {isLoadingData ? (
-                            <option value="isLoading" disabled hidden>Loading Types of Units</option>
-                        ) : isErrorData ? (
-                            <option value="isError" disabled hidden>Error loading unit types</option>
-                        ) : (
-                            <>
-                                <option value="" disabled hidden>Select Unit Type</option>
-                                {data?.map((item) => (
-                                    <option key={item.id} value={item.name}>
-                                        {item.name}
-                                    </option>
-                                ))}
-                            </>
-                        )}
+                        <>
+                            <option value="" disabled hidden>Select Unit Type</option>
+                            {itemsTypes?.map((item) => (
+                                <option key={item.id} value={item.value}>
+                                    {item.label}
+                                </option>
+                            ))}
+                        </>
                     </select>
                 </div>
-                <div className="px-4 py-2 flex items-center justify-center">
-                    <SimpleSubmitButton />
-                </div>
+                {child3}
             </div>
+            {isErrorMutate && <p className="text-red-500">Error Adding Item</p>}
         </form>
 
     );

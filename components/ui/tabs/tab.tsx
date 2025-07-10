@@ -4,9 +4,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import DepartureForm from "../forms/departure-form";
 import RentedOut from "../rented-out/rented-out";
 import SearchHistory from "../search-history-component/search-history";
-import { fetchTrips, searchTrips } from "@/hooks/hooks";
+import { fetchTrips,searchTrips } from "@/hooks/hooks";
+import { ItemTypes } from "@/types/types";
 
-export default function Tab() {
+export default function Tab({ itemTypesPromise }: { itemTypesPromise: Promise<ItemTypes[]> }) {
   const [selectedTab, setSelectedTab] = useState("Departure");
   const tabs = ["Departure", "Rented Out", "Search"];
   const queryClient = useQueryClient();
@@ -50,7 +51,7 @@ export default function Tab() {
           </button>
         ))}
       </div>
-      {selectedTab == "Departure" && <DepartureForm />}
+      {selectedTab == "Departure" && <DepartureForm itemTypesPromise={itemTypesPromise} />}
       {selectedTab == "Rented Out" && <RentedOut />}
       {selectedTab == "Search" && <SearchHistory />}
     </div >

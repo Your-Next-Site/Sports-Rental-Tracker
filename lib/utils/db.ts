@@ -1,26 +1,124 @@
 import { neon } from "@neondatabase/serverless";
-import { schemaAddRaft } from "./zod/schmeas";
-import { User } from "@auth/core/types";
-import { ItemTypes } from "@/types/types";
+import { schemaAddInventoryItem, schemaAddInventoryItemType, schemaAddRaft, schemaRemoveInventoryItem, schemaRemoveInventoryItemType } from "./zod/schemas";
+import { ItemTypes, Items } from "@/types/types";
+import { auth } from "@clerk/nextjs/server";
 
-export async function fetchUsersFromDB() {
+export async function fetchItemTypes() {
+  const { userId, orgId } = await auth.protect()
+
   const sql = neon(`${process.env.DATABASE_URL}`);
   const result = await sql`
-    SELECT * FROM users;
-    `;
-  return result as User[];
-}
-
-export async function fetchTItemTypes() {
-  const sql = neon(`${process.env.DATABASE_URL}`);
-  const result = await sql`
-    SELECT * FROM item_types;
+    SELECT * FROM item_types WHERE organization_id = ${orgId || userId};
     `;
   return result as ItemTypes[];
 }
 
-export async function fetchTrips(tripCurrent: boolean, currentPage: number, orgId: string) {
+export async function fetchItems() {
+  const { userId, orgId } = await auth.protect()
 
+  const sql = neon(`${process.env.DATABASE_URL}`);
+  const result = await sql`
+    SELECT 
+      ii.id as id,
+      ii.unit_number as unitNumber,
+      it.value as type,
+      EXISTS (
+        SELECT 1 FROM items_rented ir 
+        WHERE ir.unit_number = ii.unit_number 
+        AND ir.item_type_id = ii.item_type_id 
+        AND ir.arrival_time IS NULL
+      ) as rented,
+      ii.status
+    FROM inventory_item ii
+    JOIN item_types it ON ii.item_type_id = it.id
+    WHERE ii.organization_id = ${orgId || userId};
+  `;
+  return result as Items[];
+}
+
+export async function addInventoryItem(
+  validatedFields: typeof schemaAddInventoryItem._type,
+  orgId: string
+) {
+  const sql = neon(`${process.env.DATABASE_URL}`);
+
+  const [result] = await sql`
+            INSERT INTO inventory_item (                
+                item_type_id,
+                unit_number,
+                organization_id
+            )
+            VALUES (               
+                (SELECT id FROM item_types WHERE value = ${validatedFields.itemType}),
+                ${validatedFields.unitNumber},
+                ${orgId}                                
+            )
+            
+            RETURNING *`;
+  return [result];
+}
+
+export async function removeInventoryItem(
+  id: number,
+  orgId: string
+) {
+  const sql = neon(`${process.env.DATABASE_URL}`);
+
+  const [result] = await sql`
+    DELETE FROM inventory_item
+    WHERE id = ${id} AND organization_id = ${orgId}
+    RETURNING *`;
+  return [result];
+}
+
+export async function addInventoryItemType(
+  validatedFields: typeof schemaAddInventoryItemType._type,
+  orgId: string
+) {
+  const sql = neon(`${process.env.DATABASE_URL}`);
+
+  const [result] = await sql`
+            INSERT INTO item_types (                
+                value,
+                label,
+                organization_id
+            )
+            VALUES (               
+                ${validatedFields.unitTypeValue},
+                ${validatedFields.unitTypeLabel},
+                ${orgId}                                
+            )
+            
+            RETURNING *`;
+  return [result];
+}
+
+export async function
+  removeInventoryItemTypeDb(
+    itemTypeId: number
+
+  ) {
+  const sql = neon(`${process.env.DATABASE_URL}`);
+
+  const [result] = await sql`
+    DELETE FROM item_types
+    WHERE id = ${itemTypeId}
+    RETURNING *;
+  `;
+  return [result];
+}
+export async function toggleAvailabilityDb(unitNumber: number, orgId: string) {
+  const sql = neon(`${process.env.DATABASE_URL}`);
+  const result = await sql`
+    UPDATE inventory_item ii
+    SET status = CASE WHEN status = true THEN false ELSE true END
+    WHERE ii.unit_number = ${unitNumber}
+    AND ii.organization_id = ${orgId}
+    RETURNING *;
+  `;
+  return [result];
+}
+export async function fetchTrips(tripCurrent: boolean, currentPage: number, orgId: string) {
   const pageSize: number = 10;
   const sql = neon(`${process.env.DATABASE_URL}`);
   const offset = currentPage * pageSize; // Calculate where to start fetching results
@@ -30,7 +128,7 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number, orgI
         SELECT 
             row.id,
             row.guest_name,
-            rt.name as item_type_name,
+            rt.label as item_type_id,
             row.unit_number,
             row.checked_out_by,
             row.organization_id,
@@ -81,7 +179,7 @@ export async function addRentalStartDB(
             )
             VALUES (
                 ${validatedFields.guestName},
-                (SELECT id FROM item_types WHERE name = ${validatedFields.itemType}),
+                (SELECT id FROM item_types WHERE value = ${validatedFields.itemType}),
                 ${validatedFields.unitNumber},
                 ${userId},
                 ${orgId},
@@ -93,15 +191,17 @@ export async function addRentalStartDB(
 }
 
 export async function endRentalDB(
-  raftOnWaterId: number,
-  userId: string | null | undefined
+  rentedUnitId: number,
+  userId: string | null | undefined,
+  orgId: string
 ) {
   const sql = neon(`${process.env.DATABASE_URL}`);
   const [result] = await sql`
         UPDATE items_rented 
         SET arrival_time = NOW(),
             checked_in_by = ${userId}
-        WHERE id = ${raftOnWaterId}
+        WHERE id = ${rentedUnitId}
+        AND organization_id  =${orgId}
         RETURNING *;
         `;
   return [result];
@@ -132,7 +232,8 @@ export async function toggleEmployeeDB(email: string) {
 export async function searchTripsDB(
   guestName: string | string,
   departureTime: Date | string,
-  currentPage: number
+  currentPage: number,
+  orgId: string
 ) {
   const pageSize: number = 10;
   const offset = currentPage * pageSize; // Calculate where to start fetching results
@@ -153,24 +254,24 @@ export async function searchTripsDB(
 
   const trips = await sql`
             SELECT 
-            row.id,
-            row.guest_name,
-            it.name as item_type_name,
-            row.unit_number,
-            row.checked_out_by,
-            row.departure_time,
-            row.arrival_time                
-        FROM items_rented row
-        JOIN item_types it ON row.item_type_id = it.id
+            ir.id,
+            ir.guest_name,
+            it.label as item_type_id,
+            ir.unit_number,
+            ir.checked_out_by,
+            ir.departure_time,
+            ir.arrival_time                
+        FROM items_rented ir
+        JOIN item_types it ON ir.item_type_id = it.id
         WHERE 
-            LOWER(row.guest_name) LIKE LOWER(${"%" + guestName + "%"})
+            LOWER(ir.guest_name) LIKE LOWER(${"%" + guestName + "%"})
+            AND ir.organization_id = ${orgId}
             ${dateCondition
-      ? sql`AND row.departure_time BETWEEN ${adjustedTime} AND ${endTime}`
+      ? sql`AND ir.departure_time BETWEEN ${adjustedTime} AND ${endTime}`
       : sql``
     }
-        ORDER BY row.departure_time DESC
+        ORDER BY ir.departure_time DESC
         LIMIT ${pageSize} OFFSET ${offset}`;
-
   // Fetch total trip count to determine if there are more pages
   const totalTripsResult = await sql`
         SELECT COUNT(*) FROM items_rented row
@@ -185,8 +286,6 @@ export async function searchTripsDB(
   const totalTrips = Number(totalTripsResult[0].count);
   const hasMore = offset + pageSize < totalTrips;
   const totalPages = Math.ceil(Number(totalTripsResult[0].count) / pageSize);
-
-
 
   return { trips, hasMore, totalPages };
   // return result as Trip[];

@@ -1,4 +1,6 @@
 -- Drop tables if they exist, in the correct dependency order
+DROP TABLE IF EXISTS inventory_item CASCADE;
+
 DROP TABLE IF EXISTS items_rented CASCADE;
 
 DROP TABLE IF EXISTS item_types CASCADE;
@@ -6,20 +8,44 @@ DROP TABLE IF EXISTS item_types CASCADE;
 -- Raft types
 CREATE TABLE item_types (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(50) UNIQUE NOT NULL
+    value VARCHAR(75) UNIQUE NOT NULL,
+    label VARCHAR(75) UNIQUE NOT NULL,
+    organization_id VARCHAR(75) NOT NULL
 );
 
--- Insert raft types first
 INSERT INTO
-    item_types (name)
-VALUES ('single-kayak'),
-    ('double-kayak'),
-    ('small-raft'),
-    ('round-raft'),
-    ('medium-raft'),
-    ('large-raft');
+    item_types (value, label, organization_id)
+VALUES (
+        'single-kayak',
+        'Single Kayak',
+        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
+    ),
+    (
+        'double-kayak',
+        'Double Kayak',
+        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
+    ),
+    (
+        'small-raft',
+        'Small Raft',
+        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
+    ),
+    (
+        'round-raft',
+        'Round Raft',
+        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
+    ),
+    (
+        'medium-raft',
+        'Medium-Raft',
+        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
+    ),
+    (
+        'large-raft',
+        'Large Raft',
+        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
+    );
 
--- Rafts on Water (track which user is using which raft type and unit number)
 CREATE TABLE items_rented (
     id SERIAL PRIMARY KEY,
     guest_name VARCHAR(150) NOT NULL,
@@ -33,6 +59,15 @@ CREATE TABLE items_rented (
     FOREIGN KEY (item_type_id) REFERENCES item_types (id) ON DELETE CASCADE
 );
 
+CREATE TABLE inventory_item (
+    id SERIAL PRIMARY KEY,
+    unit_number INTEGER NOT NULL,
+    item_type_id INTEGER NOT NULL REFERENCES item_types (id) ON DELETE CASCADE,
+    organization_id VARCHAR(175) NOT NULL,
+    status BOOLEAN DEFAULT True
+);
+
+SELECT * from inventory_item;
 -- Indexes for performance
 CREATE INDEX idx_items_rented_checked_out_by ON items_rented (checked_out_by);
 -- Index for checked_out_by
@@ -41,4 +76,4 @@ CREATE INDEX idx_items_rented_item_type_id ON items_rented (item_type_id);
 CREATE INDEX idx_items_rented_unit_number ON items_rented (unit_number);
 -- New index for unit_number
 
-select * from items_rented
+-- select * from items_rented

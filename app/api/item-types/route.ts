@@ -1,13 +1,21 @@
-import { fetchTItemTypes } from '@/lib/utils/db';
+import { fetchItemTypes } from '@/lib/utils/db';
+
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
-    try {
-        const result = await fetchTItemTypes();
-        return new Response(JSON.stringify(result), { headers: { 'Content-Type': 'application/json' } });
-    } catch (error) {
-        console.log(error)
-        return new Response(`Error fetching raft data: ${error}`, { status: 500, headers: { 'Content-Type': 'text/plain' } });
-    }
-}
+  const { searchParams } = new URL(request.url);
+  const userId = searchParams.get('userId');
+  const orgId = searchParams.get('orgId');
 
+  if (!userId) {
+    return new Response('Unauthorized: No user ID found', { status: 401, headers: { 'Content-Type': 'text/plain' } });
+  }
+
+  try {
+    const result = await fetchItemTypes();
+    return new Response(JSON.stringify(result), { headers: { 'Content-Type': 'application/json' } });
+  } catch (error) {
+    console.log(error)
+    return new Response(`Error fetching rental data: ${error}`, { status: 500, headers: { 'Content-Type': 'text/plain' } });
+  }
+}

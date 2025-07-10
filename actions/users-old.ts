@@ -1,8 +1,9 @@
 'use server'
 import { toggleAdminDB, toggleEmployeeDB } from "@/lib/utils/db";
+import { auth } from "@clerk/nextjs/server";
 
 export async function toggleAdmin(email: string) {
-
+    await auth.protect()
     try {
         const [result] = await toggleAdminDB(email)
 
@@ -16,7 +17,7 @@ export async function toggleAdmin(email: string) {
 }
 
 export async function toggleEmployee(email: string) {
-
+    await auth.protect()
     try {
         const [result] = await toggleEmployeeDB(email)
 
