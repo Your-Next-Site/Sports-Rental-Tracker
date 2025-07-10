@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
             // (evt.type as string) === 'subscriptionItem.ended'
         ) {
             const orgId = evt.data.id
-            const plan = evt.data.plan.name
+            const plan = evt.data
 
             console.log("Org Id : ", orgId, " and plan: ", plan)
         }
