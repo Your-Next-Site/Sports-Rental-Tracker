@@ -1,4 +1,4 @@
-import { clerkClient, clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 
 const isOrgRoute = createRouteMatcher(['/(.*)'])
@@ -7,8 +7,8 @@ const isAdminRoute = createRouteMatcher(['/admin(.*)','/api/items(.*)'])
 
 
 export default clerkMiddleware(async (auth, req) => {
-  const clerk = await clerkClient()
-  const { has, orgId, userId, sessionClaims } = await auth()
+  // const clerk = await clerkClient()
+  const { userId, sessionClaims } = await auth()
   // console.log("Admin?: ", sessionClaims?.orgRole)
   if (isAdminRoute(req) && sessionClaims?.orgRole !== 'org:admin') {
     const url = req.nextUrl.clone()
