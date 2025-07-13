@@ -1,20 +1,20 @@
 "use client";
-import { useEndRental} from "@/mutations/mutations";
+import { useEndRental } from "@/mutations/mutations";
 import MainContainer from "../containers/main-container";
 import { useGetTrips } from "@/hooks/hooks";
-import { useState } from "react";
+import { use, useState } from "react";
 import PaginationBar from "../pagination/pagination-bar";
+import { Trip } from "@/types/types";
 
-export default function RentedOut() {
+export default function RentedOut({ rentedOutPage, tripsPromise }:
+  {
+    rentedOutPage: number,
+    tripsPromise: Promise<{ trips: Trip[], hasMore: boolean, totalPages: number }>
+  }) {
+
   const [page, setPage] = useState(0);
 
-  const {
-    data,
-    isLoading,
-    isError: isErrorData,
-    isPlaceholderData,
-    refetch, 
-  } = useGetTrips(true, page);
+  const { trips: data, hasMore, totalPages } = use(tripsPromise);
 
   const {
     mutate,
@@ -22,24 +22,19 @@ export default function RentedOut() {
     isError: isErrorMutate,
   } = useEndRental(page, setPage);
 
-  if (isLoading) return <MainContainer>Loading.... </MainContainer>;
-  if (isErrorData) return <MainContainer>Error loading trips</MainContainer>;
-
   return (
     <MainContainer>
       <div className="flex flex-col gap-8">
         <h1 className="text-2xl">Guests with rented equipment</h1>
-        <button className='border rounded-sm md:w-1/6 w-2/6 mx-auto hover:bg-gray-100' onClick={() => refetch()}>Refetch</button>
+        {/* <button className='border rounded-sm md:w-1/6 w-2/6 mx-auto hover:bg-gray-100' onClick={() => refetch()}>Refetch</button> */}
       </div>
       <Trips
         isError={isErrorMutate}
-        data={data?.trips}
+        data={data}
         isPending={isPending}
         mutate={mutate}
       />
-      <PaginationBar
-        setPage={setPage} page={page} data={data ?? { trips: [], hasMore: false, totalPages: 1 }} isPlaceholderData={isPlaceholderData}
-      />
+      <PaginationBar page={rentedOutPage} currentTab={"Rented Out"} hasMore={hasMore} totalPages={totalPages} pathName={"/main-rental-page"} />
     </MainContainer>
   );
 }

@@ -39,7 +39,6 @@ export const useGetTrips = (currentTrip: boolean, pageNumber: number) => {
   })
 }
 
-
 export const searchTrips = async (guestName: string, departureTime: any, page: number): Promise<{ trips: Trip[], hasMore: boolean, totalPages: number }> => {
   const response = await fetch(`/api/search-trips?guestName=${guestName}&departureTime=${departureTime}&page=${page}`)
   return await response.json();

@@ -1,6 +1,6 @@
 import { neon } from "@neondatabase/serverless";
 import { schemaAddInventoryItem, schemaAddInventoryItemType, schemaAddRaft, schemaRemoveInventoryItem, schemaRemoveInventoryItemType } from "./zod/schemas";
-import { ItemTypes, Items } from "@/types/types";
+import { ItemTypes, Items, Trip } from "@/types/types";
 import { auth } from "@clerk/nextjs/server";
 
 export async function fetchItemTypes() {
@@ -118,13 +118,14 @@ export async function toggleAvailabilityDb(unitNumber: number, orgId: string) {
   `;
   return [result];
 }
-export async function fetchTrips(tripCurrent: boolean, currentPage: number, orgId: string) {
-  const pageSize: number = 10;
+export async function fetchTrips(tripCurrent: boolean, currentPage: number) {
+  const { userId, orgId } = await auth.protect()
+  const pageSize: number = 1;
   const sql = neon(`${process.env.DATABASE_URL}`);
   const offset = currentPage * pageSize; // Calculate where to start fetching results
 
   // Fetch paginated trips
-  const trips = await sql`
+  const trips = (await sql`
         SELECT 
             row.id,
             row.guest_name,
@@ -137,13 +138,13 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number, orgI
         FROM items_rented row
         JOIN item_types rt ON row.item_type_id = rt.id
         WHERE departure_time > NOW() - INTERVAL '24 hours'
-        AND row.organization_id = ${orgId}
+        AND row.organization_id = ${orgId || userId}
         ${tripCurrent
       ? sql`AND row.arrival_time IS NULL`
       : sql`AND row.arrival_time IS NOT NULL`
     }
         ORDER BY row.departure_time DESC
-        LIMIT ${pageSize} OFFSET ${offset}`;
+        LIMIT ${pageSize} OFFSET ${offset}`) as Trip[];
 
   // Fetch total trip count to determine if there are more pages
   const totalTripsResult = await sql`
@@ -157,7 +158,7 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number, orgI
   const totalTrips = Number(totalTripsResult[0].count);
   const hasMore = offset + pageSize < totalTrips;
   const totalPages = Math.ceil(Number(totalTripsResult[0].count) / pageSize);
-
+  
   return { trips, hasMore, totalPages };
 }
 
