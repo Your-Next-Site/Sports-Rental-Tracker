@@ -1,4 +1,3 @@
-import PageContainer from "@/components/ui/containers/page-container";
 import Tab from "@/components/ui/tabs/tab";
 import { fetchItemTypes, fetchTrips, searchTripsDB } from "@/lib/utils/db";
 
@@ -24,13 +23,11 @@ export default async function Page({
 
 
     return (
-        <PageContainer>
-            <Tab
-                tripsPromise={tripsPromise}
-                itemTypesPromise={itemTypesPromise}
-                searchTripsPromise={searchTripsPromise}
-            />
-        </PageContainer>
+        <Tab
+            tripsPromise={tripsPromise}
+            itemTypesPromise={itemTypesPromise}
+            searchTripsPromise={searchTripsPromise}
+        />
     );
 }
 // /api/search-trips?guestName=${guestName}&departureTime=${departureTime}&page=${page}
