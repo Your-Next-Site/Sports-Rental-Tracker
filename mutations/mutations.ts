@@ -92,13 +92,11 @@ export const useToggleAvailability = () => {
     });
 };
 
-export const useEndRental = (currentPage: number, setPage: (page: number) => void) => {
-    const queryClient = useQueryClient();
-
+export const useEndRental = (currentPage: number) => { 
     return useMutation({
         mutationFn: (raftOnWaterId: number) => endRental(raftOnWaterId),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["trips", true, currentPage] });
+            revalidatePathAction("/main-rental-page")
         },
         onError: (error) => {
             console.error('Mutation error:', error);

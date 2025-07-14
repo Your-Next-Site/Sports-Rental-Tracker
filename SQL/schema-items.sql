@@ -18,12 +18,12 @@ INSERT INTO
 VALUES (
         'single-kayak',
         'Single Kayak',
-        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
+        'org_2zfGbSpJneNSjtfBdhaCARkfqwy'
     ),
     (
         'double-kayak',
         'Double Kayak',
-        'org_2zD3UFiIjDVZxwafVlTY7ZFHBwC'
+        'org_2zfGbSpJneNSjtfBdhaCARkfqwy'
     ),
     (
         'small-raft',
@@ -76,4 +76,4 @@ CREATE INDEX idx_items_rented_item_type_id ON items_rented (item_type_id);
 CREATE INDEX idx_items_rented_unit_number ON items_rented (unit_number);
 -- New index for unit_number
 
--- select * from items_rented
+select * from items_rented

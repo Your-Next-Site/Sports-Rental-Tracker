@@ -1,5 +1,5 @@
-// types/next-auth.d.ts
-import { DefaultSession, DefaultUser, Session } from "@auth/core/types";
+
+import { Session } from "@auth/core/types";
 import { IconDefinition } from "@fortawesome/free-brands-svg-icons";
 
 // Extend the type for employee field as verification
@@ -25,6 +25,12 @@ export interface Trip {
   checked_in_by: number | null;
 }
 
+export interface TripsData {
+  trips: Trip[];
+  hasMore: boolean;
+  totalPages: number;
+}
+
 export interface InputsProps {
   isPending: boolean;
   itemTypesPromise: Promise<ItemTypes[]>
@@ -34,7 +40,7 @@ export interface PaginationProps {
   setPage: React.Dispatch<React.SetStateAction<number>>;
   page: number;
   data: { trips: Trip[]; hasMore: boolean; totalPages: number; };
-  isPlaceholderData: boolean;
+  isPlaceholderData?: boolean;
 }
 export interface PaginationButtonProps {
   onClick: () => void;
