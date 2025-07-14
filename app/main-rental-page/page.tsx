@@ -8,17 +8,20 @@ export default async function Page({
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
     const params = await searchParams;
+
+    const searchPage = params.searchPage || 0
     const rentedOutPage = params.rentedOutPage || 0
     const guestName = params.guestName || ""
+
     const departureDate = (Array.isArray(params.departureDate) ? params.departureDate[0] : params.departureDate) || new Date().toISOString();
     let departureDateTime = new Date(departureDate);
     const offsetTimeValue = Number(process.env.NEXT_PUBLIC_OFFSET || 6);
-    departureDateTime.setHours(departureDateTime.getHours() - offsetTimeValue);;
-    const searchPage = params.searchPage || 0
-    console.log("departureDateTime: ", departureDateTime)
+    departureDateTime.setHours(departureDateTime.getHours() - offsetTimeValue);
+
     const itemTypesPromise = fetchItemTypes();
     const tripsPromise = fetchTrips(true, Number(rentedOutPage));
     const searchTripsPromise = searchTripsDB(guestName.toString(), departureDate.toString(), Number(searchPage))
+
 
     return (
         <PageContainer>

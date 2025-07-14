@@ -1,7 +1,7 @@
 "use client";
 import { Trip } from "@/types/types";
 import PaginationBar from "../pagination/pagination-bar";
-import { use } from "react";
+import { use, useCallback } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 
@@ -12,7 +12,7 @@ export default function SearchHistory({ searchTripsPromise }:
   const router = useRouter();
   const searchPage = searchParams.get("searchPage") || 0;
   const departureDate = searchParams.get("departureDate") || new Date(new Date().getTime() - Number(process.env.NEXT_PUBLIC_OFFSET) * 60 * 60 * 1000).toISOString().split('T')[0]
-  const guestName = searchParams.get("guestName") || ""
+  // const guestName = searchParams.get("guestName") || ""
 
   const { trips: data, hasMore, totalPages } = use(searchTripsPromise);
 
@@ -25,6 +25,25 @@ export default function SearchHistory({ searchTripsPromise }:
     });
   };
 
+
+  const debouncedUpdateSearchParams = useCallback(
+    debounce((name: string, value: string) => {
+      updateSearchParams(name, value);
+    }, 500),
+    [updateSearchParams]
+  );
+
+  function debounce(fn: Function, delay: number) {
+    let timeoutId: NodeJS.Timeout;
+    return (...args: any[]) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        fn(...args);
+      }, delay);
+    };
+  }
+
+
   return (
     <>
       <div className="flex flex-col gap-8 min-h-[416px]">
@@ -35,17 +54,17 @@ export default function SearchHistory({ searchTripsPromise }:
             name="GuestName"
             type="text"
             className="border-1 p-1"
-            value={guestName}
+            // value={guestName}
             onChange={(e) => {
               // setGuestName(e.target.value);
-              updateSearchParams("guestName", e.target.value);
+              debouncedUpdateSearchParams("guestName", e.target.value);
             }}
           />
           <label htmlFor="Date">Date</label>
           <input
             name="Date"
             type="date"
-            max={new Date().toLocaleDateString()}
+            // max={new Date().toLocaleDateString()}
             className="border-1 p-1"
             value={departureDate}
             onChange={(e) => {
@@ -156,3 +175,4 @@ function Trips({ trips }: { trips: Trip[] }) {
     </div>
   );
 }
+

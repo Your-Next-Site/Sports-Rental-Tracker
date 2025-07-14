@@ -11,7 +11,6 @@ export function useTabNavigation(tabs: string[], defaultTab: string) {
   const searchPage = searchParams.get("searchPage") || 0;
   const departureDate = searchParams.get("departureDate")
 
-
   const [selectedTab, setSelectedTab] = useState(currentTab || defaultTab);
 
   const createQueryString = useCallback(
@@ -71,3 +70,32 @@ export function useTabNavigation(tabs: string[], defaultTab: string) {
 
   return { selectedTab, handleTabClick };
 }
+
+
+
+
+interface UseDebounceOptions {
+  delay: number;
+  onDebounce: (value: string) => void;
+}
+
+const useDebounce = (initialValue: string, options: UseDebounceOptions): [string, (value: string) => void] => {
+  const [inputValue, setInputValue] = useState<string>(initialValue);
+  const [debouncedValue, setDebouncedValue] = useState<string>(initialValue);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedValue(inputValue);
+      options.onDebounce(inputValue);
+    }, options.delay);
+    return () => clearTimeout(timeoutId);
+  }, [inputValue, options.delay, options.onDebounce]);
+
+  const updateValue = (newValue: string) => {
+    setInputValue(newValue);
+  };
+
+  return [inputValue, updateValue];
+};
+
+export default useDebounce;
