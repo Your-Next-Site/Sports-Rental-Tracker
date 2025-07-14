@@ -214,7 +214,7 @@ export async function searchTripsDB(
 ) {
   const { userId, orgId } = await auth.protect()
 
-  const offsetTimeValue = 6;
+  const offsetTimeValue = Number(process.env.NEXT_PUBLIC_OFFSET || 1)
   const pageSize: number = 10;
   const offset = currentPage * pageSize;
 
