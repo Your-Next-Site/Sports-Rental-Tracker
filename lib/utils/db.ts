@@ -213,15 +213,18 @@ export async function searchTripsDB(
   departureTime: Date | string,
   currentPage: number,
 ) {
-  const { userId, orgId } = await auth.protect()
+   const { userId, orgId } = await auth.protect()
 
+  const offsetValue = Number(process.env.OFFSET || 0) - 6;
   const pageSize: number = 10;
   const offset = currentPage * pageSize;
 
   const sql = neon(`${process.env.DATABASE_URL}`);
 
   const date = new Date(departureTime);
+  const adjustedDate = new Date(date.getTime() + offsetValue * 60 * 60 * 1000);
   const dateCondition = !isNaN(date.getTime());
+
 
   try {
     const trips = await (sql`
@@ -258,7 +261,6 @@ export async function searchTripsDB(
     const totalTrips = Number(totalTripsResult[0].count);
     const hasMore = offset + pageSize < totalTrips;
     const totalPages = Math.ceil(totalTrips / pageSize);
-
 
     return { trips, hasMore, totalPages };
   } catch (error) {
