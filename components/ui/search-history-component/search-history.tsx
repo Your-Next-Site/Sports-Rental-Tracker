@@ -54,7 +54,7 @@ export default function SearchHistory({ searchTripsPromise }:
             name="GuestName"
             type="text"
             className="border-1 p-1"
-            value={guestName}
+            // value={guestName}
             onChange={(e) => {
               // setGuestName(e.target.value);
               debouncedUpdateSearchParams("guestName", e.target.value);
@@ -64,9 +64,9 @@ export default function SearchHistory({ searchTripsPromise }:
           <input
             name="Date"
             type="date"
-            max={new Date().toLocaleDateString()}
+            // max={new Date().toLocaleDateString()}
             className="border-1 p-1"
-            value={departureDate}
+            // value={departureDate}
             onChange={(e) => {
               // setDepartureDate(e.target.value);
               updateSearchParams("departureDate", e.target.value);
