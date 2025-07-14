@@ -120,7 +120,7 @@ export async function toggleAvailabilityDb(unitNumber: number, orgId: string) {
 }
 export async function fetchTrips(tripCurrent: boolean, currentPage: number) {
   const { userId, orgId } = await auth.protect()
-  const pageSize: number = 1;
+  const pageSize: number = 10;
   const sql = neon(`${process.env.DATABASE_URL}`);
   const offset = currentPage * pageSize; // Calculate where to start fetching results
 
