@@ -92,9 +92,7 @@ export const useToggleAvailability = () => {
     });
 };
 
-export const useEndRental = (currentPage: number, setPage: (page: number) => void) => {
-    const queryClient = useQueryClient();
-
+export const useEndRental = (currentPage: number) => { 
     return useMutation({
         mutationFn: (raftOnWaterId: number) => endRental(raftOnWaterId),
         onSuccess: () => {

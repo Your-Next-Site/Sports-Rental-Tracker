@@ -1,5 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { Trip, ItemTypes, Items } from '@/types/types'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 export const fetchItemTypes = async (): Promise<ItemTypes[]> => {
   const response = await fetch(`/api/item-types`)
@@ -52,8 +54,6 @@ export const useGetSearchPageTrips = ({ guestName, departureDate, page }: { gues
 
   })
 }
-
-
 
 
 

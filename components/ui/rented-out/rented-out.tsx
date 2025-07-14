@@ -1,8 +1,7 @@
 "use client";
 import { useEndRental } from "@/mutations/mutations";
 import MainContainer from "../containers/main-container";
-import { useGetTrips } from "@/hooks/hooks";
-import { use, useState } from "react";
+import { use } from "react";
 import PaginationBar from "../pagination/pagination-bar";
 import { Trip } from "@/types/types";
 
@@ -11,22 +10,19 @@ export default function RentedOut({ rentedOutPage, tripsPromise }:
     rentedOutPage: number,
     tripsPromise: Promise<{ trips: Trip[], hasMore: boolean, totalPages: number }>
   }) {
-
-  const [page, setPage] = useState(0);
-
+  
   const { trips: data, hasMore, totalPages } = use(tripsPromise);
 
   const {
     mutate,
     isPending,
     isError: isErrorMutate,
-  } = useEndRental(page, setPage);
+  } = useEndRental(rentedOutPage);
 
   return (
     <MainContainer>
       <div className="flex flex-col gap-8">
-        <h1 className="text-2xl">Guests with rented equipment</h1>
-        {/* <button className='border rounded-sm md:w-1/6 w-2/6 mx-auto hover:bg-gray-100' onClick={() => refetch()}>Refetch</button> */}
+        <h1 className="text-2xl">Guests with rented equipment</h1>       
       </div>
       <Trips
         isError={isErrorMutate}
