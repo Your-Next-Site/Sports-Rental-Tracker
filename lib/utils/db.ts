@@ -221,7 +221,7 @@ export async function searchTripsDB(
   const sql = neon(`${process.env.DATABASE_URL}`);
 
   const date = new Date(departureTime);
-  const adjustedDate = new Date(date.getTime() + offsetTimeValue * 60 * 60 * 1000);
+  const adjustedDate = new Date(date.getTime() - offsetTimeValue * 60 * 60 * 1000);
   const startDate = new Date(adjustedDate.getTime() - 12 * 60 * 60 * 1000);
   const endDate = new Date(adjustedDate.getTime() + 12 * 60 * 60 * 1000);
   const dateCondition = !isNaN(date.getTime());
