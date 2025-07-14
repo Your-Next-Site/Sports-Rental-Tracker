@@ -11,6 +11,7 @@ export default function SearchHistory({ searchTripsPromise }:
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
+
   const searchPage = searchParams.get("searchPage") || 0;
   const departureDate = searchParams.get("departureDate") || new Date(new Date().getTime() - Number(process.env.NEXT_PUBLIC_OFFSET) * 60 * 60 * 1000).toISOString().split('T')[0]
   const guestName = searchParams.get("guestName") || ""
@@ -42,7 +43,6 @@ export default function SearchHistory({ searchTripsPromise }:
       }, delay);
     };
   }
-
 
   return (
     <>
