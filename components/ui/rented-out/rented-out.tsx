@@ -4,25 +4,27 @@ import MainContainer from "../containers/main-container";
 import { use } from "react";
 import PaginationBar from "../pagination/pagination-bar";
 import { Trip } from "@/types/types";
+import { useSearchParams } from "next/navigation";
 
-export default function RentedOut({ rentedOutPage, tripsPromise }:
+export default function RentedOut({ tripsPromise }:
   {
-    rentedOutPage: number,
     tripsPromise: Promise<{ trips: Trip[], hasMore: boolean, totalPages: number }>
   }) {
-  
+
+  const searchParams = useSearchParams();
+  const rentedOutPage = searchParams.get("rentedOutPage") || 0;
   const { trips: data, hasMore, totalPages } = use(tripsPromise);
 
   const {
     mutate,
     isPending,
     isError: isErrorMutate,
-  } = useEndRental(rentedOutPage);
+  } = useEndRental(Number(rentedOutPage));
 
   return (
     <MainContainer>
       <div className="flex flex-col gap-8">
-        <h1 className="text-2xl">Guests with rented equipment</h1>       
+        <h1 className="text-2xl">Guests with rented equipment</h1>
       </div>
       <Trips
         isError={isErrorMutate}
@@ -30,7 +32,7 @@ export default function RentedOut({ rentedOutPage, tripsPromise }:
         isPending={isPending}
         mutate={mutate}
       />
-      <PaginationBar page={rentedOutPage} currentTab={"Rented Out"} hasMore={hasMore} totalPages={totalPages} pathName={"/main-rental-page"} />
+      <PaginationBar page={Number(rentedOutPage)} currentTab={"Rented Out"} hasMore={hasMore} totalPages={totalPages} pathName={"/main-rental-page"} />
     </MainContainer>
   );
 }

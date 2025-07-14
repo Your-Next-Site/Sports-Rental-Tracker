@@ -1,17 +1,30 @@
 "use client";
-import { useGetSearchPageTrips } from "@/hooks/hooks";
 import MainContainer from "../containers/main-container";
 import { Trip } from "@/types/types";
 import PaginationBar from "../pagination/pagination-bar";
-import { useState } from "react";
+import { use, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export default function SearchHistory() {
-  const [page, setPage] = useState(0);
 
-  const [guestName, setGuestName] = useState("");
-  const [departureDate, setDepartureDate] = useState(new Date().toLocaleDateString('en-CA'));
+export default function SearchHistory({ searchTripsPromise }:
+  { searchTripsPromise: Promise<{ trips: Trip[], hasMore: boolean, totalPages: number }> }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const searchPage = searchParams.get("searchPage") || 0;
+  const departureDate = searchParams.get("departureDate") || 0;
+  const guestName = searchParams.get("guestName")||""
+  // const [departureDate, setDepartureDate] = useState(new Date().toLocaleDateString('en-CA'));
+  const { trips: data, hasMore, totalPages } = use(searchTripsPromise);
 
-  const { data, isLoading, isError, isPlaceholderData, refetch } = useGetSearchPageTrips({ guestName, departureDate: new Date(departureDate), page });
+  const updateSearchParams = (name: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(name, value);
+    params.set("searchPage", "0"); // reset page to 0 when search params change
+    router.push(`${pathname}?${params.toString()}`, {
+      scroll: false,
+    });
+  };
 
   return (
     <MainContainer>
@@ -24,8 +37,10 @@ export default function SearchHistory() {
             type="text"
             className="border-1 p-1"
             value={guestName}
-            onChange={(e) => setGuestName(e.target.value)}
-            onKeyDown={(e) => (e.key === "Enter" ? refetch() : null)}
+            onChange={(e) => {
+              // setGuestName(e.target.value);
+              updateSearchParams("guestName", e.target.value);
+            }}
           />
           <label htmlFor="Date">Date</label>
           <input
@@ -35,27 +50,26 @@ export default function SearchHistory() {
             className="border-1 p-1"
             value={departureDate}
             onChange={(e) => {
-              setDepartureDate(e.target.value)
+              // setDepartureDate(e.target.value);
+              updateSearchParams("departureDate", e.target.value);
             }}
           />
-          <button
+          {/* <button
             onClick={() => refetch()}
             className="bg-buttoncolormain hover:bg-buttoncolorsecend text-white p-2 rounded mr-4"
           >
             Search
-          </button>
+          </button> */}
         </div>
-        {isLoading ? (
-          <p>Loading . . .</p>
-        ) : isError ? (
-          <p>Error loading trips</p>
-        ) : (
-          data && <Trips trips={data.trips} />
-        )}
+        <Trips trips={data} />
       </div>
       <PaginationBar
-            setPage={setPage} page={page} data={data ?? { trips: [], hasMore: false, totalPages: 1 }} isPlaceholderData={isPlaceholderData}
-            />
+        page={Number(searchPage)}
+        currentTab={"Search"}
+        hasMore={hasMore}
+        totalPages={totalPages}
+        pathName={"/main-rental-page"}
+      />
     </MainContainer>
   );
 }

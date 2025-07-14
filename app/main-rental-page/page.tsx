@@ -1,6 +1,6 @@
 import PageContainer from "@/components/ui/containers/page-container";
 import Tab from "@/components/ui/tabs/tab";
-import { fetchItemTypes, fetchTrips } from "@/lib/utils/db";
+import { fetchItemTypes, fetchTrips, searchTripsDB } from "@/lib/utils/db";
 
 export default async function Page({
     searchParams,
@@ -8,14 +8,23 @@ export default async function Page({
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
     const params = await searchParams;
-    const rentedOutPage = params.rentedOutPage;    
+    const rentedOutPage = params.rentedOutPage || 0
+    const guestName = params.guestName || ""
+    const departureDate = params.departureDate || new Date().toLocaleDateString('en-CA') //date here
+    const searchPage = params.searchPage || 0
 
     const itemTypesPromise = fetchItemTypes();
     const tripsPromise = fetchTrips(true, Number(rentedOutPage));
-    
+    const searchTripsPromise = searchTripsDB(guestName.toString(),departureDate.toString(), Number(searchPage))
+
     return (
         <PageContainer>
-            <Tab  rentedOutPage={Number(rentedOutPage) || 0} tripsPromise={tripsPromise} itemTypesPromise={itemTypesPromise} />
+            <Tab
+                tripsPromise={tripsPromise}
+                itemTypesPromise={itemTypesPromise}
+                searchTripsPromise={searchTripsPromise}
+            />
         </PageContainer>
     );
 }
+// /api/search-trips?guestName=${guestName}&departureTime=${departureTime}&page=${page}

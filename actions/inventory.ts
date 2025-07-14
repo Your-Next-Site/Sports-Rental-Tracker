@@ -6,7 +6,7 @@ import { auth } from "@clerk/nextjs/server";
 
 export async function addInventory(formData: FormData) {
 
-    const { orgId, userId } = await auth()
+    const { orgId, userId } = await auth.protect()
     if (!userId) {
         throw new Error("No user ID found");
     }

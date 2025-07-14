@@ -158,7 +158,7 @@ export async function fetchTrips(tripCurrent: boolean, currentPage: number) {
   const totalTrips = Number(totalTripsResult[0].count);
   const hasMore = offset + pageSize < totalTrips;
   const totalPages = Math.ceil(Number(totalTripsResult[0].count) / pageSize);
-  
+
   return { trips, hasMore, totalPages };
 }
 
@@ -208,52 +208,24 @@ export async function endRentalDB(
   return [result];
 }
 
-export async function toggleAdminDB(email: string) {
-  const sql = neon(`${process.env.DATABASE_URL}`);
-  const [result] = await sql`
-        UPDATE users 
-        SET admin = NOT admin 
-        WHERE email = ${email}
-        RETURNING *;
-    `;
-  return [result];
-}
-
-export async function toggleEmployeeDB(email: string) {
-  const sql = neon(`${process.env.DATABASE_URL}`);
-  const [result] = await sql`
-        UPDATE users 
-        SET employee = NOT employee 
-        WHERE email = ${email}
-        RETURNING *;
-    `;
-  return [result];
-}
-
 export async function searchTripsDB(
-  guestName: string | string,
+  guestName: string,
   departureTime: Date | string,
   currentPage: number,
-  orgId: string
 ) {
+  const { userId, orgId } = await auth.protect()
+
+ 
   const pageSize: number = 10;
-  const offset = currentPage * pageSize; // Calculate where to start fetching results
+  const offset = currentPage * pageSize;
 
   const sql = neon(`${process.env.DATABASE_URL}`);
 
-  const dateCondition = !isNaN(new Date(departureTime).getTime());
-  let adjustedTime, endTime;
-
-  if (dateCondition) {
-    adjustedTime = new Date(departureTime);
-    adjustedTime.setHours(
-      adjustedTime.getHours() + Number(process.env.OFFSET || 0)
-    );
-    endTime = new Date(adjustedTime);
-    endTime.setHours(endTime.getHours() + 24);
-  }
-
-  const trips = await sql`
+  const date = new Date(departureTime);
+  const dateCondition = !isNaN(date.getTime());
+  
+  try {
+    const trips = await (sql`
             SELECT 
             ir.id,
             ir.guest_name,
@@ -266,28 +238,32 @@ export async function searchTripsDB(
         JOIN item_types it ON ir.item_type_id = it.id
         WHERE 
             LOWER(ir.guest_name) LIKE LOWER(${"%" + guestName + "%"})
-            AND ir.organization_id = ${orgId}
+            AND ir.organization_id = ${orgId || userId}
             ${dateCondition
-      ? sql`AND ir.departure_time BETWEEN ${adjustedTime} AND ${endTime}`
-      : sql``
-    }
+        ? sql`AND DATE(ir.departure_time) = DATE(${date})`
+        : sql``
+      }
         ORDER BY ir.departure_time DESC
-        LIMIT ${pageSize} OFFSET ${offset}`;
-  // Fetch total trip count to determine if there are more pages
-  const totalTripsResult = await sql`
-        SELECT COUNT(*) FROM items_rented row
+        LIMIT ${pageSize} OFFSET ${offset}`) as Trip[]
+
+    const totalTripsResult = await sql`
+        SELECT COUNT(*) FROM items_rented ir
         WHERE 
-            LOWER(row.guest_name) LIKE LOWER(${"%" + guestName + "%"})
+            LOWER(ir.guest_name) LIKE LOWER(${"%" + guestName + "%"})
+            AND ir.organization_id = ${orgId || userId}
             ${dateCondition
-      ? sql`AND row.departure_time BETWEEN ${adjustedTime} AND ${endTime}`
-      : sql``
-    }`;
+        ? sql`AND DATE(ir.departure_time) = DATE(${date})`
+        : sql``
+      }`
 
+    const totalTrips = Number(totalTripsResult[0].count);
+    const hasMore = offset + pageSize < totalTrips;
+    const totalPages = Math.ceil(totalTrips / pageSize);
 
-  const totalTrips = Number(totalTripsResult[0].count);
-  const hasMore = offset + pageSize < totalTrips;
-  const totalPages = Math.ceil(Number(totalTripsResult[0].count) / pageSize);
-
-  return { trips, hasMore, totalPages };
-  // return result as Trip[];
+  
+    return { trips, hasMore, totalPages };
+  } catch (error) {
+    console.error("Error fetching trips: ", error);
+    throw error;
+  }
 }
