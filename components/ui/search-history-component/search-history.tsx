@@ -13,7 +13,7 @@ export default function SearchHistory({ searchTripsPromise }:
   const router = useRouter();
   const searchPage = searchParams.get("searchPage") || 0;
   const departureDate = searchParams.get("departureDate") || new Date(new Date().getTime() - Number(process.env.NEXT_PUBLIC_OFFSET) * 60 * 60 * 1000).toISOString().split('T')[0]
-  const guestName = searchParams.get("guestName") || ""
+  // const guestName = searchParams.get("guestName") || ""
 
   const { trips: data, hasMore, totalPages } = use(searchTripsPromise);
 
@@ -54,9 +54,7 @@ export default function SearchHistory({ searchTripsPromise }:
             name="GuestName"
             type="text"
             className="border-1 p-1"
-            // value={guestName}
             onChange={(e) => {
-              // setGuestName(e.target.value);
               debouncedUpdateSearchParams("guestName", e.target.value);
             }}
           />
@@ -64,11 +62,9 @@ export default function SearchHistory({ searchTripsPromise }:
           <input
             name="Date"
             type="date"
-            // max={new Date().toLocaleDateString()}
+            defaultValue={departureDate}
             className="border-1 p-1"
-            // value={departureDate}
             onChange={(e) => {
-              // setDepartureDate(e.target.value);
               updateSearchParams("departureDate", e.target.value);
             }}
           />
