@@ -53,7 +53,7 @@ export default function SearchHistory({ searchTripsPromise }:
               updateSearchParams("departureDate", e.target.value);
             }}
           />
-          {/* <button
+          {/* <button 
             onClick={() => refetch()}
             className="bg-buttoncolormain hover:bg-buttoncolorsecend text-white p-2 rounded mr-4"
           >

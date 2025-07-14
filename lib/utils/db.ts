@@ -215,7 +215,6 @@ export async function searchTripsDB(
 ) {
   const { userId, orgId } = await auth.protect()
 
- 
   const pageSize: number = 10;
   const offset = currentPage * pageSize;
 
@@ -223,7 +222,7 @@ export async function searchTripsDB(
 
   const date = new Date(departureTime);
   const dateCondition = !isNaN(date.getTime());
-  
+
   try {
     const trips = await (sql`
             SELECT 
@@ -260,7 +259,7 @@ export async function searchTripsDB(
     const hasMore = offset + pageSize < totalTrips;
     const totalPages = Math.ceil(totalTrips / pageSize);
 
-  
+
     return { trips, hasMore, totalPages };
   } catch (error) {
     console.error("Error fetching trips: ", error);
