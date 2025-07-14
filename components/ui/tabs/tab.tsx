@@ -39,16 +39,19 @@ export default function Tab({
       </div>
       <MainContainer>
         {selectedTab === "Departure" && <DepartureForm itemTypesPromise={itemTypesPromise} />}
-        {selectedTab === "Rented Out" && (
+        
+        {selectedTab === "Rented Out" && 
           <Suspense fallback={<RentedOutFallback />}>
             <RentedOut tripsPromise={tripsPromise} />
           </Suspense>
-        )}
+        }
+        
         {selectedTab === "Search" &&
           <Suspense fallback={<SearchFallback />}>
             <SearchHistory searchTripsPromise={searchTripsPromise} />
           </Suspense>
         }
+        
       </MainContainer>
     </div>
   );

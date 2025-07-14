@@ -30,8 +30,8 @@ export default async function Home() {
         <Image className="md:w-2/6 rounded-sm" src="/rental.jpg" height={1200} width={1200} alt={"Sports Image"} />
       </div>
       <div className="flex p-4 gap-4 justify-center bg">
-        <SiteNavButton text="Go to Rental Page" />
-        <SiteNavButton text="Go to Inventory Page" />
+        <SiteNavButton text="Go to Rental Page" path="/main-rental-page" />
+        <SiteNavButton text="Go to Inventory Page" path='/admin/inventory' />
       </div>
       <footer className="border mt-auto mx-auto text-center  bg-white p-4 rounded-lg shadow-lg">
         <span>By using Sports Rental Tracker, you agree to our </span>

@@ -54,7 +54,7 @@ export default function SearchHistory({ searchTripsPromise }:
             defaultValue={guestName}
             name="GuestName"
             type="text"
-            className="border-1 p-1"
+            className="border-1 p-1 bg-white rounded-sm"
             onChange={(e) => {
               debouncedUpdateSearchParams("guestName", e.target.value);
             }}
@@ -64,7 +64,7 @@ export default function SearchHistory({ searchTripsPromise }:
             name="Date"
             type="date"
             defaultValue={departureDate}
-            className="border-1 p-1"
+            className="border-1 p-1 bg-white"
             onChange={(e) => {
               updateSearchParams("departureDate", e.target.value);
             }}

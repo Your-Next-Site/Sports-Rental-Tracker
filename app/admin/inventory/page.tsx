@@ -1,4 +1,5 @@
 import SimpleSubmitButton from "@/components/ui/buttons/simple-submit-button";
+import SiteNavButton from "@/components/ui/buttons/site-nav-button";
 import MainContainer from "@/components/ui/containers/main-container";
 import DisplayUintTypes from "@/components/ui/display-data/display-unit-types";
 import AddUnitForm from "@/components/ui/forms/add-unit-form";
@@ -53,6 +54,9 @@ export default async function Page() {
                 <Suspense fallback={<h1 className="md:hidden block">Loading...</h1>}>
                     <MobileItemsView itemPromise={itemPromise} />
                 </Suspense>
+                <div className="justify-center flex w-full mt-4">
+                    <SiteNavButton text="Go to Rental Page" path="/main-rental-page" />
+                </div>
             </div>
         </MainContainer>
     );

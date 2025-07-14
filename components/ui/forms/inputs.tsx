@@ -16,7 +16,7 @@ export default function Inputs({
         <div className="flex flex-col md:flex-row gap-4">
             <div className="flex flex-col md:flex-row w-full p-2 gap-4 justify-center items-center">
                 <input
-                    className="border border-gray-300 rounded-sm h-10 w-full md:w-2/6 p-2"
+                    className="border border-gray-300 bg-white rounded-sm h-10 w-full md:w-2/6 p-2"
                     type='text'
                     required
                     name="guest-name"
@@ -34,7 +34,7 @@ export default function Inputs({
                     }}
                 />
                 <input
-                    className="border border-gray-300 rounded-sm h-10 w-full md:w-2/6 p-2"
+                    className="border border-gray-300 bg-white rounded-sm h-10 w-full md:w-2/6 p-2"
                     name="unit-number"
                     type="number"
                     placeholder="Unit Number"

@@ -1,3 +1,4 @@
+import SiteNavButton from "@/components/ui/buttons/site-nav-button";
 import Tab from "@/components/ui/tabs/tab";
 import { fetchItemTypes, fetchTrips, searchTripsDB } from "@/lib/utils/db";
 
@@ -23,11 +24,16 @@ export default async function Page({
 
 
     return (
-        <Tab
-            tripsPromise={tripsPromise}
-            itemTypesPromise={itemTypesPromise}
-            searchTripsPromise={searchTripsPromise}
-        />
+        <>
+            <Tab
+                tripsPromise={tripsPromise}
+                itemTypesPromise={itemTypesPromise}
+                searchTripsPromise={searchTripsPromise}
+            />
+            <div className="justify-center flex w-full mt-4">
+                <SiteNavButton text="Go to Inventory Page" path="/admin/inventory" />
+            </div>
+        </>
     );
 }
 // /api/search-trips?guestName=${guestName}&departureTime=${departureTime}&page=${page}
