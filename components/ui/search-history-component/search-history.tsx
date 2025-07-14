@@ -1,8 +1,7 @@
 "use client";
-import MainContainer from "../containers/main-container";
 import { Trip } from "@/types/types";
 import PaginationBar from "../pagination/pagination-bar";
-import { use, useState } from "react";
+import { use} from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 
@@ -13,8 +12,8 @@ export default function SearchHistory({ searchTripsPromise }:
   const router = useRouter();
   const searchPage = searchParams.get("searchPage") || 0;
   const departureDate = searchParams.get("departureDate") || 0;
-  const guestName = searchParams.get("guestName")||""
-  // const [departureDate, setDepartureDate] = useState(new Date().toLocaleDateString('en-CA'));
+  const guestName = searchParams.get("guestName") || ""
+
   const { trips: data, hasMore, totalPages } = use(searchTripsPromise);
 
   const updateSearchParams = (name: string, value: string) => {
@@ -27,7 +26,7 @@ export default function SearchHistory({ searchTripsPromise }:
   };
 
   return (
-    <MainContainer>
+    <>
       <div className="flex flex-col gap-8 min-h-[416px]">
         <h1 className="text-2xl">Search Trips</h1>
         <div className="flex flex-col md:justify-center md:items-center gap-2 md:flex-row">
@@ -70,7 +69,7 @@ export default function SearchHistory({ searchTripsPromise }:
         totalPages={totalPages}
         pathName={"/main-rental-page"}
       />
-    </MainContainer>
+    </>
   );
 }
 

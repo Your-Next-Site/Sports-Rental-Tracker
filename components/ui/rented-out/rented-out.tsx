@@ -22,7 +22,7 @@ export default function RentedOut({ tripsPromise }:
   } = useEndRental(Number(rentedOutPage));
 
   return (
-    <MainContainer>
+    <>
       <div className="flex flex-col gap-8">
         <h1 className="text-2xl">Guests with rented equipment</h1>
       </div>
@@ -33,7 +33,7 @@ export default function RentedOut({ tripsPromise }:
         mutate={mutate}
       />
       <PaginationBar page={Number(rentedOutPage)} currentTab={"Rented Out"} hasMore={hasMore} totalPages={totalPages} pathName={"/main-rental-page"} />
-    </MainContainer>
+    </>
   );
 }
 
