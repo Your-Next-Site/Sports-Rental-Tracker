@@ -243,7 +243,7 @@ export async function searchTripsDB(
             LOWER(ir.guest_name) LIKE LOWER(${"%" + guestName + "%"})
             AND ir.organization_id = ${orgId || userId}
             ${dateCondition
-        ? sql`AND ir.departure_time BETWEEN ${startDate} AND ${endDate}`
+        ? sql`AND ir.departure_time BETWEEN ${adjustedDate} AND ${endDate}`
         : sql``
       }
         ORDER BY ir.departure_time DESC
