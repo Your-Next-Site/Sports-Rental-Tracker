@@ -7,6 +7,7 @@ import SearchHistory from "../search-history-component/search-history";
 import RentedOutFallback from "../fallbacks/rented-out-fallback";
 import { useTabNavigation } from "@/hooks/hooks";
 import MainContainer from "../containers/main-container";
+import SearchFallback from "../fallbacks/search-fallback";
 
 
 export default function Tab({
@@ -43,7 +44,11 @@ export default function Tab({
             <RentedOut tripsPromise={tripsPromise} />
           </Suspense>
         )}
-        {selectedTab === "Search" && <SearchHistory searchTripsPromise={searchTripsPromise} />}
+        {selectedTab === "Search" &&
+          <Suspense fallback={<SearchFallback />}>
+            <SearchHistory searchTripsPromise={searchTripsPromise} />
+          </Suspense>
+        }
       </MainContainer>
     </div>
   );

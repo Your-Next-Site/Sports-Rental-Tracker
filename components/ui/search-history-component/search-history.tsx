@@ -11,7 +11,7 @@ export default function SearchHistory({ searchTripsPromise }:
   const searchParams = useSearchParams();
   const router = useRouter();
   const searchPage = searchParams.get("searchPage") || 0;
-  const departureDate = searchParams.get("departureDate") || 0;
+  const departureDate = searchParams.get("departureDate") || new Date().toISOString().split('T')[0];
   const guestName = searchParams.get("guestName") || ""
 
   const { trips: data, hasMore, totalPages } = use(searchTripsPromise);
@@ -52,13 +52,7 @@ export default function SearchHistory({ searchTripsPromise }:
               // setDepartureDate(e.target.value);
               updateSearchParams("departureDate", e.target.value);
             }}
-          />
-          {/* <button 
-            onClick={() => refetch()}
-            className="bg-buttoncolormain hover:bg-buttoncolorsecend text-white p-2 rounded mr-4"
-          >
-            Search
-          </button> */}
+          />          
         </div>
         <Trips trips={data} />
       </div>
