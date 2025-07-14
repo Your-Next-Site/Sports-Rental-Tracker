@@ -1,7 +1,7 @@
 "use client";
 import { Trip } from "@/types/types";
 import PaginationBar from "../pagination/pagination-bar";
-import { use } from "react";
+import { use, useCallback } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Trips } from "../trips/trips";
 
@@ -26,6 +26,24 @@ export default function SearchHistory({ searchTripsPromise }:
     });
   };
 
+  const debouncedUpdateSearchParams = useCallback(
+    debounce((name: string, value: string) => {
+      updateSearchParams(name, value);
+    }, 500),
+    [updateSearchParams]
+  );
+
+  function debounce(fn: Function, delay: number) {
+    let timeoutId: NodeJS.Timeout;
+    return (...args: any[]) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        fn(...args);
+      }, delay);
+    };
+  }
+
+
   return (
     <>
       <div className="flex flex-col gap-8 min-h-[416px]">
@@ -39,7 +57,7 @@ export default function SearchHistory({ searchTripsPromise }:
             value={guestName}
             onChange={(e) => {
               // setGuestName(e.target.value);
-              updateSearchParams("guestName", e.target.value);
+              debouncedUpdateSearchParams("guestName", e.target.value);
             }}
           />
           <label htmlFor="Date">Date</label>
