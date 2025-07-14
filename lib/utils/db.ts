@@ -221,11 +221,11 @@ export async function searchTripsDB(
   const sql = neon(`${process.env.DATABASE_URL}`);
 
   const date = new Date(departureTime);
-  const adjustedDate = new Date(date.getTime() - offsetTimeValue * 60 * 60 * 1000);
-  const startDate = new Date(adjustedDate.getTime() - 12 * 60 * 60 * 1000);
-  const endDate = new Date(adjustedDate.getTime() + 12 * 60 * 60 * 1000);
+  const adjustedDate = new Date(date.getTime() + offsetTimeValue * 60 * 60 * 1000);
+  // const startDate = new Date(adjustedDate.getTime() - 12 * 60 * 60 * 1000);
+  const endDate = new Date(adjustedDate.getTime() + 24 * 60 * 60 * 1000);
   const dateCondition = !isNaN(date.getTime());
-  console.log("date", date, " AdjustedDate  : ", adjustedDate, " StartDate: ", startDate, " EndDate: ", endDate)
+  // console.log("date", date, " AdjustedDate  : ", adjustedDate, " StartDate: ", startDate, " EndDate: ", endDate)
 
   try {
     const trips = await (sql`
@@ -255,7 +255,7 @@ export async function searchTripsDB(
             LOWER(ir.guest_name) LIKE LOWER(${"%" + guestName + "%"})
             AND ir.organization_id = ${orgId || userId}
             ${dateCondition
-        ? sql`AND ir.departure_time BETWEEN ${startDate} AND ${endDate}`
+        ? sql`AND ir.departure_time BETWEEN ${adjustedDate} AND ${endDate}`
         : sql``
       }`
 
