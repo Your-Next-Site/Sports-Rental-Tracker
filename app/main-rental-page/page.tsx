@@ -10,12 +10,15 @@ export default async function Page({
     const params = await searchParams;
     const rentedOutPage = params.rentedOutPage || 0
     const guestName = params.guestName || ""
-    const departureDate = params.departureDate || new Date().toLocaleDateString('en-CA') //date here
+    const departureDate = (Array.isArray(params.departureDate) ? params.departureDate[0] : params.departureDate) || new Date().toISOString();
+    let departureDateTime = new Date(departureDate);
+    const offsetTimeValue = Number(process.env.NEXT_PUBLIC_OFFSET || 6);
+    departureDateTime.setHours(departureDateTime.getHours() - offsetTimeValue);;
     const searchPage = params.searchPage || 0
-
+    console.log("departureDateTime: ", departureDateTime)
     const itemTypesPromise = fetchItemTypes();
     const tripsPromise = fetchTrips(true, Number(rentedOutPage));
-    const searchTripsPromise = searchTripsDB(guestName.toString(),departureDate.toString(), Number(searchPage))
+    const searchTripsPromise = searchTripsDB(guestName.toString(), departureDate.toString(), Number(searchPage))
 
     return (
         <PageContainer>

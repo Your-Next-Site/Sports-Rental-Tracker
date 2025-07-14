@@ -1,7 +1,7 @@
 "use client";
 import { Trip } from "@/types/types";
 import PaginationBar from "../pagination/pagination-bar";
-import { use} from "react";
+import { use } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 
@@ -11,7 +11,7 @@ export default function SearchHistory({ searchTripsPromise }:
   const searchParams = useSearchParams();
   const router = useRouter();
   const searchPage = searchParams.get("searchPage") || 0;
-  const departureDate = searchParams.get("departureDate") || new Date().toISOString().split('T')[0];
+  const departureDate = searchParams.get("departureDate") || new Date(new Date().getTime() - Number(process.env.NEXT_PUBLIC_OFFSET) * 60 * 60 * 1000).toISOString().split('T')[0]
   const guestName = searchParams.get("guestName") || ""
 
   const { trips: data, hasMore, totalPages } = use(searchTripsPromise);
@@ -52,7 +52,7 @@ export default function SearchHistory({ searchTripsPromise }:
               // setDepartureDate(e.target.value);
               updateSearchParams("departureDate", e.target.value);
             }}
-          />          
+          />
         </div>
         <Trips trips={data} />
       </div>
