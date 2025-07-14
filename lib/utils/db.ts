@@ -207,24 +207,25 @@ export async function endRentalDB(
         `;
   return [result];
 }
-
 export async function searchTripsDB(
   guestName: string,
   departureTime: Date | string,
   currentPage: number,
 ) {
-   const { userId, orgId } = await auth.protect()
+  const { userId, orgId } = await auth.protect()
 
-  const offsetTimeValue = Number(process.env.NEXT_PUBLIC_OFFSET || 0) - 6;
+  const offsetTimeValue = Number(process.env.NEXT_PUBLIC_OFFSET || 1)
   const pageSize: number = 10;
   const offset = currentPage * pageSize;
 
   const sql = neon(`${process.env.DATABASE_URL}`);
 
   const date = new Date(departureTime);
-  const adjustedDate = new Date(date.getTime() - offsetTimeValue * 60 * 60 * 1000);
+  const adjustedDate = new Date(date.getTime() + offsetTimeValue * 60 * 60 * 1000);
+  // const startDate = new Date(adjustedDate.getTime() - 12 * 60 * 60 * 1000);
+  const endDate = new Date(adjustedDate.getTime() + 24 * 60 * 60 * 1000);
   const dateCondition = !isNaN(date.getTime());
-
+  // console.log("date", date, " AdjustedDate  : ", adjustedDate, " StartDate: ", startDate, " EndDate: ", endDate)
 
   try {
     const trips = await (sql`
@@ -242,7 +243,7 @@ export async function searchTripsDB(
             LOWER(ir.guest_name) LIKE LOWER(${"%" + guestName + "%"})
             AND ir.organization_id = ${orgId || userId}
             ${dateCondition
-        ? sql`AND DATE(ir.departure_time) = DATE(${adjustedDate})`
+        ? sql`AND ir.departure_time BETWEEN ${adjustedDate} AND ${endDate}`
         : sql``
       }
         ORDER BY ir.departure_time DESC
@@ -254,7 +255,7 @@ export async function searchTripsDB(
             LOWER(ir.guest_name) LIKE LOWER(${"%" + guestName + "%"})
             AND ir.organization_id = ${orgId || userId}
             ${dateCondition
-        ? sql`AND DATE(ir.departure_time) = DATE(${date})`
+        ? sql`AND ir.departure_time BETWEEN ${adjustedDate} AND ${endDate}`
         : sql``
       }`
 
