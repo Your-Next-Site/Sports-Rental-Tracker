@@ -13,7 +13,7 @@ export default function SearchHistory({ searchTripsPromise }:
   const router = useRouter();
   const searchPage = searchParams.get("searchPage") || 0;
   const departureDate = searchParams.get("departureDate") || new Date(new Date().getTime() - Number(process.env.NEXT_PUBLIC_OFFSET) * 60 * 60 * 1000).toISOString().split('T')[0]
-  // const guestName = searchParams.get("guestName") || ""
+  const guestName = searchParams.get("guestName") || ""
 
   const { trips: data, hasMore, totalPages } = use(searchTripsPromise);
 
@@ -51,6 +51,7 @@ export default function SearchHistory({ searchTripsPromise }:
         <div className="flex flex-col md:justify-center md:items-center gap-2 md:flex-row">
           <label htmlFor="GuestName">Guest Name</label>
           <input
+            defaultValue={guestName}
             name="GuestName"
             type="text"
             className="border-1 p-1"
