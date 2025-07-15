@@ -4,6 +4,7 @@ import "./globals.css";
 import Banner from "@/components/ui/banner/banner";
 import Providers from "@/components/Providers";
 import { ClerkProvider, OrganizationSwitcher, SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import PageContainer from "@/components/ui/containers/page-container";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +32,11 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Providers>          
+          <Providers>
             <Banner />
-            {children}
+            <PageContainer>
+              {children}
+            </PageContainer>
           </Providers>
         </body>
       </html>

@@ -1,9 +1,7 @@
-import PageContainer from "@/components/ui/containers/page-container";
 import Policy from "@/components/ui/policy/policy";
 
 export default function Page() {
-  return (
-    <PageContainer>
+  return (    
       <Policy
         name="Terms of Service"
         text="Only authorized clients are allowed access to the Sports Rental Tracker system. By using this system, you agree to:
@@ -16,6 +14,5 @@ export default function Page() {
         All data submitted is conditional and should not be shared with individuals outside of the paddle station. 
         The system and its contents are proprietary and intended solely for authorized business purposes."
       />
-    </PageContainer>
   );
 }

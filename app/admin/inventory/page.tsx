@@ -1,6 +1,6 @@
 import SimpleSubmitButton from "@/components/ui/buttons/simple-submit-button";
+import SiteNavButton from "@/components/ui/buttons/site-nav-button";
 import MainContainer from "@/components/ui/containers/main-container";
-import PageContainer from "@/components/ui/containers/page-container";
 import DisplayUintTypes from "@/components/ui/display-data/display-unit-types";
 import AddUnitForm from "@/components/ui/forms/add-unit-form";
 import AddUnitTypeForm from "@/components/ui/forms/add-unit-type-form";
@@ -12,54 +12,53 @@ import { TableHeadItems } from "@/components/ui/table-components/table-head-item
 import { fetchItemTypes, fetchItems } from '@/lib/utils/db'
 import { Suspense } from "react";
 
-
-
 export default async function Page() {
     const itemTypesPromise = fetchItemTypes();
     const itemPromise = fetchItems();
     return (
-        <PageContainer>
-            <MainContainer>
-                <div className="flex flex-col gap-4 p-4">
-                    <h1 className="text-2xl font-semibold" >Inventory List</h1>
-                    <AddUnitTypeForm
-                        child1={<FormHeader title="Add Unit Type" />}
-                        child2={<InputFormElement placeholder="Unit Type Value" type="text" name="unit-type-value" />}
-                        child3={<InputFormElement placeholder="Unit Type Label" type="text" name="unit-type-label" />}
-                        child4={<SimpleSubmitButton />}
-                    />
-                    {/* Dummy list of unit types */}
+        <MainContainer>
+            <div className="flex flex-col gap-4 p-4">
+                <h1 className="text-2xl font-semibold" >Inventory List</h1>
+                <AddUnitTypeForm
+                    child1={<FormHeader title="Add Unit Type" />}
+                    child2={<InputFormElement placeholder="Unit Type Value" type="text" name="unit-type-value" />}
+                    child3={<InputFormElement placeholder="Unit Type Label" type="text" name="unit-type-label" />}
+                    child4={<SimpleSubmitButton />}
+                />
+                {/* Dummy list of unit types */}
 
-                    <div className="flex flex-1 flex-col min-w-full border border-gray-300">
-                        <div className="w-full border-b border-gray-300">
-                            <FormHeader title="Unit Types" />
-                        </div>
-                        <Suspense fallback={<h1>Loading...</h1>}>
-                            <DisplayUintTypes itemTypesPromise={itemTypesPromise} />
-                        </Suspense>
+                <div className="flex flex-1 flex-col min-w-full border border-gray-300">
+                    <div className="w-full border-b border-gray-300">
+                        <FormHeader title="Unit Types" />
                     </div>
                     <Suspense fallback={<h1>Loading...</h1>}>
-                        <AddUnitForm
-                            itemTypesPromise={itemTypesPromise}
-                            child1={<FormHeader title='Add Unit' />}
-                            child2={<InputFormElement placeholder="Unit Number" type="number" name="unit-number" />}
-                            child3={<SimpleSubmitButton />}
-                        />
-                    </Suspense>
-                    {/* Desktop view (md and above) */}
-                    <table className="hidden md:table min-w-full border-collapse border border-gray-300">
-                        <TableHeadItems />
-                        <Suspense fallback={<FallBackTableBody />}>
-                            <TableBodyItems itemPromise={itemPromise} />
-                        </Suspense>
-                    </table>
-                    {/* Mobile view (below md breakpoint) */}
-                    <Suspense fallback={<h1 className="md:hidden block">Loading...</h1>}>
-                        <MobileItemsView itemPromise={itemPromise} />
+                        <DisplayUintTypes itemTypesPromise={itemTypesPromise} />
                     </Suspense>
                 </div>
-            </MainContainer>
-        </PageContainer>
+                <Suspense fallback={<h1>Loading...</h1>}>
+                    <AddUnitForm
+                        itemTypesPromise={itemTypesPromise}
+                        child1={<FormHeader title='Add Unit' />}
+                        child2={<InputFormElement placeholder="Unit Number" type="number" name="unit-number" />}
+                        child3={<SimpleSubmitButton />}
+                    />
+                </Suspense>
+                {/* Desktop view (md and above) */}
+                <table className="hidden md:table min-w-full border-collapse border border-gray-300">
+                    <TableHeadItems />
+                    <Suspense fallback={<FallBackTableBody />}>
+                        <TableBodyItems itemPromise={itemPromise} />
+                    </Suspense>
+                </table>
+                {/* Mobile view (below md breakpoint) */}
+                <Suspense fallback={<h1 className="md:hidden block">Loading...</h1>}>
+                    <MobileItemsView itemPromise={itemPromise} />
+                </Suspense>
+                <div className="justify-center flex w-full mt-4">
+                    <SiteNavButton text="Go to Rental Page" path="/main-rental-page" />
+                </div>
+            </div>
+        </MainContainer>
     );
 }
 

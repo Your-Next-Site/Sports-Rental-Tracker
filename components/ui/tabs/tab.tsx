@@ -1,23 +1,17 @@
 "use client";
-import { Suspense } from "react";
 import { ItemTypes, Trip, TripsData } from "@/types/types";
 import DepartureForm from "../forms/departure-form";
-import RentedOut from "../rented-out/rented-out";
-import SearchHistory from "../search-history-component/search-history";
-import RentedOutFallback from "../fallbacks/rented-out-fallback";
 import { useTabNavigation } from "@/hooks/hooks";
 import MainContainer from "../containers/main-container";
-import SearchFallback from "../fallbacks/search-fallback";
-
 
 export default function Tab({
-  tripsPromise,
   itemTypesPromise,
-  searchTripsPromise,
+  rentedOut,
+  searchHistory
 }: {
-  tripsPromise: Promise<TripsData>;
   itemTypesPromise: Promise<ItemTypes[]>;
-  searchTripsPromise: Promise<{ trips: Trip[], hasMore: boolean, totalPages: number }>
+  rentedOut: React.ReactNode;
+  searchHistory: React.ReactNode;
 }) {
 
   const tabs = ["Departure", "Rented Out", "Search"];
@@ -39,16 +33,8 @@ export default function Tab({
       </div>
       <MainContainer>
         {selectedTab === "Departure" && <DepartureForm itemTypesPromise={itemTypesPromise} />}
-        {selectedTab === "Rented Out" && (
-          <Suspense fallback={<RentedOutFallback />}>
-            <RentedOut tripsPromise={tripsPromise} />
-          </Suspense>
-        )}
-        {selectedTab === "Search" &&
-          <Suspense fallback={<SearchFallback />}>
-            <SearchHistory searchTripsPromise={searchTripsPromise} />
-          </Suspense>
-        }
+        {selectedTab === "Rented Out" && <>{rentedOut}</>}
+        {selectedTab === "Search" && <>{searchHistory}</>}
       </MainContainer>
     </div>
   );
