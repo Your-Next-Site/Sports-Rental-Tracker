@@ -11,13 +11,13 @@ import SearchFallback from "../fallbacks/search-fallback";
 
 
 export default function Tab({
-  tripsPromise,
   itemTypesPromise,
-  searchTripsPromise,
+  rentedOut,
+  searchHistory
 }: {
-  tripsPromise: Promise<TripsData>;
-  itemTypesPromise: Promise<ItemTypes[]>;
-  searchTripsPromise: Promise<{ trips: Trip[], hasMore: boolean, totalPages: number }>
+  itemTypesPromise: Promise<ItemTypes[]>;  
+  rentedOut: React.ReactNode;
+  searchHistory: React.ReactNode;
 }) {
 
   const tabs = ["Departure", "Rented Out", "Search"];
@@ -39,19 +39,19 @@ export default function Tab({
       </div>
       <MainContainer>
         {selectedTab === "Departure" && <DepartureForm itemTypesPromise={itemTypesPromise} />}
-        
-        {selectedTab === "Rented Out" && 
+
+        {selectedTab === "Rented Out" &&
           <Suspense fallback={<RentedOutFallback />}>
-            <RentedOut tripsPromise={tripsPromise} />
+            {rentedOut}
           </Suspense>
         }
-        
+
         {selectedTab === "Search" &&
           <Suspense fallback={<SearchFallback />}>
-            <SearchHistory searchTripsPromise={searchTripsPromise} />
+            {searchHistory}
           </Suspense>
         }
-        
+
       </MainContainer>
     </div>
   );

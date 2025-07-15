@@ -1,9 +1,8 @@
-import SiteNavButton from "@/components/ui/buttons/site-nav-button";
 import InventoryLink from "@/components/ui/inventory/inventroy-link";
+import RentedOut from "@/components/ui/rented-out/rented-out";
+import SearchHistory from "@/components/ui/search-history-component/search-history";
 import Tab from "@/components/ui/tabs/tab";
-import { showInventoryFunction } from "@/lib/utils";
 import { fetchItemTypes, fetchTrips, searchTripsDB } from "@/lib/utils/db";
-import { auth } from "@clerk/nextjs/server";
 import { Suspense } from "react";
 
 
@@ -31,13 +30,13 @@ export default async function Page({
     return (
         <>
             <Tab
-                tripsPromise={tripsPromise}
-                itemTypesPromise={itemTypesPromise}
-                searchTripsPromise={searchTripsPromise}
+                itemTypesPromise={itemTypesPromise}                
+                rentedOut={<RentedOut tripsPromise={tripsPromise} />}
+                searchHistory={<SearchHistory searchTripsPromise={searchTripsPromise} />}
             />
             <Suspense>
                 <InventoryLink />
-            </Suspense>            
+            </Suspense>
         </>
     );
 }
