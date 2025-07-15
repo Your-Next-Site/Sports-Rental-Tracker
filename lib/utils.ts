@@ -7,9 +7,3 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 
-export async function showInventoryFunction() {
-  const { orgId, sessionClaims } = await auth.protect()  
-  if (orgId && sessionClaims.orgRole === 'org:admin') return true
-  if (!orgId) return true
-  return false
-}
