@@ -4,6 +4,7 @@ import Image from "next/image";
 import SiteNavButton from "@/components/ui/buttons/site-nav-button";
 import { Suspense } from "react";
 import InventoryLink from "@/components/ui/inventory/inventroy-link";
+import { SignedIn } from "@clerk/nextjs";
 
 export default async function Home() {
   return (
@@ -32,10 +33,12 @@ export default async function Home() {
         <Image className="md:w-2/6 rounded-sm" src="/rental.jpg" height={1200} width={1200} alt={"Sports Image"} />
       </div>
       <div className="flex p-4 gap-4 justify-center bg">
-        <SiteNavButton text="Go to Rental Page" path="/main-rental-page" />
-        <Suspense>
-          <InventoryLink />
-        </Suspense>
+        <SignedIn>
+          <SiteNavButton text="Go to Rental Page" path="/main-rental-page" />
+          <Suspense>
+            <InventoryLink />
+          </Suspense>
+        </SignedIn>
       </div>
       <footer className="border mt-auto mx-auto text-center  bg-white p-4 rounded-lg shadow-lg">
         <span>By using Sports Rental Tracker, you agree to our </span>
