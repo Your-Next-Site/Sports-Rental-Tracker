@@ -1,6 +1,8 @@
 import { Trip } from "@/types/types";
 import { Trips } from "../trips/trips";
 import SearchHistoryInputClient from "./search-history-input-client";
+import { Suspense } from "react";
+import SearchFallback from "../fallbacks/search-fallback";
 
 export default function SearchHistory({ searchTripsPromise }:
   { searchTripsPromise: Promise<{ trips: Trip[], hasMore: boolean, totalPages: number }> }) {
@@ -13,7 +15,9 @@ export default function SearchHistory({ searchTripsPromise }:
           <label htmlFor="GuestName">Guest Name</label>
           <SearchHistoryInputClient />
         </div>
-        <Trips searchTripsPromise={searchTripsPromise} />
+        <Suspense fallback={<SearchFallback />}>
+          <Trips searchTripsPromise={searchTripsPromise} />
+        </Suspense>
       </div>
     </>
   );

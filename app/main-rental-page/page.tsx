@@ -5,7 +5,6 @@ import Tab from "@/components/ui/tabs/tab";
 import { fetchItemTypes, fetchTrips, searchTripsDB } from "@/lib/utils/db";
 import { Suspense } from "react";
 
-
 export default async function Page({
     searchParams,
 }: {
@@ -22,10 +21,10 @@ export default async function Page({
     const offsetTimeValue = Number(process.env.NEXT_PUBLIC_OFFSET || 6);
     departureDateTime.setHours(departureDateTime.getHours() - offsetTimeValue);
 
+    //Start fetching data on page load instead of waterfall
     const itemTypesPromise = fetchItemTypes();
     const tripsPromise = fetchTrips(true, Number(rentedOutPage));
     const searchTripsPromise = searchTripsDB(guestName.toString(), departureDate.toString(), Number(searchPage))
-
 
     return (
         <>
@@ -40,4 +39,3 @@ export default async function Page({
         </>
     );
 }
-// /api/search-trips?guestName=${guestName}&departureTime=${departureTime}&page=${page}
