@@ -1,14 +1,18 @@
 import SiteNavButton from "@/components/ui/buttons/site-nav-button";
 import Tab from "@/components/ui/tabs/tab";
 import { fetchItemTypes, fetchTrips, searchTripsDB } from "@/lib/utils/db";
+import { auth } from "@clerk/nextjs/server";
 
 export default async function Page({
     searchParams,
 }: {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-    const params = await searchParams;
+    // const { userId, orgId, sessionClaims } = auth.protect()
+    // let showInventoryLink = false;
+    // if (!orgId && !sessionClaims.orgRole === 'org:admin') showInventoryLink = true
 
+    const params = await searchParams;
     const searchPage = params.searchPage || 0
     const rentedOutPage = params.rentedOutPage || 0
     const guestName = params.guestName || ""
