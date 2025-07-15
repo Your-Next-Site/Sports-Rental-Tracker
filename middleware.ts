@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 
 const isOrgRoute = createRouteMatcher(['/(.*)'])
 const isProtectedRoute = createRouteMatcher(['/main-rental-page(.*)'])
-const isAdminRoute = createRouteMatcher(['/admin(.*)', '/api/items(.*)'])
+const isAdminRoute = createRouteMatcher(['/admin(.*)'])
 
 
 export default clerkMiddleware(async (auth, req) => {

@@ -2,6 +2,8 @@ import MainContainer from "@/components/ui/containers/main-container";
 import Link from "next/link";
 import Image from "next/image";
 import SiteNavButton from "@/components/ui/buttons/site-nav-button";
+import { Suspense } from "react";
+import InventoryLink from "@/components/ui/inventory/inventroy-link";
 
 export default async function Home() {
   return (
@@ -31,7 +33,9 @@ export default async function Home() {
       </div>
       <div className="flex p-4 gap-4 justify-center bg">
         <SiteNavButton text="Go to Rental Page" path="/main-rental-page" />
-        <SiteNavButton text="Go to Inventory Page" path='/admin/inventory' />
+        <Suspense>
+          <InventoryLink />
+        </Suspense>
       </div>
       <footer className="border mt-auto mx-auto text-center  bg-white p-4 rounded-lg shadow-lg">
         <span>By using Sports Rental Tracker, you agree to our </span>

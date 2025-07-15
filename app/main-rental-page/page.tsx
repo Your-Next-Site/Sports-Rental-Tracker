@@ -1,16 +1,17 @@
 import SiteNavButton from "@/components/ui/buttons/site-nav-button";
+import InventoryLink from "@/components/ui/inventory/inventroy-link";
 import Tab from "@/components/ui/tabs/tab";
+import { showInventoryFunction } from "@/lib/utils";
 import { fetchItemTypes, fetchTrips, searchTripsDB } from "@/lib/utils/db";
 import { auth } from "@clerk/nextjs/server";
+import { Suspense } from "react";
+
 
 export default async function Page({
     searchParams,
 }: {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-    // const { userId, orgId, sessionClaims } = auth.protect()
-    // let showInventoryLink = false;
-    // if (!orgId && !sessionClaims.orgRole === 'org:admin') showInventoryLink = true
 
     const params = await searchParams;
     const searchPage = params.searchPage || 0
@@ -34,9 +35,9 @@ export default async function Page({
                 itemTypesPromise={itemTypesPromise}
                 searchTripsPromise={searchTripsPromise}
             />
-            <div className="justify-center flex w-full mt-4">
-                <SiteNavButton text="Go to Inventory Page" path="/admin/inventory" />
-            </div>
+            <Suspense>
+                <InventoryLink />
+            </Suspense>            
         </>
     );
 }
