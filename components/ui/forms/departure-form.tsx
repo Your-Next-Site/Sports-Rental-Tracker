@@ -2,8 +2,7 @@
 import { useAddRentalStart } from "@/mutations/mutations";
 import Inputs from "./inputs";
 import { ItemTypes } from "@/types/types";
-import { Suspense } from "react";
-import InputDepartureFormFallback from "../fallbacks/input-departure-form-fallback";
+
 
 export default function DepartureForm({ itemTypesPromise }: { itemTypesPromise: Promise<ItemTypes[]> }) {
     const { mutate, isPending, isError } = useAddRentalStart();
@@ -14,9 +13,7 @@ export default function DepartureForm({ itemTypesPromise }: { itemTypesPromise: 
                 action={mutate}
                 className="flex flex-col gap-2 "
             >
-                <Suspense fallback={<InputDepartureFormFallback />}>
-                    <Inputs itemTypesPromise={itemTypesPromise} isPending={isPending} />
-                </Suspense>
+                <Inputs itemTypesPromise={itemTypesPromise} isPending={isPending} />
                 {isError && <p className="text-red-500">Error adding trip</p>}
             </form>
         </>
