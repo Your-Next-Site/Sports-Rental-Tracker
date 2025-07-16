@@ -18,8 +18,8 @@ export async function POST(req: NextRequest) {
         console.log("plan: ", evt.data.plan?.slug)
 
         if (
-            evt.type === 'subscriptionItem.active' ||
-            evt.type === 'subscriptionItem.ended'
+            evt.type === 'subscriptionItem.active' 
+            // evt.type === 'subscriptionItem.ended'
         ) {
             if (isSubscriptionItem(evt.data)) {
                 const plan = evt.data.plan.slug;
