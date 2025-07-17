@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import { ItemTypes, Trip, TripsData } from "@/types/types";
 import DepartureForm from "../forms/departure-form";
 import { useTabNavigation } from "@/hooks/hooks";
@@ -12,7 +12,7 @@ export default function Tab({
 }>) {
 
   const tabs = ["Departure", "Rented Out", "Search"];
-  const { selectedTab, handleTabClick } = useTabNavigation(tabs, "Departure");
+  // const { selectedTab, handleTabClick } = useTabNavigation(tabs, "Departure");
 
   return (
     <div className="flex flex-col w-full md:w-5/6">
@@ -24,8 +24,8 @@ export default function Tab({
               pathname: `/main-rental-page`,
               query: { currentTab: tab }
             }}
-            className={`${selectedTab === tab ? "bg-foreground text-white" : "bg-white"
-              } grow rounded-t-md border-[1px] text-lg hover:bg-background border-foreground p-2`}
+            // className={`${selectedTab === tab ? "bg-foreground text-white" : "bg-white"
+            //   } grow rounded-t-md border-[1px] text-lg hover:bg-background border-foreground p-2`}
           >
             {tab}
           </Link>
