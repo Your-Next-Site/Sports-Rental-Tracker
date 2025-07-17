@@ -1,6 +1,7 @@
 import InventoryLink from "@/components/ui/inventory/inventroy-link";
 import RentedOut from "@/components/ui/rented-out/rented-out";
 import SearchHistory from "@/components/ui/search-history-component/search-history";
+import SetSearchParams from "@/components/ui/setSearchParams";
 import Tab from "@/components/ui/tabs/tab";
 import { fetchItemTypes, fetchTrips, searchTripsDB } from "@/lib/utils/db";
 import { Suspense } from "react";
@@ -15,6 +16,7 @@ export default async function Page({
     const searchPage = params.searchPage || 0
     const rentedOutPage = params.rentedOutPage || 0
     const guestName = params.guestName || ""
+    const currentTab = String(params.currentTab) || ""
 
     const departureDate = (Array.isArray(params.departureDate) ? params.departureDate[0] : params.departureDate) || new Date().toISOString();
     let departureDateTime = new Date(departureDate);
@@ -28,8 +30,10 @@ export default async function Page({
 
     return (
         <>
+            <SetSearchParams />
             <Tab
-                itemTypesPromise={itemTypesPromise}                
+                currentTab={currentTab}
+                itemTypesPromise={itemTypesPromise}
                 rentedOut={<RentedOut tripsPromise={tripsPromise} />}
                 searchHistory={<SearchHistory searchTripsPromise={searchTripsPromise} />}
             />
