@@ -31,7 +31,7 @@ export default function Tab({
           </Link>
         ))}
       </div>
-      {slots}
+      {children}
     </div>
   );
 }
