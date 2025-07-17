@@ -1,3 +1,5 @@
+import MainContainer from "@/components/ui/containers/main-container";
+import DepartureForm from "@/components/ui/forms/departure-form";
 import InventoryLink from "@/components/ui/inventory/inventroy-link";
 import RentedOut from "@/components/ui/rented-out/rented-out";
 import SearchHistory from "@/components/ui/search-history-component/search-history";
@@ -15,6 +17,7 @@ export default async function Page({
     const searchPage = params.searchPage || 0
     const rentedOutPage = params.rentedOutPage || 0
     const guestName = params.guestName || ""
+    const selectedTab = (params.currentTab)
 
     const departureDate = (Array.isArray(params.departureDate) ? params.departureDate[0] : params.departureDate) || new Date().toISOString();
     let departureDateTime = new Date(departureDate);
@@ -28,11 +31,13 @@ export default async function Page({
 
     return (
         <>
-            <Tab
-                itemTypesPromise={itemTypesPromise}                
-                rentedOut={<RentedOut tripsPromise={tripsPromise} />}
-                searchHistory={<SearchHistory searchTripsPromise={searchTripsPromise} />}
-            />
+            <Tab>
+                <MainContainer>
+                    {selectedTab === "Departure" && <DepartureForm itemTypesPromise={itemTypesPromise} />}
+                    {selectedTab === "Rented Out" && <RentedOut tripsPromise={tripsPromise} />}
+                    {selectedTab === "Search" && <SearchHistory searchTripsPromise={searchTripsPromise} />}
+                </MainContainer>
+            </Tab>
             <Suspense>
                 <InventoryLink />
             </Suspense>
